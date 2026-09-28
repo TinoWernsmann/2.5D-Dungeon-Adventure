@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Debug
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneSO
   _dialogueLines:
-  - Text: This is a Debug
+  - Text: Year 1XXX
     VoiceClip: {fileID: 0}
-    DialogueSprite: {fileID: 21300000, guid: 673a17383db30ad4b9e025018fe033a9, type: 3}
-  - Text: This is another Text Box
+    DialogueSprite: {fileID: 21300000, guid: fc0b3c3d0dbc0da4ebfd3ff7aa5a0bed, type: 3}
+  - Text: '!"#@ Woods'
     VoiceClip: {fileID: 0}
-    DialogueSprite: {fileID: 21300000, guid: 5e6baacc7e340804d877b31b31b440ce, type: 3}
+    DialogueSprite: {fileID: 21300000, guid: 080d0fd6bef1b0346ba98126339b31c7, type: 3}
+  - Text: 'Protagonist Name: ... ?!'
+    VoiceClip: {fileID: 0}
+    DialogueSprite: {fileID: 21300000, guid: 0fd20701bf784e540acf86ea06d1e0af, type: 3}

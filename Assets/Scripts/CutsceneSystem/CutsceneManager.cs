@@ -43,7 +43,7 @@ public class CutsceneManager : MonoBehaviour
 
     private void SetDialogueData()
     {
-        _text.text = _currentCutsceneDialogue[_dialogueCounter].Text;
+        _text.text = _currentCutsceneDialogue[_dialogueCounter].Text + GlobalVars.Instance.PlayerName;
         _cutsceneUI.SetDialogueImage(_currentCutsceneDialogue[_dialogueCounter].DialogueSprite);
     }
 
