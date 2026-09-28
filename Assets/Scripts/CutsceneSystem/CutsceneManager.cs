@@ -1,22 +1,29 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CutsceneManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private CutsceneSO _cutscene;
-    [SerializeField] private Image _dialogueImage;
 
+    private TextMeshProUGUI _text;
     private DialogueData[] _currentCutsceneDialogue;
     private int _dialogueCounter = 0;
+    private CutsceneUI _cutsceneUI;
 
     private const int WAIT_SECONDS = 5;
 
+    private void OnEnable()
+    {
+        _text = GetComponentInChildren<TextMeshProUGUI>();
+        _cutsceneUI = GetComponent<CutsceneUI>();
+        if (_text == null) Debug.LogError("Error Loading Cutscene Text!");
+        if (_cutsceneUI == null) Debug.LogError("Error Loading Cutscene UI Manager!");
+    }
+
     private void Start()
     {
-        _currentCutsceneDialogue = _cutscene.DialogueLines;
+        if (_cutscene != null) _currentCutsceneDialogue = _cutscene.DialogueLines;
         StartCutscene();
     }
 
@@ -37,12 +44,17 @@ public class CutsceneManager : MonoBehaviour
     private void SetDialogueData()
     {
         _text.text = _currentCutsceneDialogue[_dialogueCounter].Text;
-        SetDialogueImage(_currentCutsceneDialogue[_dialogueCounter].DialogueSprite);
+        _cutsceneUI.SetDialogueImage(_currentCutsceneDialogue[_dialogueCounter].DialogueSprite);
     }
 
     private bool IsCutsceneOver()
     {
         return _dialogueCounter >= _currentCutsceneDialogue.Length - 1;
+    }
+
+    private void EndCutscene()
+    {
+        this.gameObject.SetActive(false);
     }
 
     private void WaitUntilNextCutsceneEntry()
@@ -53,12 +65,13 @@ public class CutsceneManager : MonoBehaviour
     private IEnumerator WaitCoroutine()
     {
         yield return new WaitForSeconds(WAIT_SECONDS);
-        if (!IsCutsceneOver()) PlayNextCutsceneElement();
-    }
-
-    private void SetDialogueImage(Sprite sprite)
-    {
-        if (sprite == null) return;
-        _dialogueImage.sprite = sprite;
+        if (!IsCutsceneOver())
+        {
+            PlayNextCutsceneElement();
+        }
+        else
+        {
+            EndCutscene();
+        }
     }
 }
