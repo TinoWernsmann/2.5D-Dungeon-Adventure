@@ -1351,6 +1351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 908654042}
+  - component: {fileID: 908654044}
   - component: {fileID: 908654043}
   m_Layer: 0
   m_Name: General
@@ -1387,6 +1388,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameInput
   _testDialogue: {fileID: 1963790624}
+--- !u!114 &908654044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908654041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae09b2aeed1c4cb45a6f5a2e01b3642a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyboardDebug
+  _itemToTest: {fileID: 1686681772}
+  _itemManager: {fileID: 1058557255}
 --- !u!1 &974831012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,6 +2420,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6906d19fff7047b478d1cb13af9e42c6, type: 3}
+--- !u!114 &1686681772 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 223743874185225283, guid: 6906d19fff7047b478d1cb13af9e42c6, type: 3}
+  m_PrefabInstance: {fileID: 1686681771}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBase
 --- !u!1 &1692070133
 GameObject:
   m_ObjectHideFlags: 0
