@@ -30,6 +30,7 @@ public class ItemBase : MonoBehaviour
 
     private void FloatItem()
     {
+        if (!this.gameObject.activeSelf) return;
         float newY = _startPos.y + Mathf.Sin(Time.time * FLOAT_SPEED) * FLOAT_HEIGHT;
         transform.position = new Vector3(_startPos.x, newY, _startPos.z);
     }

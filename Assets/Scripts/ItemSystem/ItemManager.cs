@@ -5,7 +5,7 @@ public class ItemManager : MonoBehaviour
 {
     private ItemListUI _itemListUI;
     private List<ItemBase> _playerItems;
-    private ItemBase _weapon;
+    private WeaponSO _weapon;
     private WeaponUI _weaponUI;
 
     private void OnEnable()
@@ -21,14 +21,23 @@ public class ItemManager : MonoBehaviour
         if (_itemListUI == null) Debug.LogError("Error Loading Item List UI!");
     }
 
+    public void UseWeapon()
+    {
+        if (_weapon == null)
+        {
+            Debug.Log("No Weapon!");
+            return;
+        }
+        _weaponUI.Attack(_weapon);
+    }
+
     private void HandleItemAdded(ItemBase item)
     {
-        if (item is WeaponBase weapon && item.ItemData is WeaponSO weaponData)
+        if (item.ItemData is WeaponSO weapon)
         {
-            _weapon = item;
-            weapon.EquipWeapon(weaponData);
-            _weaponUI.UpdateEquipSprite(weapon.CurrentSprite);
-            _itemListUI.ChangeEquippedWeapon(weapon.ItemData.InventoryIcon);
+            _weapon = weapon;
+            _weaponUI.UpdateEquipSprite(weapon.IdleSprite);
+            _itemListUI.ChangeEquippedWeapon(weapon.InventoryIcon);
         }
         else
         {
