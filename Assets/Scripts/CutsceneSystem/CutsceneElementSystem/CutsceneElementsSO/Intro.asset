@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19012a14631964444b14de38c738cf56, type: 3}
+  m_Name: Intro
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneSO
+  _dialogueLines:
+  - Text: Year 1XXX
+    VoiceClip: {fileID: 0}
+    DialogueSprite: {fileID: 21300000, guid: fc0b3c3d0dbc0da4ebfd3ff7aa5a0bed, type: 3}
+  - Text: '!"#@ Woods'
+    VoiceClip: {fileID: 0}
+    DialogueSprite: {fileID: 21300000, guid: 080d0fd6bef1b0346ba98126339b31c7, type: 3}
+  - Text: '(name): ...?!'
+    VoiceClip: {fileID: 0}
+    DialogueSprite: {fileID: 21300000, guid: 0fd20701bf784e540acf86ea06d1e0af, type: 3}
