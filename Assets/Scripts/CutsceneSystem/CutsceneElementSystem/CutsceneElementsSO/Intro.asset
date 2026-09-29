@@ -15,10 +15,11 @@ MonoBehaviour:
   _dialogueLines:
   - Text: Year 1XXX
     VoiceClip: {fileID: 0}
-    DialogueSprite: {fileID: 21300000, guid: fc0b3c3d0dbc0da4ebfd3ff7aa5a0bed, type: 3}
+    DialogueSprite: {fileID: 21300000, guid: 6b03a85f77ec8834a84e4990e71f2641, type: 3}
   - Text: '!"#@ Woods'
     VoiceClip: {fileID: 0}
-    DialogueSprite: {fileID: 21300000, guid: 080d0fd6bef1b0346ba98126339b31c7, type: 3}
+    DialogueSprite: {fileID: 21300000, guid: 9733b585828f01441a64d460bd1426c4, type: 3}
   - Text: '(name): ...?!'
     VoiceClip: {fileID: 0}
-    DialogueSprite: {fileID: 21300000, guid: 0fd20701bf784e540acf86ea06d1e0af, type: 3}
+    DialogueSprite: {fileID: 21300000, guid: a98129a853f1a31479deb400fb77e056, type: 3}
+  Video: {fileID: 32900000, guid: e8b9909290d3cda4dba3c7f889be5e5c, type: 3}
