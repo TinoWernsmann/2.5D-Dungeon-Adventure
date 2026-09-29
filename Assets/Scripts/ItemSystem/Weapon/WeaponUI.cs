@@ -10,10 +10,14 @@ public class WeaponUI : MonoBehaviour
 
     private const float ATTACK_SPEED = 0.5f;
 
+    private void Awake()
+    {
+        UpdateEquipWeaponVisibilty();
+    }
+
     private void Start()
     {
         _animIsRunnning = false;
-        UpdateEquipWeaponVisibilty();
     }
 
     public void UpdateEquipSprite(Sprite sprite)

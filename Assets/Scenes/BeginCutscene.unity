@@ -535,7 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneInitiator
   _cutsceneToBegin: {fileID: 11400000, guid: 30f060c758f577c43a08549813484fbb, type: 2}
   _cutsceneManager: {fileID: 396631509}
-  NEXT_SCENE_TO_LOAD: TinoScene
+  NEXT_SCENE_TO_LOAD: TinoWeaponScene
 --- !u!1 &1291611009
 GameObject:
   m_ObjectHideFlags: 0

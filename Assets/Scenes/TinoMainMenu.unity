@@ -165,7 +165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuManager
   _nameEntryObject: {fileID: 955436665}
   _nameInput: {fileID: 795227558}
-  _beginCutscene: {fileID: 11400000, guid: 30f060c758f577c43a08549813484fbb, type: 2}
 --- !u!1 &704124371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,7 +1703,7 @@ RectTransform:
   m_GameObject: {fileID: 1968830167}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.4785, y: 2.1552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1198278784}

@@ -29,6 +29,6 @@ public class CutsceneInitiator : MonoBehaviour
         yield return new WaitUntil(() => finished);
 
         _cutsceneManager.OnCutsceneFinished -= OnFinished;
-        SceneManager.LoadScene(NEXT_SCENE_TO_LOAD);
+        SceneManager.LoadSceneAsync(NEXT_SCENE_TO_LOAD);
     }
 }
