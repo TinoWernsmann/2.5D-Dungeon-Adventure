@@ -17,6 +17,14 @@ MonoBehaviour:
   InventoryIcon: {fileID: 21300000, guid: 6c30d23484168a54cb341b13717d179c, type: 3}
   WeaponDamage: 0
   WeaponRange: 0
-  AttackSound: {fileID: 0}
+  AttackSounds:
+  - {fileID: 8300000, guid: 3395d142011cd6d4582f64ecd865b105, type: 3}
+  - {fileID: 8300000, guid: 11b4cf1676e7dba4f83a87c6c7acd7af, type: 3}
+  - {fileID: 8300000, guid: 0fa9c45a9226185429c5fb499e9fdedb, type: 3}
+  - {fileID: 8300000, guid: 3360ed70b3123f34fb979fe50fcc37c6, type: 3}
+  - {fileID: 8300000, guid: 467546c50dfa0ce4fa832850f64d47fa, type: 3}
+  - {fileID: 8300000, guid: 271f2f444b287b2448deb6df407877dd, type: 3}
+  - {fileID: 8300000, guid: ce8d570a69cc41a48aec5bb8a17999c9, type: 3}
+  - {fileID: 8300000, guid: b9ce68a3272b7e24b9a02685c6b7c953, type: 3}
   IdleSprite: {fileID: 21300000, guid: 8afd9b26e7d0907409a88ff8d0b3a324, type: 3}
   AttackSprite: {fileID: 21300000, guid: ddc5ef8342d227e40b21675a430aaa25, type: 3}
