@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class CutsceneManager : MonoBehaviour
     private DialogueData[] _currentCutsceneDialogue;
     private int _dialogueCounter;
     private CutsceneUI _cutsceneUI;
+    private VideoClip _video;
 
     private const int WAIT_SECONDS = 5;
 
@@ -29,6 +31,7 @@ public class CutsceneManager : MonoBehaviour
         if (_currentCutsceneDialogue == null || _currentCutsceneDialogue.Length == 0) return;
 
         _dialogueCounter = 0;
+        _video = cutscene.Video;
         IsPlaying = true;
         SetDialogueData();
         WaitUntilNextCutsceneEntry();
@@ -56,9 +59,53 @@ public class CutsceneManager : MonoBehaviour
 
     private void EndCutscene()
     {
+        if (_video != null)
+        {
+            VideoPlayer player = _cutsceneUI.SetVideo(_video);
+            if (player != null)
+            {
+                _text.text = string.Empty;
+                StartCoroutine(PlayVideoRoutine(player));
+                return;
+            }
+        }
+        FinishCutscene();
+    }
+
+    private IEnumerator PlayVideoRoutine(VideoPlayer player)
+    {
+        bool finished = false;
+        void OnFinished(VideoPlayer vp) => finished = true;
+        void OnError(VideoPlayer vp, string msg)
+        {
+            Debug.LogError($"Video error: {msg}");
+            finished = true;
+        }
+
+        player.loopPointReached += OnFinished;
+        player.errorReceived += OnError;
+
+        player.Prepare();
+        yield return new WaitUntil(() => player.isPrepared || finished);
+
+        if (!finished)
+        {
+            player.Play();
+            yield return new WaitUntil(() => finished);
+        }
+
+        player.loopPointReached -= OnFinished;
+        player.errorReceived -= OnError;
+
+        _cutsceneUI.HideVideo();
+        FinishCutscene();
+    }
+
+    private void FinishCutscene()
+    {
         IsPlaying = false;
         OnCutsceneFinished?.Invoke();
-        this.gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     private void WaitUntilNextCutsceneEntry()

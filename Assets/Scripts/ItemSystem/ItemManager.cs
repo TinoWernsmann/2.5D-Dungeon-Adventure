@@ -7,6 +7,7 @@ public class ItemManager : MonoBehaviour
     private List<ItemBase> _playerItems;
     private WeaponSO _weapon;
     private WeaponUI _weaponUI;
+    private WeaponSoundManager _weaponSound;
 
     private void OnEnable()
     {
@@ -18,7 +19,9 @@ public class ItemManager : MonoBehaviour
         _playerItems = new List<ItemBase>();
         _itemListUI = GetComponent<ItemListUI>();
         _weaponUI = GetComponent<WeaponUI>();
+        _weaponSound = GetComponent<WeaponSoundManager>();
         if (_itemListUI == null) Debug.LogError("Error Loading Item List UI!");
+        if (_weaponSound == null) Debug.LogError("Error Loading Weapon Sound!");
     }
 
     public void UseWeapon()
@@ -28,7 +31,7 @@ public class ItemManager : MonoBehaviour
             Debug.Log("No Weapon!");
             return;
         }
-        _weaponUI.Attack(_weapon);
+        _weaponUI.Attack(_weapon, _weaponSound);
     }
 
     private void HandleItemAdded(ItemBase item)
@@ -38,6 +41,7 @@ public class ItemManager : MonoBehaviour
             _weapon = weapon;
             _weaponUI.UpdateEquipSprite(weapon.IdleSprite);
             _itemListUI.ChangeEquippedWeapon(weapon.InventoryIcon);
+            _weaponSound.GetSoundEffects(weapon.AttackSounds);
         }
         else
         {

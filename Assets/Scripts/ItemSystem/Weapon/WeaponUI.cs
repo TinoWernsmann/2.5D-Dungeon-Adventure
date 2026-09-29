@@ -31,16 +31,17 @@ public class WeaponUI : MonoBehaviour
         _equipImage.gameObject.SetActive(_equipImage.sprite != null);
     }
 
-    public void Attack(WeaponSO weapon)
+    public void Attack(WeaponSO weapon, WeaponSoundManager sound)
     {
         if (_animIsRunnning) return;
-        StartCoroutine(AnimateWeapon(weapon));
+        StartCoroutine(AnimateWeapon(weapon, sound));
     }
 
-    private IEnumerator AnimateWeapon(WeaponSO weapon)
+    private IEnumerator AnimateWeapon(WeaponSO weapon, WeaponSoundManager sound)
     {
         _animIsRunnning = true;
         UpdateEquipSprite(weapon.AttackSprite);
+        sound.PlayRandomAttackSound();
 
         yield return new WaitForSeconds(ATTACK_SPEED);
 
