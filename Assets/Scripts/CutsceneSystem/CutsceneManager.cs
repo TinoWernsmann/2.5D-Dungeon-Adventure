@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class CutsceneManager : MonoBehaviour
 {
-    [SerializeField] private CutsceneSO _cutscene;
+    public event Action OnCutsceneFinished;
+    public bool IsPlaying { get; private set; }
 
     private TextMeshProUGUI _text;
     private DialogueData[] _currentCutsceneDialogue;
-    private int _dialogueCounter = 0;
+    private int _dialogueCounter;
     private CutsceneUI _cutsceneUI;
 
     private const int WAIT_SECONDS = 5;
@@ -21,15 +23,13 @@ public class CutsceneManager : MonoBehaviour
         if (_cutsceneUI == null) Debug.LogError("Error Loading Cutscene UI Manager!");
     }
 
-    private void Start()
+    public void StartNewCutscene(CutsceneSO cutscene)
     {
-        if (_cutscene != null) _currentCutsceneDialogue = _cutscene.DialogueLines;
-        StartCutscene();
-    }
+        if (cutscene != null) _currentCutsceneDialogue = cutscene.DialogueLines;
+        if (_currentCutsceneDialogue == null || _currentCutsceneDialogue.Length == 0) return;
 
-    private void StartCutscene()
-    {
-        if (_currentCutsceneDialogue == null) return;
+        _dialogueCounter = 0;
+        IsPlaying = true;
         SetDialogueData();
         WaitUntilNextCutsceneEntry();
     }
@@ -43,7 +43,9 @@ public class CutsceneManager : MonoBehaviour
 
     private void SetDialogueData()
     {
-        _text.text = _currentCutsceneDialogue[_dialogueCounter].Text + GlobalVars.Instance.PlayerName;
+        string sentence = _currentCutsceneDialogue[_dialogueCounter].Text;
+        string fin = sentence.Replace("(name)", GlobalVars.Instance.PlayerName);
+        _text.text = fin;
         _cutsceneUI.SetDialogueImage(_currentCutsceneDialogue[_dialogueCounter].DialogueSprite);
     }
 
@@ -54,6 +56,8 @@ public class CutsceneManager : MonoBehaviour
 
     private void EndCutscene()
     {
+        IsPlaying = false;
+        OnCutsceneFinished?.Invoke();
         this.gameObject.SetActive(false);
     }
 

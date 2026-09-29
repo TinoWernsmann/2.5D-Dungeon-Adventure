@@ -17,7 +17,6 @@ public class CutsceneUI : MonoBehaviour
             Debug.LogError("No Image provided!");
             return;
         }
-        Debug.Log("Image Set");
         _dialogueImage.sprite = sprite;
     }
 }

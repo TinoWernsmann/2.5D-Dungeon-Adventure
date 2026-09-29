@@ -20,6 +20,5 @@ public class GlobalVars : MonoBehaviour
     public void SetPlayerName(string playerName)
     {
         PlayerName = playerName;
-        Debug.Log(PlayerName);
     }
 }

@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TinoScene.unity
     guid: 1efd8cb710b69d546a082ee225b6c31c
+  - enabled: 1
+    path: Assets/Scenes/BeginCutscene.unity
+    guid: 111120c47db64fe4195170cff3c41457
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
