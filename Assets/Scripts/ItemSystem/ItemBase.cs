@@ -8,7 +8,10 @@ public class ItemBase : MonoBehaviour
 
     [SerializeField] private ItemSO _itemData;
 
+    private const float FLOAT_SPEED = 3f;
+    private const float FLOAT_HEIGHT = 0.1f;
     private Rigidbody _rb;
+    private Vector3 _startPos;
 
     public ItemSO ItemData => _itemData;
 
@@ -16,6 +19,19 @@ public class ItemBase : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         if (_rb == null) Debug.LogError("Error Loading Item Body!");
+
+        _startPos = transform.position;
+    }
+
+    private void Update()
+    {
+        FloatItem();
+    }
+
+    private void FloatItem()
+    {
+        float newY = _startPos.y + Mathf.Sin(Time.time * FLOAT_SPEED) * FLOAT_HEIGHT;
+        transform.position = new Vector3(_startPos.x, newY, _startPos.z);
     }
 
     private void OnTriggerEnter(Collider other)
