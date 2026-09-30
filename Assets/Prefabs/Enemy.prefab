@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7794656419434081467}
   - component: {fileID: 7465784643759612908}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpriteRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 8129561734530974439}
   - component: {fileID: 1386764266232329278}
   - component: {fileID: 1444055521874148194}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7308323858064894872}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DetectionOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 6663392407211150962}
   - component: {fileID: 9138609314208651646}
   - component: {fileID: 3429332506891082912}
+  - component: {fileID: 9012327972248141077}
   m_Layer: 0
   m_Name: Crossbow
   m_TagString: Untagged
