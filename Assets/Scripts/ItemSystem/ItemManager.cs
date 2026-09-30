@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance { get; private set; }
+
     public const int MaxItems = 4;
 
     [Header("References")]
@@ -26,6 +29,16 @@ public class ItemManager : MonoBehaviour
     public WeaponSO SelectedWeapon => SelectedItem as WeaponSO;
 
     public bool IsFull => playerItems.Count >= MaxItems;
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     public void ConfigurePlayer(Transform player)
     {
@@ -156,6 +169,14 @@ public class ItemManager : MonoBehaviour
     private void NotifySelectedItemChanged()
     {
         SelectedItemChanged?.Invoke(SelectedItem);
+    }
+
+    public void RemoveSelectedItem()
+    {
+        playerItems.RemoveAt(selectedSlot);
+        UpdateSelectedSlotAfterRemoval();
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
     }
 
     private Vector3 GetDropPosition()

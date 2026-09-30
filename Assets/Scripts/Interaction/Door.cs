@@ -44,9 +44,11 @@ public class Door : MonoBehaviour, IInteractable
 
         if (isLocked)
         {
-            if (ItemManager.Instance.HasItem(neededUnlockItem))
+            if (ItemManager.Instance.GetSelectedItem() == null) return;
+
+            if (ItemManager.Instance.GetSelectedItem().ItemName == neededUnlockItem)
             {
-                ItemManager.Instance.RemoveItemByName(neededUnlockItem);
+                ItemManager.Instance.RemoveSelectedItem();
                 isLocked = false;
                 OpenDoor();
                 return;

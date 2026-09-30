@@ -221,8 +221,11 @@ MonoBehaviour:
   navMeshObstacle: {fileID: 1208800757356375697}
   openAngle: -90
   animationDuration: 0.5
+  isLocked: 0
+  neededUnlockItem: Key
   openSound: {fileID: 8300000, guid: 6e777312dc8cfbc4eb7c8edd122b7a02, type: 3}
   closeSound: {fileID: 8300000, guid: e178b7cbab441e74ba73019d204e53df, type: 3}
+  lockedSound: {fileID: 0}
 --- !u!65 &2167008475839620143
 BoxCollider:
   m_ObjectHideFlags: 0
