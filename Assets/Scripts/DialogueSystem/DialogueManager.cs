@@ -8,15 +8,29 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueUIManager _dialogueUI;
     //[SerializeField] private DialogueAudioManager _audioManager;
 
-    [SerializeField] private DialogueInteractable _interactables;
+    private List<DialogueInteractable> _interactables;
     private AudioClip _currentSpeakerAudio;
 
     private const float DIALOGUE_TIMER = 4f;
     private bool _isDialogue = false;
 
+
+    private void Awake()
+    {
+        _interactables = new List<DialogueInteractable>();
+        DialogueInteractable[] foundDialogue = FindObjectsByType<DialogueInteractable>();
+        _interactables.AddRange(foundDialogue);
+    }
+
     private void OnEnable()
     {
-        _interactables.OnDialogueInteract += HandleDialogue;
+        if (_interactables != null &&  _interactables.Count > 0)
+        {
+            foreach (DialogueInteractable dialogue in _interactables)
+            {
+                dialogue.OnDialogueInteract += HandleDialogue;
+            }
+        }
     }
 
     private void HandleDialogue(DialogueContext context)
@@ -44,6 +58,12 @@ public class DialogueManager : MonoBehaviour
 
     private void OnDisable()
     {
-        _interactables.OnDialogueInteract -= HandleDialogue;
+        if (_interactables != null && _interactables.Count > 0)
+        {
+            foreach (DialogueInteractable dialogue in _interactables)
+            {
+                dialogue.OnDialogueInteract -= HandleDialogue;
+            }
+        }
     }
 }

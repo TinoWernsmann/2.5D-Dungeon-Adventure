@@ -13,10 +13,13 @@ public class Door : MonoBehaviour, IInteractable
     [Header("Door Settings")]
     [SerializeField] private float openAngle = -90f;
     [SerializeField] private float animationDuration = 0.5f;
+    [SerializeField] private bool isLocked;
+    [SerializeField] private string neededUnlockItem;
 
     [Header("Audio")]
     [SerializeField] private AudioClip openSound;
     [SerializeField] private AudioClip closeSound;
+    [SerializeField] private AudioClip lockedSound;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
@@ -32,11 +35,27 @@ public class Door : MonoBehaviour, IInteractable
         SetDoorBlocking(true);
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
         if (isAnimating)
         {
             return;
+        }
+
+        if (isLocked)
+        {
+            if (ItemManager.Instance.HasItem(neededUnlockItem))
+            {
+                ItemManager.Instance.RemoveItemByName(neededUnlockItem);
+                isLocked = false;
+                OpenDoor();
+                return;
+            }
+            else
+            {
+                PlaySound(lockedSound);
+                return;
+            }
         }
 
         if (isOpen)
