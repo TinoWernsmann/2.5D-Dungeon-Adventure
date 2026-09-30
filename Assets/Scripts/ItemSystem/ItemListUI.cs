@@ -38,6 +38,7 @@ public class ItemListUI : MonoBehaviour
             if (icon.sprite == itemSprite)
             {
                 icon.sprite = null;
+                break;
             }
         }
 

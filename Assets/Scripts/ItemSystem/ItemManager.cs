@@ -3,15 +3,30 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance { get; private set; }
+
     private ItemListUI _itemListUI;
     private List<ItemBase> _playerItems;
     private WeaponSO _weapon;
     private WeaponUI _weaponUI;
     private WeaponSoundManager _weaponSound;
 
+    public List<ItemBase> PlayerItems => _playerItems;
+
     private void OnEnable()
     {
         ItemBase.OnAddItem += HandleItemAdded;
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
     private void Start()
@@ -32,6 +47,28 @@ public class ItemManager : MonoBehaviour
             return;
         }
         _weaponUI.Attack(_weapon, _weaponSound);
+    }
+
+    public bool HasItem(string itemName)
+    {
+        foreach (ItemBase item in _playerItems)
+        {
+            if (item.ItemData.ItemName == itemName) return true;
+        }
+        return false;
+    }
+
+    public void RemoveItemByName(string itemName)
+    {
+        foreach (ItemBase item in _playerItems)
+        {
+            if (item.ItemData.ItemName == itemName)
+            {
+                _playerItems.Remove(item);
+                _itemListUI.DeleteItemFromList(item.ItemData.InventoryIcon);
+                break;
+            }
+        }
     }
 
     private void HandleItemAdded(ItemBase item)
