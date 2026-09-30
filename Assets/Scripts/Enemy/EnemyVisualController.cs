@@ -31,6 +31,18 @@ public class EnemyVisualController : MonoBehaviour
     [Header("Movement - Right")]
     [SerializeField] private Sprite[] rightFrames;
 
+    [Header("Idle - Front")]
+    [SerializeField] private Sprite[] idleFrontFrames;
+
+    [Header("Idle - Back")]
+    [SerializeField] private Sprite[] idleBackFrames;
+
+    [Header("Idle - Left")]
+    [SerializeField] private Sprite[] idleLeftFrames;
+
+    [Header("Idle - Right")]
+    [SerializeField] private Sprite[] idleRightFrames;
+
     [Header("Attack")]
     [SerializeField] private Sprite[] attackFrontFrames;
 
@@ -43,8 +55,16 @@ public class EnemyVisualController : MonoBehaviour
     [Min(0.01f)]
     [SerializeField] private float movementFramesPerSecond = 6f;
 
+    [Header("Idle Animation")]
+    [Min(0.01f)]
+    [SerializeField] private float idleFramesPerSecond = 4f;
+
     private int movementFrame;
     private float movementFrameTimer;
+
+    private int idleFrame;
+    private float idleFrameTimer;
+
     private bool isDead;
 
     private void Start()
@@ -77,7 +97,9 @@ public class EnemyVisualController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("EnemyVisualController could not find enemy Health.");
+            Debug.LogError(
+                "EnemyVisualController could not find enemy Health."
+            );
         }
     }
 
@@ -107,6 +129,7 @@ public class EnemyVisualController : MonoBehaviour
         }
 
         isDead = true;
+
         DisableEnemySystems();
 
         if (deathPoint != null)
@@ -116,6 +139,7 @@ public class EnemyVisualController : MonoBehaviour
 
         spriteRenderer.sprite = deadSprite;
         spriteRenderer.color = Color.white;
+
         StartCoroutine(FadeAndDestroy());
     }
 
@@ -143,9 +167,14 @@ public class EnemyVisualController : MonoBehaviour
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
+
             Color fadedColor = startColor;
-            fadedColor.a = 1f - Mathf.Clamp01(elapsed / fadeDuration);
+            fadedColor.a = 1f - Mathf.Clamp01(
+                elapsed / fadeDuration
+            );
+
             spriteRenderer.color = fadedColor;
+
             yield return null;
         }
 
@@ -161,17 +190,30 @@ public class EnemyVisualController : MonoBehaviour
 
         if (attack.IsAttacking)
         {
+            ResetMovementAnimation();
+            ResetIdleAnimation();
+
             UpdateAttackAnimation();
             return;
         }
 
         ViewDirection direction = GetViewDirection();
-        UpdateMovementAnimation(direction);
+
+        if (movement.IsMoving)
+        {
+            ResetIdleAnimation();
+            UpdateMovementAnimation(direction);
+            return;
+        }
+
+        ResetMovementAnimation();
+        UpdateIdleAnimation(direction);
     }
 
     private void UpdateAttackAnimation()
     {
-        if (attackFrontFrames == null || attackFrontFrames.Length == 0)
+        if (attackFrontFrames == null ||
+            attackFrontFrames.Length == 0)
         {
             return;
         }
@@ -198,25 +240,6 @@ public class EnemyVisualController : MonoBehaviour
             return;
         }
 
-        if (!movement.IsMoving)
-        {
-            ShowIdleFrame(frames);
-            return;
-        }
-
-        AnimateMovement(frames);
-    }
-
-    private void ShowIdleFrame(Sprite[] frames)
-    {
-        movementFrame = 0;
-        movementFrameTimer = 0f;
-
-        spriteRenderer.sprite = frames[0];
-    }
-
-    private void AnimateMovement(Sprite[] frames)
-    {
         movementFrameTimer += Time.deltaTime;
 
         float frameDuration = 1f / movementFramesPerSecond;
@@ -224,7 +247,9 @@ public class EnemyVisualController : MonoBehaviour
         if (movementFrameTimer >= frameDuration)
         {
             movementFrameTimer -= frameDuration;
-            movementFrame = (movementFrame + 1) % frames.Length;
+
+            movementFrame =
+                (movementFrame + 1) % frames.Length;
         }
 
         movementFrame = Mathf.Clamp(
@@ -234,6 +259,48 @@ public class EnemyVisualController : MonoBehaviour
         );
 
         spriteRenderer.sprite = frames[movementFrame];
+    }
+
+    private void UpdateIdleAnimation(ViewDirection direction)
+    {
+        Sprite[] frames = GetIdleFrames(direction);
+
+        if (frames == null || frames.Length == 0)
+        {
+            return;
+        }
+
+        idleFrameTimer += Time.deltaTime;
+
+        float frameDuration = 1f / idleFramesPerSecond;
+
+        if (idleFrameTimer >= frameDuration)
+        {
+            idleFrameTimer -= frameDuration;
+
+            idleFrame =
+                (idleFrame + 1) % frames.Length;
+        }
+
+        idleFrame = Mathf.Clamp(
+            idleFrame,
+            0,
+            frames.Length - 1
+        );
+
+        spriteRenderer.sprite = frames[idleFrame];
+    }
+
+    private void ResetMovementAnimation()
+    {
+        movementFrame = 0;
+        movementFrameTimer = 0f;
+    }
+
+    private void ResetIdleAnimation()
+    {
+        idleFrame = 0;
+        idleFrameTimer = 0f;
     }
 
     private ViewDirection GetViewDirection()
@@ -281,6 +348,18 @@ public class EnemyVisualController : MonoBehaviour
             ViewDirection.Left => leftFrames,
             ViewDirection.Right => rightFrames,
             _ => frontFrames
+        };
+    }
+
+    private Sprite[] GetIdleFrames(ViewDirection direction)
+    {
+        return direction switch
+        {
+            ViewDirection.Front => idleFrontFrames,
+            ViewDirection.Back => idleBackFrames,
+            ViewDirection.Left => idleLeftFrames,
+            ViewDirection.Right => idleRightFrames,
+            _ => idleFrontFrames
         };
     }
 
