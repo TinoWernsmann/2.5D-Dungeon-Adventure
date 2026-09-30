@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 6846320659654345519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 1.398}
+  m_LocalPosition: {x: 0, y: 0.569, z: 1.398}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,6 +44,12 @@ GameObject:
   - component: {fileID: 4188527589084267088}
   - component: {fileID: 4772648369287565350}
   - component: {fileID: 6802337269427441995}
+  - component: {fileID: 2969922554337895795}
+  - component: {fileID: 6444305979016087353}
+  - component: {fileID: 7839845420257286536}
+  - component: {fileID: 964904284531863866}
+  - component: {fileID: 6699359120627354551}
+  - component: {fileID: 3654593812399395128}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -87,8 +93,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -130,8 +136,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
   playerCamera: {fileID: 2867891199821086857}
   itemManager: {fileID: 0}
+  playerCombat: {fileID: 964904284531863866}
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  attackAction: {fileID: 0}
+  attackAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactionDistance: 5
 --- !u!114 &6802337269427441995
 MonoBehaviour:
@@ -146,6 +153,94 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+--- !u!114 &2969922554337895795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f581149e5583b6448a0a1864dc3ec10f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  playerCamera: {fileID: 2867891199821086857}
+  itemManager: {fileID: 0}
+  weaponUI: {fileID: 0}
+  weaponSoundManager: {fileID: 0}
+--- !u!114 &6444305979016087353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcb58c70a77c0194ca47c4996c460749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
+  itemManager: {fileID: 0}
+  weaponUI: {fileID: 0}
+  weaponSoundManager: {fileID: 0}
+--- !u!114 &7839845420257286536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d387f4b07c3ff744862a8bada340c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
+  itemManager: {fileID: 0}
+--- !u!114 &964904284531863866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f581149e5583b6448a0a1864dc3ec10f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  playerCamera: {fileID: 2867891199821086857}
+  itemManager: {fileID: 0}
+  weaponUI: {fileID: 0}
+  weaponSoundManager: {fileID: 0}
+--- !u!114 &6699359120627354551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcb58c70a77c0194ca47c4996c460749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
+  itemManager: {fileID: 0}
+  weaponUI: {fileID: 0}
+  weaponSoundManager: {fileID: 0}
+--- !u!114 &3654593812399395128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d387f4b07c3ff744862a8bada340c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
+  itemManager: {fileID: 0}
 --- !u!1 &8053330415370136812
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +268,7 @@ Transform:
   m_GameObject: {fileID: 8053330415370136812}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7, z: 0}
+  m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -302,7 +397,7 @@ Transform:
   m_GameObject: {fileID: 8400896203194356152}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7, z: 0}
+  m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

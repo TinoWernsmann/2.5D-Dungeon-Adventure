@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2062464464, guid: 445fc3aea26054e479a7ccd7ca3c6c06, type: 3}
+  m_Sprite: {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 7664568011315287388}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.53, z: 0}
+  m_LocalPosition: {x: 0, y: 0.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -159,29 +159,38 @@ MonoBehaviour:
   health: {fileID: 121343053122972427}
   deathPoint: {fileID: 764994764364833506}
   frontFrames:
-  - {fileID: -133490467, guid: 7f6d34ab912f39c4d892c1b72136148c, type: 3}
-  - {fileID: -2062464464, guid: 445fc3aea26054e479a7ccd7ca3c6c06, type: 3}
-  - {fileID: -700633917, guid: 042c2f902f61bf94e8c759b5f883959f, type: 3}
+  - {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  - {fileID: 551905052, guid: 853fca051a24cc74fba5799ba1c43e6a, type: 3}
+  - {fileID: 760640290, guid: 11f29139ec27f2f429d3b3ae07a42b89, type: 3}
   backFrames:
-  - {fileID: 2112737686, guid: dc139cb6e2f003f4fa03b61333e463f0, type: 3}
-  - {fileID: -1689800143, guid: d973bea8f9447ea4bb8e31dd31d561a6, type: 3}
-  - {fileID: -132584940, guid: 62e0391f5ecc1714a8dbacaf66dadf80, type: 3}
+  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
+  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
+  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
   leftFrames:
-  - {fileID: -133490467, guid: 7f6d34ab912f39c4d892c1b72136148c, type: 3}
-  - {fileID: -2062464464, guid: 445fc3aea26054e479a7ccd7ca3c6c06, type: 3}
-  - {fileID: -60373621, guid: 35b7e50e57aa6654f937de32fe3803a4, type: 3}
+  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
+  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
+  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
   rightFrames:
-  - {fileID: -745452999, guid: fd9dfaab5d749f24dbb504c604cc771d, type: 3}
-  - {fileID: 1980985401, guid: 9c4e947f295d967438a67e8275aebc54, type: 3}
-  - {fileID: 611673371, guid: c5db5ebcb277bb448be2b7740f8cdd30, type: 3}
+  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
+  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
+  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  idleFrontFrames:
+  - {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  idleBackFrames:
+  - {fileID: 1517994408, guid: d8cfd7bed72bbfb4d8835bc72f708ba8, type: 3}
+  idleLeftFrames:
+  - {fileID: 1517994408, guid: d8cfd7bed72bbfb4d8835bc72f708ba8, type: 3}
+  idleRightFrames:
+  - {fileID: -1377513048, guid: 7a10c5940aacd8045bdd77edf6c0bb09, type: 3}
   attackFrontFrames:
-  - {fileID: -224222571, guid: 908ffb84df6870346b5fbae94fbb4dd7, type: 3}
-  - {fileID: -1299184217, guid: ec8a9f837f3921146970c570e4627f27, type: 3}
-  - {fileID: -1828818480, guid: d73019acc950b2c4a9c9926ed5d1adfe, type: 3}
-  deadSprite: {fileID: 498126362, guid: c01aa52100996794b8aba55bd8bf2105, type: 3}
-  corpseDuration: 5
+  - {fileID: 230019391, guid: 9b421abd70bbf6d4abcd0771582743a9, type: 3}
+  - {fileID: -1361824585, guid: 0118d12dab66f7048b512ba5f9a4bf03, type: 3}
+  - {fileID: -239005995, guid: d6f9296768c8dc040906ef3f44b62fd3, type: 3}
+  deadSprite: {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  corpseDuration: 1
   fadeDuration: 1
   movementFramesPerSecond: 6
+  idleFramesPerSecond: 4
 --- !u!1 &8009179718533681090
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +216,7 @@ Transform:
   m_GameObject: {fileID: 8009179718533681090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.156, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -263,7 +272,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8334742394470388967}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -272,8 +281,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2.33
-  m_BaseOffset: 0.9
+  m_Height: 1.71
+  m_BaseOffset: 0.53
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &4992716912674233300
@@ -388,8 +397,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.68
+  m_Radius: 0.3
+  m_Height: 1.81
   m_Direction: 1
   m_Center: {x: 0, y: 0.17, z: 0}
 --- !u!1 &8422531498140445762
