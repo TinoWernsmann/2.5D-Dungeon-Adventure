@@ -6,7 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/KevinScene.unity
+    path: Assets/Scenes/TinoWeaponScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/TinoMainMenu.unity
+    guid: ca7cd9df51f7aeb40881e52d8475fb08
+  - enabled: 1
+    path: Assets/Scenes/TinoScene.unity
+    guid: 1efd8cb710b69d546a082ee225b6c31c
+  - enabled: 1
+    path: Assets/Scenes/BeginCutscene.unity
+    guid: 111120c47db64fe4195170cff3c41457
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
