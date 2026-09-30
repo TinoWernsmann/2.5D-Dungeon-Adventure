@@ -1,14 +1,14 @@
 using UnityEngine;
 using System;
 
-public class DialogueInteractable : InteractableController
+public class DialogueInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueBase _dialogueData;
     [SerializeField] private AudioClip _talkAudio;
 
     public event Action<DialogueContext> OnDialogueInteract;
 
-    public override void Interact()
+    public void Interact()
     {
         DialogueContext context = new DialogueContext(_dialogueData.SpeakerName, _dialogueData.SpokenText, _talkAudio);
         OnDialogueInteract?.Invoke(context);

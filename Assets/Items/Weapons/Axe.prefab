@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 7996674264252730799}
   - component: {fileID: 5080989062992906552}
   - component: {fileID: 2216420366719847928}
+  - component: {fileID: 1150091257598958905}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -317,3 +318,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   _itemData: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
+--- !u!114 &1150091257598958905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644393544740876600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e0475116215784098bb91d8e27f28c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
+  targetCamera: {fileID: 0}

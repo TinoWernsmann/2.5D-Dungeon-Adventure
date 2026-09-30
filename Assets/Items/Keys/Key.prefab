@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4380697095073839480}
   - component: {fileID: 8512899116574715424}
   - component: {fileID: 5397329226068617096}
+  - component: {fileID: 1966461587666828776}
   m_Layer: 0
   m_Name: Key
   m_TagString: Untagged
@@ -74,6 +75,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   _itemData: {fileID: 11400000, guid: 0abe6127d525aa1419da1a519605fca5, type: 2}
+--- !u!114 &1966461587666828776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4463335413416696145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e0475116215784098bb91d8e27f28c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
+  targetCamera: {fileID: 0}
 --- !u!1 &6829905768072403915
 GameObject:
   m_ObjectHideFlags: 0
