@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 3414163615532668833}
   - component: {fileID: 2940542477066929725}
   - component: {fileID: 223743874185225283}
+  - component: {fileID: 6300361273727988883}
   m_Layer: 0
   m_Name: Stick
   m_TagString: Untagged
@@ -148,7 +149,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  _itemData: {fileID: 11400000, guid: 7d7fc37d00862cc46b0af0c3e4821dde, type: 2}
+  itemData: {fileID: 11400000, guid: 7d7fc37d00862cc46b0af0c3e4821dde, type: 2}
+--- !u!114 &6300361273727988883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6470192057342875470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130240b4f1915ce4f927c92653ae3323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
+  targetCamera: {fileID: 0}
 --- !u!1 &7121770660903078567
 GameObject:
   m_ObjectHideFlags: 0

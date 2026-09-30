@@ -111,7 +111,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.75}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &20848860146242723
@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 7996674264252730799}
   - component: {fileID: 5080989062992906552}
   - component: {fileID: 2216420366719847928}
+  - component: {fileID: 4732234953121599548}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -316,4 +317,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  _itemData: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
+  itemData: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
+--- !u!114 &4732234953121599548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644393544740876600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130240b4f1915ce4f927c92653ae3323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
+  targetCamera: {fileID: 0}

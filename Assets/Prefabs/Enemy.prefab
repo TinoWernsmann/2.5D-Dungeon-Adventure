@@ -118,11 +118,12 @@ Transform:
   m_GameObject: {fileID: 7664568011315287388}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7794656419434081467}
+  - {fileID: 764994764364833506}
   m_Father: {fileID: 3113970845522469459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1386764266232329278
@@ -155,22 +156,63 @@ MonoBehaviour:
   movement: {fileID: 4992716912674233300}
   attack: {fileID: 3850263267356874813}
   targetCamera: {fileID: 0}
+  health: {fileID: 121343053122972427}
+  deathPoint: {fileID: 764994764364833506}
   frontFrames:
+  - {fileID: -133490467, guid: 7f6d34ab912f39c4d892c1b72136148c, type: 3}
   - {fileID: -2062464464, guid: 445fc3aea26054e479a7ccd7ca3c6c06, type: 3}
   - {fileID: -700633917, guid: 042c2f902f61bf94e8c759b5f883959f, type: 3}
   backFrames:
+  - {fileID: 2112737686, guid: dc139cb6e2f003f4fa03b61333e463f0, type: 3}
   - {fileID: -1689800143, guid: d973bea8f9447ea4bb8e31dd31d561a6, type: 3}
   - {fileID: -132584940, guid: 62e0391f5ecc1714a8dbacaf66dadf80, type: 3}
   leftFrames:
-  - {fileID: -1405482327, guid: 82c92a353bc0f5e438931b1b920f32ce, type: 3}
+  - {fileID: -133490467, guid: 7f6d34ab912f39c4d892c1b72136148c, type: 3}
+  - {fileID: -2062464464, guid: 445fc3aea26054e479a7ccd7ca3c6c06, type: 3}
   - {fileID: -60373621, guid: 35b7e50e57aa6654f937de32fe3803a4, type: 3}
   rightFrames:
+  - {fileID: -745452999, guid: fd9dfaab5d749f24dbb504c604cc771d, type: 3}
   - {fileID: 1980985401, guid: 9c4e947f295d967438a67e8275aebc54, type: 3}
+  - {fileID: 611673371, guid: c5db5ebcb277bb448be2b7740f8cdd30, type: 3}
   attackFrontFrames:
   - {fileID: -224222571, guid: 908ffb84df6870346b5fbae94fbb4dd7, type: 3}
   - {fileID: -1299184217, guid: ec8a9f837f3921146970c570e4627f27, type: 3}
   - {fileID: -1828818480, guid: d73019acc950b2c4a9c9926ed5d1adfe, type: 3}
+  deadSprite: {fileID: 498126362, guid: c01aa52100996794b8aba55bd8bf2105, type: 3}
+  corpseDuration: 5
+  fadeDuration: 1
   movementFramesPerSecond: 6
+--- !u!1 &8009179718533681090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 764994764364833506}
+  m_Layer: 0
+  m_Name: DeathPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &764994764364833506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8009179718533681090}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.156, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8129561734530974439}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8334742394470388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +229,7 @@ GameObject:
   - component: {fileID: 901670449927281364}
   - component: {fileID: 3850263267356874813}
   - component: {fileID: 121343053122972427}
+  - component: {fileID: 2700000000000001}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -229,8 +272,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0.92
+  m_Height: 2.33
+  m_BaseOffset: 0.9
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &4992716912674233300
@@ -326,6 +369,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+--- !u!136 &2700000000000001
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.68
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.17, z: 0}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

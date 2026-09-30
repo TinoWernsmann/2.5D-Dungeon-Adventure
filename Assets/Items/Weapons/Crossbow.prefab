@@ -316,4 +316,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  _itemData: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}
+  itemData: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}

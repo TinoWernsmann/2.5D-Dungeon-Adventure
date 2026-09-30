@@ -16,6 +16,8 @@ public class EnemyVisualController : MonoBehaviour
     [SerializeField] private EnemyMovement movement;
     [SerializeField] private EnemyAttack attack;
     [SerializeField] private Camera targetCamera;
+    [SerializeField] private Health health;
+    [SerializeField] private Transform deathPoint;
 
     [Header("Movement - Front")]
     [SerializeField] private Sprite[] frontFrames;
@@ -32,12 +34,18 @@ public class EnemyVisualController : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private Sprite[] attackFrontFrames;
 
+    [Header("Death")]
+    [SerializeField] private Sprite deadSprite;
+    [SerializeField] private float corpseDuration = 5f;
+    [SerializeField] private float fadeDuration = 1f;
+
     [Header("Movement Animation")]
     [Min(0.01f)]
     [SerializeField] private float movementFramesPerSecond = 6f;
 
     private int movementFrame;
     private float movementFrameTimer;
+    private bool isDead;
 
     private void Start()
     {
@@ -45,11 +53,103 @@ public class EnemyVisualController : MonoBehaviour
         {
             targetCamera = Camera.main;
         }
+
+        if (health == null)
+        {
+            health = enemyRoot.GetComponent<Health>();
+        }
+
+        if (deathPoint == null)
+        {
+            foreach (Transform child in enemyRoot.GetComponentsInChildren<Transform>(true))
+            {
+                if (child.name == "DeathPoint")
+                {
+                    deathPoint = child;
+                    break;
+                }
+            }
+        }
+
+        if (health != null)
+        {
+            health.Died += HandleDeath;
+        }
+        else
+        {
+            Debug.LogError("EnemyVisualController could not find enemy Health.");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (health != null)
+        {
+            health.Died -= HandleDeath;
+        }
     }
 
     private void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         UpdateVisual();
+    }
+
+    private void HandleDeath()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+        DisableEnemySystems();
+
+        if (deathPoint != null)
+        {
+            spriteRenderer.transform.position = deathPoint.position;
+        }
+
+        spriteRenderer.sprite = deadSprite;
+        spriteRenderer.color = Color.white;
+        StartCoroutine(FadeAndDestroy());
+    }
+
+    private void DisableEnemySystems()
+    {
+        enemyRoot.GetComponent<EnemyBrain>().enabled = false;
+        movement.enabled = false;
+        attack.enabled = false;
+        enemyRoot.GetComponent<EnemyPatrol>().enabled = false;
+        enemyRoot.GetComponent<EnemyPerception>().enabled = false;
+
+        foreach (Collider enemyCollider in enemyRoot.GetComponentsInChildren<Collider>())
+        {
+            enemyCollider.enabled = false;
+        }
+    }
+
+    private System.Collections.IEnumerator FadeAndDestroy()
+    {
+        yield return new WaitForSeconds(corpseDuration);
+
+        float elapsed = 0f;
+        Color startColor = spriteRenderer.color;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            Color fadedColor = startColor;
+            fadedColor.a = 1f - Mathf.Clamp01(elapsed / fadeDuration);
+            spriteRenderer.color = fadedColor;
+            yield return null;
+        }
+
+        Destroy(enemyRoot.gameObject);
     }
 
     private void UpdateVisual()
