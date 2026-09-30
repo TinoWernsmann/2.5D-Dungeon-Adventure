@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4380697095073839480}
   - component: {fileID: 8512899116574715424}
   - component: {fileID: 5397329226068617096}
-  - component: {fileID: 1966461587666828776}
+  - component: {fileID: 3677674488091397640}
   m_Layer: 0
   m_Name: Key
   m_TagString: Untagged
@@ -74,8 +74,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  _itemData: {fileID: 11400000, guid: 0abe6127d525aa1419da1a519605fca5, type: 2}
---- !u!114 &1966461587666828776
+  itemData: {fileID: 11400000, guid: 0abe6127d525aa1419da1a519605fca5, type: 2}
+--- !u!114 &3677674488091397640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4463335413416696145}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4e0475116215784098bb91d8e27f28c, type: 3}
+  m_Script: {fileID: 11500000, guid: 130240b4f1915ce4f927c92653ae3323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
   targetCamera: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6962264272798310091}
   - component: {fileID: 8593501500633861045}
-  - component: {fileID: 3849421916770311094}
+  - component: {fileID: 6911667285589457152}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
@@ -130,8 +130,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6829905768072403915}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &3849421916770311094
-BoxCollider:
+--- !u!135 &6911667285589457152
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -149,8 +149,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.17943496, y: 0.4281, z: 0.063129485}
-  m_Center: {x: -0.00045374036, y: 0.0035889223, z: -0.021203931}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8411219221450931934
 GameObject:
   m_ObjectHideFlags: 0

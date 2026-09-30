@@ -1,47 +1,86 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class WeaponSoundManager : MonoBehaviour
 {
-    [SerializeField] private List<AudioClip> _soundEffects;
+    private readonly List<AudioClip> attackSounds = new();
 
-    private AudioSource _soundSource;
-    private AudioClip _previousSound;
+    private AudioSource audioSource;
+    private AudioClip previousSound;
 
-    private void Start()
+    private void Awake()
     {
-        _soundSource = GetComponent<AudioSource>();
-        _previousSound = null;
+        audioSource = GetComponent<AudioSource>();
     }
 
-    public void GetSoundEffects(AudioClip[] effects)
+    public void SetAttackSounds(AudioClip[] sounds)
     {
-        if (_soundEffects.Count > 0) _soundEffects.Clear();
-        _soundEffects.AddRange(effects);
+        attackSounds.Clear();
+        previousSound = null;
+
+        if (sounds == null)
+        {
+            return;
+        }
+
+        foreach (AudioClip sound in sounds)
+        {
+            if (sound != null)
+            {
+                attackSounds.Add(sound);
+            }
+        }
+    }
+
+    public void ClearAttackSounds()
+    {
+        attackSounds.Clear();
+        previousSound = null;
     }
 
     public void PlayRandomAttackSound()
     {
-        List<AudioClip> soundPool = GetValidSounds();
-
-        AudioClip chosen = soundPool[Random.Range(0, soundPool.Count)];
-
-        _previousSound = chosen;
-        _soundSource.PlayOneShot(chosen);
-    }
-
-    private List<AudioClip> GetValidSounds()
-    {
-        List<AudioClip> validSounds = new List<AudioClip>();
-
-        foreach (AudioClip sound in _soundEffects)
+        if (audioSource == null || attackSounds.Count == 0)
         {
-            if (sound == _previousSound) continue;
-            validSounds.Add(sound);
+            return;
         }
 
-        return validSounds;
+        AudioClip sound = GetRandomAttackSound();
+
+        if (sound == null)
+        {
+            return;
+        }
+
+        previousSound = sound;
+        audioSource.PlayOneShot(sound);
+    }
+
+    private AudioClip GetRandomAttackSound()
+    {
+        if (attackSounds.Count == 1)
+        {
+            return attackSounds[0];
+        }
+
+        List<AudioClip> availableSounds = new();
+
+        foreach (AudioClip sound in attackSounds)
+        {
+            if (sound != previousSound)
+            {
+                availableSounds.Add(sound);
+            }
+        }
+
+        if (availableSounds.Count == 0)
+        {
+            return attackSounds[0];
+        }
+
+        return availableSounds[
+            Random.Range(0, availableSounds.Count)
+        ];
     }
 }

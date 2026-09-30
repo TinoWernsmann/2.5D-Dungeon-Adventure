@@ -7,15 +7,20 @@ public class ItemBillboard : MonoBehaviour
 
     private void Start()
     {
-        if (targetCamera == null)
-        {
-            targetCamera = Camera.main;
-        }
+        FindCameraIfMissing();
     }
 
     private void LateUpdate()
     {
         FaceCamera();
+    }
+
+    private void FindCameraIfMissing()
+    {
+        if (targetCamera == null)
+        {
+            targetCamera = Camera.main;
+        }
     }
 
     private void FaceCamera()
@@ -35,8 +40,7 @@ public class ItemBillboard : MonoBehaviour
             return;
         }
 
-        transform.rotation = Quaternion.LookRotation(
-            directionToCamera
-        );
+        transform.rotation =
+            Quaternion.LookRotation(directionToCamera);
     }
 }

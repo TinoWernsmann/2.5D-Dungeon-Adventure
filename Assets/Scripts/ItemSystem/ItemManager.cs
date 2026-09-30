@@ -1,94 +1,179 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public static ItemManager Instance { get; private set; }
+    public const int MaxItems = 4;
 
-    private ItemListUI _itemListUI;
-    private List<ItemBase> _playerItems;
-    private WeaponSO _weapon;
-    private WeaponUI _weaponUI;
-    private WeaponSoundManager _weaponSound;
+    [Header("References")]
+    [SerializeField] private Transform dropPoint;
 
-    public List<ItemBase> PlayerItems => _playerItems;
+    private readonly List<ItemBase> playerItems = new(MaxItems);
 
-    private void OnEnable()
+    private Transform playerTransform;
+    private int selectedSlot = -1;
+
+    public event Action InventoryChanged;
+    public event Action<ItemSO> SelectedItemChanged;
+
+    public int ItemCount => playerItems.Count;
+
+    public int SelectedSlot => selectedSlot;
+
+    public ItemSO SelectedItem => GetSelectedItem();
+
+    public WeaponSO SelectedWeapon => SelectedItem as WeaponSO;
+
+    public bool IsFull => playerItems.Count >= MaxItems;
+
+    public void ConfigurePlayer(Transform player)
     {
-        ItemBase.OnAddItem += HandleItemAdded;
+        playerTransform = player;
     }
 
-    private void Awake()
+    public bool TryAddItem(ItemBase item)
     {
-        if (Instance != null && Instance != this)
+        if (!CanAddItem(item))
         {
-            Destroy(gameObject);
+            return false;
+        }
+
+        playerItems.Add(item);
+
+        SelectFirstItemIfNeeded();
+
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
+
+        return true;
+    }
+
+    public void SelectSlot(int slotIndex)
+    {
+        if (!IsValidSlot(slotIndex))
+        {
             return;
         }
 
-        Instance = this;
-    }
-
-    private void Start()
-    {
-        _playerItems = new List<ItemBase>();
-        _itemListUI = GetComponent<ItemListUI>();
-        _weaponUI = GetComponent<WeaponUI>();
-        _weaponSound = GetComponent<WeaponSoundManager>();
-        if (_itemListUI == null) Debug.LogError("Error Loading Item List UI!");
-        if (_weaponSound == null) Debug.LogError("Error Loading Weapon Sound!");
-    }
-
-    public void UseWeapon()
-    {
-        if (_weapon == null)
+        if (selectedSlot == slotIndex)
         {
-            Debug.Log("No Weapon!");
             return;
         }
-        _weaponUI.Attack(_weapon, _weaponSound);
+
+        selectedSlot = slotIndex;
+
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
     }
 
-    public bool HasItem(string itemName)
+    public void DropSelectedItem()
     {
-        foreach (ItemBase item in _playerItems)
+        if (!HasSelectedItem())
         {
-            if (item.ItemData.ItemName == itemName) return true;
+            return;
         }
-        return false;
+
+        ItemBase itemToDrop = playerItems[selectedSlot];
+
+        playerItems.RemoveAt(selectedSlot);
+
+        UpdateSelectedSlotAfterRemoval();
+
+        itemToDrop.DropAt(GetDropPosition());
+
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
     }
 
-    public void RemoveItemByName(string itemName)
+    public ItemSO GetItemAt(int slotIndex)
     {
-        foreach (ItemBase item in _playerItems)
+        if (!IsValidSlot(slotIndex))
         {
-            if (item.ItemData.ItemName == itemName)
-            {
-                _playerItems.Remove(item);
-                _itemListUI.DeleteItemFromList(item.ItemData.InventoryIcon);
-                break;
-            }
+            return null;
         }
+
+        return playerItems[slotIndex].ItemData;
     }
 
-    private void HandleItemAdded(ItemBase item)
+    public ItemSO GetSelectedItem()
     {
-        if (item.ItemData is WeaponSO weapon)
-        {
-            _weapon = weapon;
-            _weaponUI.UpdateEquipSprite(weapon.IdleSprite);
-            _itemListUI.ChangeEquippedWeapon(weapon.InventoryIcon);
-            _weaponSound.GetSoundEffects(weapon.AttackSounds);
-        }
-        else
-        {
-            _playerItems.Add(item);
-            _itemListUI.AddItemToList(item.ItemData.InventoryIcon);
-        }
+        return GetItemAt(selectedSlot);
     }
 
-    private void OnDisable()
+    public WeaponSO GetSelectedWeapon()
     {
-        ItemBase.OnAddItem -= HandleItemAdded;
+        return GetSelectedItem() as WeaponSO;
+    }
+
+    private bool CanAddItem(ItemBase item)
+    {
+        return item != null &&
+               item.ItemData != null &&
+               !IsFull;
+    }
+
+    private bool HasSelectedItem()
+    {
+        return IsValidSlot(selectedSlot);
+    }
+
+    private bool IsValidSlot(int slotIndex)
+    {
+        return slotIndex >= 0 &&
+               slotIndex < playerItems.Count;
+    }
+
+    private void SelectFirstItemIfNeeded()
+    {
+        if (selectedSlot >= 0)
+        {
+            return;
+        }
+
+        selectedSlot = 0;
+    }
+
+    private void UpdateSelectedSlotAfterRemoval()
+    {
+        if (playerItems.Count == 0)
+        {
+            selectedSlot = -1;
+            return;
+        }
+
+        selectedSlot = Mathf.Min(
+            selectedSlot,
+            playerItems.Count - 1
+        );
+    }
+
+    private void NotifyInventoryChanged()
+    {
+        InventoryChanged?.Invoke();
+    }
+
+    private void NotifySelectedItemChanged()
+    {
+        SelectedItemChanged?.Invoke(SelectedItem);
+    }
+
+    private Vector3 GetDropPosition()
+    {
+        if (dropPoint != null)
+        {
+            return dropPoint.position;
+        }
+
+        if (playerTransform != null)
+        {
+            return playerTransform.position +
+                   playerTransform.forward * 1.5f +
+                   Vector3.up * 0.25f;
+        }
+
+        return transform.position +
+               transform.forward * 1.5f +
+               Vector3.up * 0.25f;
     }
 }
