@@ -420,10 +420,6 @@ PrefabInstance:
       propertyPath: targetCamera
       value: 
       objectReference: {fileID: 1860632184}
-    - target: {fileID: 5831512288307352162, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
-      propertyPath: defeatFrames.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6553040462468949477, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
       propertyPath: player
       value: 
