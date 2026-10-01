@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5022a1df78513284c8a25fe6a22f4b85, type: 3}
+  m_Name: TheChildFirstEncounter
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueBase
+  _speakerName: The Child
+  _spokenText:
+  - Uhm... H-Hello?
+  - Oh... excuse me I was on guard... so you are?
+  - Pleasure meeting you, but I wished the circumstances of our meeting would have
+    been more auspicious!
+  - Might you know where we are? You seem like an adventurer... So I was wondering
+    if you have already visited this place...
+  - No? You were on a quest at Faraway Woods? Hmm I have only read about this Faraway
+    Country before...
+  - So you saw THAT tooo...?

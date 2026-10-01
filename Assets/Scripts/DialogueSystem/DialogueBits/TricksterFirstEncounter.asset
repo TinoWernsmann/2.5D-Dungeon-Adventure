@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5022a1df78513284c8a25fe6a22f4b85, type: 3}
+  m_Name: TricksterFirstEncounter
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueBase
+  _speakerName: Trickster
+  _spokenText:
+  - What do my weary eyes spot! Ha! Another victim, eh...?
+  - Well, well... From Faraway Country, are we?
+  - I am from the Central Kingdom, Leader of the Spilled Wine Troupe... well of what
+    remains of it... Ha Ha Ha
+  - One of my quests was at Faraway Country, but can't say that we were swallowed
+    there!
+  - Wondering what swallowed means? It's a term that a ragtag group of people who
+    were also "displaced" here came up with.
+  - That makes you another "Swallowed One". Welcome to the Worlds Worst Club! Ha
+    Ha Ha
+  - But I know that probing look... Everyone new here with enough will has that look!
+  - You want to know more? To struggle, escape or resign your fate?
+  - Well I don't care why, but... The rest will cost you some leaf. I haven't smoked
+    for quite a bit!
