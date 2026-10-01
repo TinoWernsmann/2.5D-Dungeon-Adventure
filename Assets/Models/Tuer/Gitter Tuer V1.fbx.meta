@@ -3,7 +3,12 @@ guid: d87047d81d33b984d9415972b7268ddc
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "AtlasT\xFCr"
+    second: {fileID: 2100000, guid: f1db507113788fd47ac550c67a99ba5b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

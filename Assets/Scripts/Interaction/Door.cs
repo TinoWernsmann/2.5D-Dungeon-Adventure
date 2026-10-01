@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class Door : MonoBehaviour, IInteractable
 {
     [Header("References")]
+    [SerializeField] private ItemManager itemManager;
     [SerializeField] private Transform doorPivot;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Collider visionBlocker;
@@ -29,6 +30,11 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Awake()
     {
+        if (itemManager == null)
+        {
+            itemManager = FindAnyObjectByType<ItemManager>();
+        }
+
         closedRotation = doorPivot.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0f, openAngle, 0f);
 
@@ -44,9 +50,9 @@ public class Door : MonoBehaviour, IInteractable
 
         if (isLocked)
         {
-            if (ItemManager.Instance.HasItem(neededUnlockItem))
+            if (itemManager != null && itemManager.HasItem(neededUnlockItem))
             {
-                ItemManager.Instance.RemoveItemByName(neededUnlockItem);
+                itemManager.RemoveItemByName(neededUnlockItem);
                 isLocked = false;
                 OpenDoor();
                 return;

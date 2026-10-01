@@ -15,7 +15,7 @@ MonoBehaviour:
   ItemName: Axe
   Description: 
   InventoryIcon: {fileID: 21300000, guid: c6312d70762c09740ad78a3de950fdb4, type: 3}
-  WeaponDamage: 20
+  WeaponDamage: 3
   WeaponRange: 2
   AttackDuration: 0.5
   IdleSprite: {fileID: 21300000, guid: cfc97ad841f034640853fe2ffa75d27e, type: 3}
