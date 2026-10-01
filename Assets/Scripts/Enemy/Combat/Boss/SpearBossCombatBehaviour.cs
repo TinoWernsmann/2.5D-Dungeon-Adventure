@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpearBossCombatBehaviour : EnemyCombatBehaviour
 {
@@ -225,6 +226,21 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
         {
             health = GetComponent<Health>();
         }
+    }
+
+    private void OnEnable()
+    {
+        health.Died += Die;
+    }
+
+    private void OnDisable()
+    {
+        health.Died -= Die;
+    }
+
+    private void Die()
+    {
+        SceneManager.LoadSceneAsync("TinoMainMenu");
     }
 
     public override bool IsInCombatRange(

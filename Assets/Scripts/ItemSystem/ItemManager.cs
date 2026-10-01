@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance { get; private set; }
+
     [Serializable]
     private class InventorySlot
     {
@@ -37,8 +36,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private AudioSource itemSound;
 
     private readonly List<InventorySlot>
-        inventorySlots =
-            new(MaxItems);
+    inventorySlots = new(MaxItems);
 
     private Transform playerTransform;
     private int selectedSlot = -1;
@@ -47,17 +45,13 @@ public class ItemManager : MonoBehaviour
     public event Action<ItemSO> SelectedItemChanged;
     public event Action OnHealingUsed;
 
-    public event Action<ItemSO>
-        SelectedItemChanged;
-
     public int ItemCount =>
         inventorySlots.Count;
 
     public int SelectedSlot =>
         selectedSlot;
 
-    public ItemSO SelectedItem =>
-        GetSelectedItem();
+    public ItemSO SelectedItem => GetSelectedItem();
 
     public WeaponSO SelectedWeapon =>
         SelectedItem as WeaponSO;
@@ -82,9 +76,14 @@ public class ItemManager : MonoBehaviour
 
         ItemSO itemData =
             item.ItemData;
+
         int amount =
             item.PickupAmount;
 
+        if (item.ItemData.PickUpSound != null)
+        {
+            itemSound.PlayOneShot(item.ItemData.PickUpSound);
+        }
         if (itemData.Stackable)
         {
             return TryAddStackableItem(
@@ -99,7 +98,6 @@ public class ItemManager : MonoBehaviour
         );
     }
 
-    public bool IsFull => playerItems.Count >= MaxItems;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -109,20 +107,6 @@ public class ItemManager : MonoBehaviour
         }
 
         Instance = this;
-    }
-
-        if (itemData.Stackable)
-        {
-            return TryAddStackableItem(
-                item,
-                itemData,
-                amount
-            );
-        }
-
-        return TryAddNonStackableItem(
-            item
-        );
     }
 
     public bool HasItem(
@@ -308,7 +292,8 @@ public class ItemManager : MonoBehaviour
 
     public void TryUseHealing()
     {
-        if (GetSelectedItem().ItemName != "Healing" || GetSelectedItem() == null) return;
+        var item = GetSelectedItem();
+        if (item == null || item.ItemName != "Healing") return;
 
         OnHealingUsed?.Invoke();
         RemoveSelectedItem();
@@ -326,12 +311,11 @@ public class ItemManager : MonoBehaviour
                 selectedSlot
             ];
 
-        if (itemToDrop.ItemData.DropSound != null)
+        if (slot.ItemData.DropSound != null)
         {
-            itemSound.PlayOneShot(itemToDrop.ItemData.DropSound);
+            itemSound.PlayOneShot(slot.ItemData.DropSound);
         }
 
-        playerItems.RemoveAt(selectedSlot);
         ItemBase itemToDrop =
             slot.ItemInstance;
 
@@ -548,14 +532,12 @@ public class ItemManager : MonoBehaviour
             );
     }
 
-    private void
-        NotifyInventoryChanged()
+    private void NotifyInventoryChanged()
     {
         InventoryChanged?.Invoke();
     }
 
-    private void
-        NotifySelectedItemChanged()
+    private void NotifySelectedItemChanged()
     {
         SelectedItemChanged?.Invoke(
             SelectedItem
@@ -564,8 +546,9 @@ public class ItemManager : MonoBehaviour
 
     public void RemoveSelectedItem()
     {
-        playerItems.RemoveAt(selectedSlot);
-        UpdateSelectedSlotAfterRemoval();
+        if (!HasSelectedItem()) return;
+
+        RemoveSlot(selectedSlot);
         NotifyInventoryChanged();
         NotifySelectedItemChanged();
     }

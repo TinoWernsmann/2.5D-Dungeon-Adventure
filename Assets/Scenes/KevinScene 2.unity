@@ -1516,6 +1516,7 @@ MonoBehaviour:
   - {fileID: 815412749}
   - {fileID: 1093191207}
   - {fileID: 355410412}
+  itemAmountTexts: []
   selectedItemIcon: {fileID: 1331819746}
 --- !u!114 &97898113
 MonoBehaviour:

@@ -15,6 +15,8 @@ MonoBehaviour:
   ItemName: Healing
   Description: Heals the player
   InventoryIcon: {fileID: 21300000, guid: deb453b96dd951f4986685aca1d4f715, type: 3}
+  stackable: 0
+  maxStackSize: 1
   IsHealing: 1
-  PickUpSound: {fileID: 0}
+  PickUpSound: {fileID: 8300000, guid: f502bef67f2f652488be46ba75191671, type: 3}
   DropSound: {fileID: 0}

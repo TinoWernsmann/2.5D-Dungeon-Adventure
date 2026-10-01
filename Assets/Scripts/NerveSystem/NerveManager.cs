@@ -11,7 +11,6 @@ public class NerveManager : MonoBehaviour
 
     private List<Nerve> _levelNerves;
     private List<Transform> _chosenSpawnPos;
-    private int _levelNervesAmount;
     private int _cutNerves;
 
     private void Awake()
@@ -70,7 +69,7 @@ public class NerveManager : MonoBehaviour
     {
         _cutNerves++;
 
-        if (_cutNerves >= _levelNervesAmount)
+        if (_cutNerves >= LEVEL_NERVES)
         {
             AllNervesFound();
         }
