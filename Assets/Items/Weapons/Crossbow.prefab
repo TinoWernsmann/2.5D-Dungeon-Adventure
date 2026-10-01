@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 6663392407211150962}
   - component: {fileID: 9138609314208651646}
   - component: {fileID: 3429332506891082912}
+  - component: {fileID: 4732234953121599548}
   m_Layer: 0
   m_Name: Crossbow
   m_TagString: Untagged
@@ -316,4 +317,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  _itemData: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}
+  itemData: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}
+--- !u!114 &4732234953121599548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3993550858570903507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130240b4f1915ce4f927c92653ae3323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
+  targetCamera: {fileID: 0}

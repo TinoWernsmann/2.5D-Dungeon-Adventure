@@ -2,48 +2,99 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] private DialogueUIManager _dialogueUI;
+    [SerializeField] private PlayerMovement _movement;
     //[SerializeField] private DialogueAudioManager _audioManager;
 
-    [SerializeField] private DialogueInteractable _interactables;
+    private List<DialogueInteractable> _interactables;
     private AudioClip _currentSpeakerAudio;
 
     private const float DIALOGUE_TIMER = 4f;
-    private bool _isDialogue = false;
+    private int _dialogueIndex = 0;
+    private string[] _currentDialogue;
+    private Sprite[] _speakerSprites;
+    private string _currentSpeaker;
+    private Sprite _defaultSprite;
+
+    private void Awake()
+    {
+        _interactables = new List<DialogueInteractable>();
+        DialogueInteractable[] foundDialogue = FindObjectsByType<DialogueInteractable>();
+        _interactables.AddRange(foundDialogue);
+    }
 
     private void OnEnable()
     {
-        _interactables.OnDialogueInteract += HandleDialogue;
+        if (_interactables != null &&  _interactables.Count > 0)
+        {
+            foreach (DialogueInteractable dialogue in _interactables)
+            {
+                dialogue.OnDialogueInteract += HandleDialogue;
+            }
+        }
     }
 
-    private void HandleDialogue(DialogueContext context)
+    private void HandleDialogue(DialogueContext context, SpriteRenderer sprite)
     {
-        _isDialogue = true;
         _currentSpeakerAudio = context.SpeakAudio;
 
-        if (_dialogueUI != null)
-        {
-            //_audioManager.PlayDialogueAudio(_currentSpeakerAudio);
-        }
+        if (_dialogueUI == null) return;
 
-        StartCoroutine(WaitDialoge(context));
+        if (_dialogueIndex == 0)
+        {
+            StartDialogue(context, sprite);
+        }
+        else if (_dialogueIndex >= 0 && _dialogueIndex < _currentDialogue.Length)
+        {
+            ContinueDialogue(context, sprite);
+        }
+        else
+        {
+            EndDialogue(sprite);
+        }
     }
 
-    private IEnumerator WaitDialoge(DialogueContext context)
+    private void StartDialogue(DialogueContext context, SpriteRenderer sprite)
     {
-        _dialogueUI.ShowSpeakingUI(context.Text);
+        _movement.SetPlayerDialogueInput(true);
+        _currentDialogue = context.Text;
+        _currentSpeaker = context.Speaker;
+        _speakerSprites = context.Sprites;
+        _defaultSprite = context.DefaultSprite;
+        _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
+        sprite.sprite = _speakerSprites[_dialogueIndex];
+        _dialogueIndex++;
+    }
 
-        yield return new WaitForSeconds(DIALOGUE_TIMER);
+    private void ContinueDialogue(DialogueContext context, SpriteRenderer sprite)
+    {
+        _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
+        sprite.sprite = _speakerSprites[_dialogueIndex];
+        _dialogueIndex++;
+    }
 
-        _dialogueUI.ShowSpeakingUI(string.Empty);
-        _isDialogue = false;
+    private void EndDialogue(SpriteRenderer sprite)
+    {
+        _movement.SetPlayerDialogueInput(false);
+        _dialogueUI.HideSpeakingUI();
+        sprite.sprite = _defaultSprite;
+        _dialogueIndex = 0;
+        _speakerSprites = null;
+        _currentDialogue = null;
     }
 
     private void OnDisable()
     {
-        _interactables.OnDialogueInteract -= HandleDialogue;
+        if (_interactables != null && _interactables.Count > 0)
+        {
+            foreach (DialogueInteractable dialogue in _interactables)
+            {
+                dialogue.OnDialogueInteract -= HandleDialogue;
+            }
+        }
     }
 }

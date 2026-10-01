@@ -12,6 +12,8 @@ public class CutsceneInitiator : MonoBehaviour
     [SerializeField] private CutsceneSO _cutsceneToBegin;
     [SerializeField] private CutsceneManager _cutsceneManager;
     [SerializeField] private string NEXT_SCENE_TO_LOAD;
+    [SerializeField] private bool waitAtEnd;
+    [SerializeField] private float TIME_TO_WAIT;
 
     private void Start()
     {
@@ -27,6 +29,11 @@ public class CutsceneInitiator : MonoBehaviour
         _cutsceneManager.StartNewCutscene(_cutsceneToBegin);
 
         yield return new WaitUntil(() => finished);
+
+        if (waitAtEnd)
+        {
+            yield return new WaitForSeconds(TIME_TO_WAIT);
+        }
 
         _cutsceneManager.OnCutsceneFinished -= OnFinished;
         SceneManager.LoadSceneAsync(NEXT_SCENE_TO_LOAD);

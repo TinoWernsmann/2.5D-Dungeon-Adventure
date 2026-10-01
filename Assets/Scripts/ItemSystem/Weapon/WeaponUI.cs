@@ -4,48 +4,72 @@ using UnityEngine.UI;
 
 public class WeaponUI : MonoBehaviour
 {
-    [SerializeField] private Image _equipImage;
+    [Header("References")]
+    [SerializeField] private Image weaponImage;
 
-    private bool _animIsRunnning;
-
-    private const float ATTACK_SPEED = 0.5f;
+    private Coroutine attackAnimation;
 
     private void Awake()
     {
-        UpdateEquipWeaponVisibilty();
+        if (weaponImage == null)
+        {
+            weaponImage = GetComponent<Image>();
+        }
+
+        HideWeapon();
     }
 
-    private void Start()
+    public void SetWeaponSprite(Sprite sprite)
     {
-        _animIsRunnning = false;
+        if (weaponImage == null)
+        {
+            return;
+        }
+
+        weaponImage.sprite = sprite;
+        weaponImage.enabled = sprite != null;
     }
 
-    public void UpdateEquipSprite(Sprite sprite)
+    public void PlayAttackAnimation(
+        Sprite attackSprite,
+        Sprite idleSprite,
+        float duration)
     {
-        _equipImage.sprite = sprite;
-        UpdateEquipWeaponVisibilty();
+        if (weaponImage == null)
+        {
+            return;
+        }
+
+        if (attackAnimation != null)
+        {
+            StopCoroutine(attackAnimation);
+        }
+
+        attackAnimation = StartCoroutine(
+            PlayAttackAnimationRoutine(
+                attackSprite,
+                idleSprite,
+                duration
+            )
+        );
     }
 
-    private void UpdateEquipWeaponVisibilty()
+    private IEnumerator PlayAttackAnimationRoutine(
+        Sprite attackSprite,
+        Sprite idleSprite,
+        float duration)
     {
-        _equipImage.gameObject.SetActive(_equipImage.sprite != null);
+        SetWeaponSprite(attackSprite);
+
+        yield return new WaitForSeconds(duration);
+
+        SetWeaponSprite(idleSprite);
+
+        attackAnimation = null;
     }
 
-    public void Attack(WeaponSO weapon, WeaponSoundManager sound)
+    private void HideWeapon()
     {
-        if (_animIsRunnning) return;
-        StartCoroutine(AnimateWeapon(weapon, sound));
-    }
-
-    private IEnumerator AnimateWeapon(WeaponSO weapon, WeaponSoundManager sound)
-    {
-        _animIsRunnning = true;
-        UpdateEquipSprite(weapon.AttackSprite);
-        sound.PlayRandomAttackSound();
-
-        yield return new WaitForSeconds(ATTACK_SPEED);
-
-        UpdateEquipSprite(weapon.IdleSprite);
-        _animIsRunnning = false;
+        SetWeaponSprite(null);
     }
 }

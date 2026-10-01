@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyVisualController : MonoBehaviour
@@ -14,8 +15,10 @@ public class EnemyVisualController : MonoBehaviour
     [SerializeField] private Transform enemyRoot;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private EnemyMovement movement;
-    [SerializeField] private EnemyAttack attack;
+    [SerializeField] private EnemyCombatBehaviour combatBehaviour;
     [SerializeField] private Camera targetCamera;
+    [SerializeField] private Health health;
+    [SerializeField] private Transform deathPoint;
 
     [Header("Movement - Front")]
     [SerializeField] private Sprite[] frontFrames;
@@ -29,27 +32,230 @@ public class EnemyVisualController : MonoBehaviour
     [Header("Movement - Right")]
     [SerializeField] private Sprite[] rightFrames;
 
+    [Header("Idle - Front")]
+    [SerializeField] private Sprite[] idleFrontFrames;
+
+    [Header("Idle - Back")]
+    [SerializeField] private Sprite[] idleBackFrames;
+
+    [Header("Idle - Left")]
+    [SerializeField] private Sprite[] idleLeftFrames;
+
+    [Header("Idle - Right")]
+    [SerializeField] private Sprite[] idleRightFrames;
+
     [Header("Attack")]
     [SerializeField] private Sprite[] attackFrontFrames;
+
+    [Header("Death")]
+    [SerializeField] private Sprite deadSprite;
+    [SerializeField] private float corpseDuration = 5f;
+    [SerializeField] private float fadeDuration = 1f;
 
     [Header("Movement Animation")]
     [Min(0.01f)]
     [SerializeField] private float movementFramesPerSecond = 6f;
 
+    [Header("Idle Animation")]
+    [Min(0.01f)]
+    [SerializeField] private float idleFramesPerSecond = 4f;
+
     private int movementFrame;
     private float movementFrameTimer;
 
+    private int idleFrame;
+    private float idleFrameTimer;
+
+    private bool isDead;
+
     private void Start()
     {
-        if (targetCamera == null)
+        FindMissingReferences();
+
+        if (health != null)
         {
-            targetCamera = Camera.main;
+            health.Died += HandleDeath;
+        }
+        else
+        {
+            Debug.LogError(
+                $"{gameObject.name}: EnemyVisualController " +
+                "could not find enemy Health."
+            );
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (health != null)
+        {
+            health.Died -= HandleDeath;
         }
     }
 
     private void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         UpdateVisual();
+    }
+
+    private void FindMissingReferences()
+    {
+        if (targetCamera == null)
+        {
+            targetCamera = Camera.main;
+        }
+
+        if (enemyRoot == null)
+        {
+            enemyRoot = transform.root;
+        }
+
+        if (movement == null)
+        {
+            movement =
+                enemyRoot.GetComponent<EnemyMovement>();
+        }
+
+        if (combatBehaviour == null)
+        {
+            combatBehaviour =
+                enemyRoot.GetComponent<EnemyCombatBehaviour>();
+        }
+
+        if (health == null)
+        {
+            health =
+                enemyRoot.GetComponent<Health>();
+        }
+
+        if (deathPoint == null)
+        {
+            FindDeathPoint();
+        }
+    }
+
+    private void FindDeathPoint()
+    {
+        Transform[] children =
+            enemyRoot.GetComponentsInChildren<Transform>(
+                true
+            );
+
+        foreach (Transform child in children)
+        {
+            if (child.name != "DeathPoint")
+            {
+                continue;
+            }
+
+            deathPoint = child;
+            return;
+        }
+    }
+
+    private void HandleDeath()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+
+        DisableEnemySystems();
+
+        if (deathPoint != null)
+        {
+            spriteRenderer.transform.position =
+                deathPoint.position;
+        }
+
+        spriteRenderer.sprite = deadSprite;
+        spriteRenderer.color = Color.white;
+
+        StartCoroutine(FadeAndDestroy());
+    }
+
+    private void DisableEnemySystems()
+    {
+        EnemyBrain brain =
+            enemyRoot.GetComponent<EnemyBrain>();
+
+        EnemyPatrol patrol =
+            enemyRoot.GetComponent<EnemyPatrol>();
+
+        EnemyPerception perception =
+            enemyRoot.GetComponent<EnemyPerception>();
+
+        if (brain != null)
+        {
+            brain.enabled = false;
+        }
+
+        if (movement != null)
+        {
+            movement.enabled = false;
+        }
+
+        if (combatBehaviour != null)
+        {
+            combatBehaviour.enabled = false;
+        }
+
+        if (patrol != null)
+        {
+            patrol.enabled = false;
+        }
+
+        if (perception != null)
+        {
+            perception.enabled = false;
+        }
+
+        Collider[] colliders =
+            enemyRoot.GetComponentsInChildren<Collider>();
+
+        foreach (Collider enemyCollider in colliders)
+        {
+            enemyCollider.enabled = false;
+        }
+    }
+
+    private IEnumerator FadeAndDestroy()
+    {
+        yield return new WaitForSeconds(
+            corpseDuration
+        );
+
+        float elapsed = 0f;
+
+        Color startColor =
+            spriteRenderer.color;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            Color fadedColor = startColor;
+
+            fadedColor.a =
+                1f -
+                Mathf.Clamp01(
+                    elapsed / fadeDuration
+                );
+
+            spriteRenderer.color =
+                fadedColor;
+
+            yield return null;
+        }
+
+        Destroy(enemyRoot.gameObject);
     }
 
     private void UpdateVisual()
@@ -59,87 +265,151 @@ public class EnemyVisualController : MonoBehaviour
             return;
         }
 
-        if (attack.IsAttacking)
+        if (combatBehaviour.IsPerformingAttack)
         {
+            ResetMovementAnimation();
+            ResetIdleAnimation();
+
             UpdateAttackAnimation();
             return;
         }
 
-        ViewDirection direction = GetViewDirection();
-        UpdateMovementAnimation(direction);
+        ViewDirection direction =
+            GetViewDirection();
+
+        if (movement.IsMoving)
+        {
+            ResetIdleAnimation();
+
+            UpdateMovementAnimation(direction);
+            return;
+        }
+
+        ResetMovementAnimation();
+
+        UpdateIdleAnimation(direction);
     }
 
     private void UpdateAttackAnimation()
     {
-        if (attackFrontFrames == null || attackFrontFrames.Length == 0)
+        if (attackFrontFrames == null ||
+            attackFrontFrames.Length == 0)
         {
             return;
         }
 
-        int frameIndex = Mathf.FloorToInt(
-            attack.AttackProgress * attackFrontFrames.Length
-        );
+        int frameIndex =
+            Mathf.FloorToInt(
+                combatBehaviour.AttackProgress *
+                attackFrontFrames.Length
+            );
 
-        frameIndex = Mathf.Clamp(
-            frameIndex,
-            0,
-            attackFrontFrames.Length - 1
-        );
+        frameIndex =
+            Mathf.Clamp(
+                frameIndex,
+                0,
+                attackFrontFrames.Length - 1
+            );
 
-        spriteRenderer.sprite = attackFrontFrames[frameIndex];
+        spriteRenderer.sprite =
+            attackFrontFrames[frameIndex];
     }
 
-    private void UpdateMovementAnimation(ViewDirection direction)
+    private void UpdateMovementAnimation(
+        ViewDirection direction)
     {
-        Sprite[] frames = GetMovementFrames(direction);
+        Sprite[] frames =
+            GetMovementFrames(direction);
 
-        if (frames == null || frames.Length == 0)
+        if (frames == null ||
+            frames.Length == 0)
         {
             return;
         }
 
-        if (!movement.IsMoving)
-        {
-            ShowIdleFrame(frames);
-            return;
-        }
+        movementFrameTimer +=
+            Time.deltaTime;
 
-        AnimateMovement(frames);
-    }
-
-    private void ShowIdleFrame(Sprite[] frames)
-    {
-        movementFrame = 0;
-        movementFrameTimer = 0f;
-
-        spriteRenderer.sprite = frames[0];
-    }
-
-    private void AnimateMovement(Sprite[] frames)
-    {
-        movementFrameTimer += Time.deltaTime;
-
-        float frameDuration = 1f / movementFramesPerSecond;
+        float frameDuration =
+            1f / movementFramesPerSecond;
 
         if (movementFrameTimer >= frameDuration)
         {
-            movementFrameTimer -= frameDuration;
-            movementFrame = (movementFrame + 1) % frames.Length;
+            movementFrameTimer -=
+                frameDuration;
+
+            movementFrame =
+                (movementFrame + 1) %
+                frames.Length;
         }
 
-        movementFrame = Mathf.Clamp(
-            movementFrame,
-            0,
-            frames.Length - 1
-        );
+        movementFrame =
+            Mathf.Clamp(
+                movementFrame,
+                0,
+                frames.Length - 1
+            );
 
-        spriteRenderer.sprite = frames[movementFrame];
+        spriteRenderer.sprite =
+            frames[movementFrame];
+    }
+
+    private void UpdateIdleAnimation(
+        ViewDirection direction)
+    {
+        Sprite[] frames =
+            GetIdleFrames(direction);
+
+        if (frames == null ||
+            frames.Length == 0)
+        {
+            return;
+        }
+
+        idleFrameTimer +=
+            Time.deltaTime;
+
+        float frameDuration =
+            1f / idleFramesPerSecond;
+
+        if (idleFrameTimer >= frameDuration)
+        {
+            idleFrameTimer -=
+                frameDuration;
+
+            idleFrame =
+                (idleFrame + 1) %
+                frames.Length;
+        }
+
+        idleFrame =
+            Mathf.Clamp(
+                idleFrame,
+                0,
+                frames.Length - 1
+            );
+
+        spriteRenderer.sprite =
+            frames[idleFrame];
+    }
+
+    private void ResetMovementAnimation()
+    {
+        movementFrame = 0;
+        movementFrameTimer = 0f;
+    }
+
+    private void ResetIdleAnimation()
+    {
+        idleFrame = 0;
+        idleFrameTimer = 0f;
     }
 
     private ViewDirection GetViewDirection()
     {
         Vector3 directionToCamera =
-            targetCamera.transform.position - enemyRoot.position;
+            targetCamera.transform.position -
+            enemyRoot.position;
 
         directionToCamera.y = 0f;
 
@@ -150,17 +420,20 @@ public class EnemyVisualController : MonoBehaviour
 
         directionToCamera.Normalize();
 
-        float forwardDot = Vector3.Dot(
-            enemyRoot.forward,
-            directionToCamera
-        );
+        float forwardDot =
+            Vector3.Dot(
+                enemyRoot.forward,
+                directionToCamera
+            );
 
-        float rightDot = Vector3.Dot(
-            enemyRoot.right,
-            directionToCamera
-        );
+        float rightDot =
+            Vector3.Dot(
+                enemyRoot.right,
+                directionToCamera
+            );
 
-        if (Mathf.Abs(forwardDot) >= Mathf.Abs(rightDot))
+        if (Mathf.Abs(forwardDot) >=
+            Mathf.Abs(rightDot))
         {
             return forwardDot >= 0f
                 ? ViewDirection.Front
@@ -172,15 +445,45 @@ public class EnemyVisualController : MonoBehaviour
             : ViewDirection.Left;
     }
 
-    private Sprite[] GetMovementFrames(ViewDirection direction)
+    private Sprite[] GetMovementFrames(
+        ViewDirection direction)
     {
         return direction switch
         {
-            ViewDirection.Front => frontFrames,
-            ViewDirection.Back => backFrames,
-            ViewDirection.Left => leftFrames,
-            ViewDirection.Right => rightFrames,
+            ViewDirection.Front =>
+                frontFrames,
+
+            ViewDirection.Back =>
+                backFrames,
+
+            ViewDirection.Left =>
+                leftFrames,
+
+            ViewDirection.Right =>
+                rightFrames,
+
             _ => frontFrames
+        };
+    }
+
+    private Sprite[] GetIdleFrames(
+        ViewDirection direction)
+    {
+        return direction switch
+        {
+            ViewDirection.Front =>
+                idleFrontFrames,
+
+            ViewDirection.Back =>
+                idleBackFrames,
+
+            ViewDirection.Left =>
+                idleLeftFrames,
+
+            ViewDirection.Right =>
+                idleRightFrames,
+
+            _ => idleFrontFrames
         };
     }
 
@@ -189,7 +492,7 @@ public class EnemyVisualController : MonoBehaviour
         return enemyRoot != null &&
                spriteRenderer != null &&
                movement != null &&
-               attack != null &&
+               combatBehaviour != null &&
                targetCamera != null;
     }
 }

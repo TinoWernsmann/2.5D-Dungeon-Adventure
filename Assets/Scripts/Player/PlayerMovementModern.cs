@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference jumpAction;
+    [SerializeField] private InputActionReference dialogueAction;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -36,16 +37,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        moveAction.action.Enable();
-        lookAction.action.Enable();
-        jumpAction.action.Enable();
+        SetPlayerMovement(true);
     }
 
     private void OnDisable()
     {
-        moveAction.action.Disable();
-        lookAction.action.Disable();
-        jumpAction.action.Disable();
+        SetPlayerMovement(false);
     }
 
     private void Start()
@@ -57,6 +54,35 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleMovement();
         HandleLook();
+    }
+
+    public void SetPlayerMovement(bool toggle)
+    {
+        if (toggle)
+        {
+            moveAction.action.Enable();
+            lookAction.action.Enable();
+            jumpAction.action.Enable();
+        }
+        else
+        {
+            moveAction.action.Disable();
+            lookAction.action.Disable();
+            jumpAction.action.Disable();
+        }
+    }
+
+    public void SetPlayerDialogueInput(bool toggle)
+    {
+        SetPlayerMovement(!toggle);
+        if (toggle)
+        {
+            dialogueAction.action.Enable();
+        }
+        else
+        {
+            dialogueAction.action.Disable();
+        }
     }
 
     private void HandleMovement()

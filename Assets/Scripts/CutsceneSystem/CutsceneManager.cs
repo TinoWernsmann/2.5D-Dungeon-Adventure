@@ -9,13 +9,28 @@ public class CutsceneManager : MonoBehaviour
     public event Action OnCutsceneFinished;
     public bool IsPlaying { get; private set; }
 
+    [SerializeField] private AudioClip _cutsceneAudio;
+    [SerializeField] private bool _pauseAtStart;
+    [SerializeField] private float _pauseLength;
+
     private TextMeshProUGUI _text;
     private DialogueData[] _currentCutsceneDialogue;
     private int _dialogueCounter;
     private CutsceneUI _cutsceneUI;
     private VideoClip _video;
+    private AudioSource _cutsceneAudioSource;
 
     private const int WAIT_SECONDS = 5;
+
+    private void Awake()
+    {
+        _cutsceneAudioSource = GetComponent<AudioSource>();
+        if (_cutsceneAudioSource != null)
+        {
+            _cutsceneAudioSource.clip = _cutsceneAudio;
+            _cutsceneAudioSource.Play();
+        }
+    }
 
     private void OnEnable()
     {
@@ -30,6 +45,23 @@ public class CutsceneManager : MonoBehaviour
         if (cutscene != null) _currentCutsceneDialogue = cutscene.DialogueLines;
         if (_currentCutsceneDialogue == null || _currentCutsceneDialogue.Length == 0) return;
 
+        if (_pauseAtStart)
+        {
+            StartCoroutine(WaitAtStart(cutscene));
+        }
+        else
+        {
+            _dialogueCounter = 0;
+            _video = cutscene.Video;
+            IsPlaying = true;
+            SetDialogueData();
+            WaitUntilNextCutsceneEntry();
+        }
+    }
+
+    private IEnumerator WaitAtStart(CutsceneSO cutscene)
+    {
+        yield return new WaitForSeconds(_pauseLength);
         _dialogueCounter = 0;
         _video = cutscene.Video;
         IsPlaying = true;
@@ -105,7 +137,6 @@ public class CutsceneManager : MonoBehaviour
     {
         IsPlaying = false;
         OnCutsceneFinished?.Invoke();
-        //gameObject.SetActive(false);
     }
 
     private void WaitUntilNextCutsceneEntry()

@@ -15,8 +15,22 @@ MonoBehaviour:
   ItemName: Crossbow
   Description: A crossbow
   InventoryIcon: {fileID: 21300000, guid: fe0e55439b676444b95bad64d8bdf006, type: 3}
-  WeaponDamage: 0
-  WeaponRange: 0
+  stackable: 0
+  maxStackSize: 1
+  IsHealing: 0
+  PickUpSound: {fileID: 8300000, guid: 3c88b45084ee0254aa64e0b28b277c61, type: 3}
+  DropSound: {fileID: 8300000, guid: 03ee6ced028d2414babfc96ae72b6fe8, type: 3}
+  attackType: 1
+  WeaponDamage: 20
+  WeaponRange: 10
+  AttackDuration: 0.5
+  projectilePrefab: {fileID: 7032267243731821679, guid: 88505baa233f80c439d0abc0299a4867, type: 3}
+  projectileSpeed: 20
+  usesAmmo: 1
+  ammoItem: {fileID: 11400000, guid: debd2aef238204647b988b91432915a8, type: 2}
+  ammoPerShot: 1
+  IdleSprite: {fileID: 21300000, guid: 42fda31ffcd9ca542aa01a0ae2372f87, type: 3}
+  AttackSprite: {fileID: 21300000, guid: 51cef7502a998b74d80bcb5e6c97d8c9, type: 3}
   AttackSounds:
   - {fileID: 8300000, guid: 060f213e01fbe3c469b8503471ae99a6, type: 3}
   - {fileID: 8300000, guid: 7d2b10c8a3128334d9b06dc210bf9e1d, type: 3}
@@ -25,5 +39,3 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bc45471aa97e2a34e9ce532e412bd232, type: 3}
   - {fileID: 8300000, guid: 26d4453870387084d8cb8a543b080527, type: 3}
   - {fileID: 8300000, guid: 7a9fcf4d417512949b278e896115182a, type: 3}
-  IdleSprite: {fileID: 21300000, guid: 42fda31ffcd9ca542aa01a0ae2372f87, type: 3}
-  AttackSprite: {fileID: 21300000, guid: 51cef7502a998b74d80bcb5e6c97d8c9, type: 3}

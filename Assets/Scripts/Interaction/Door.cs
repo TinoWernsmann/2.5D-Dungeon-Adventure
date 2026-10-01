@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class Door : MonoBehaviour, IInteractable
 {
     [Header("References")]
+    [SerializeField] private ItemManager itemManager;
     [SerializeField] private Transform doorPivot;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Collider visionBlocker;
@@ -13,10 +14,13 @@ public class Door : MonoBehaviour, IInteractable
     [Header("Door Settings")]
     [SerializeField] private float openAngle = -90f;
     [SerializeField] private float animationDuration = 0.5f;
+    [SerializeField] private bool isLocked;
+    [SerializeField] private string neededUnlockItem;
 
     [Header("Audio")]
     [SerializeField] private AudioClip openSound;
     [SerializeField] private AudioClip closeSound;
+    [SerializeField] private AudioClip lockedSound;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
@@ -26,17 +30,38 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Awake()
     {
+        if (itemManager == null)
+        {
+            itemManager = FindAnyObjectByType<ItemManager>();
+        }
+
         closedRotation = doorPivot.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0f, openAngle, 0f);
 
         SetDoorBlocking(true);
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
         if (isAnimating)
         {
             return;
+        }
+
+        if (isLocked)
+        {
+            if (itemManager != null && itemManager.HasItem(neededUnlockItem))
+            {
+                itemManager.RemoveItemByName(neededUnlockItem);
+                isLocked = false;
+                OpenDoor();
+                return;
+            }
+            else
+            {
+                PlaySound(lockedSound);
+                return;
+            }
         }
 
         if (isOpen)

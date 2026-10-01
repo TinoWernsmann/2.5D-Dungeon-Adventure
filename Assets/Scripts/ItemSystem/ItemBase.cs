@@ -1,51 +1,126 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ItemBase : MonoBehaviour
 {
-    public static event Action<ItemBase> OnAddItem;
+    private const float FloatSpeed = 3f;
+    private const float FloatHeight = 0.1f;
 
-    [SerializeField] private ItemSO _itemData;
+    [Header("Item")]
+    [SerializeField] private ItemSO itemData;
 
-    private const float FLOAT_SPEED = 3f;
-    private const float FLOAT_HEIGHT = 0.1f;
-    private Rigidbody _rb;
-    private Vector3 _startPos;
+    [Header("Pickup")]
+    [Min(1)]
+    [SerializeField] private int pickupAmount = 1;
 
-    public ItemSO ItemData => _itemData;
+    private Rigidbody itemRigidbody;
+    private Vector3 startPosition;
+
+    public ItemSO ItemData => itemData;
+
+    public int PickupAmount =>
+        Mathf.Max(1, pickupAmount);
+
+    private void Awake()
+    {
+        itemRigidbody =
+            GetComponent<Rigidbody>();
+
+        ValidateReferences();
+    }
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null) Debug.LogError("Error Loading Item Body!");
-
-        _startPos = transform.position;
+        startPosition =
+            transform.position;
     }
 
     private void Update()
     {
-        FloatItem();
+        UpdateFloatingMovement();
     }
 
-    private void FloatItem()
+    private void OnTriggerEnter(
+        Collider other)
     {
-        if (!this.gameObject.activeSelf) return;
-        float newY = _startPos.y + Mathf.Sin(Time.time * FLOAT_SPEED) * FLOAT_HEIGHT;
-        transform.position = new Vector3(_startPos.x, newY, _startPos.z);
+        ItemCollector collector =
+            other.GetComponentInParent<
+                ItemCollector>();
+
+        if (collector == null)
+        {
+            return;
+        }
+
+        TryCollect(collector);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void DropAt(
+        Vector3 position)
     {
-        if (!other.CompareTag("Player")) return;
+        transform.position =
+            position;
 
-        OnAddItem?.Invoke(this);
-        Destroy(gameObject);
+        startPosition =
+            position;
+
+        gameObject.SetActive(true);
     }
 
-    public void ItemDebugCollect()
+    public void SetPickupAmount(
+        int amount)
     {
-        OnAddItem?.Invoke(this);
-        Destroy(gameObject);
+        pickupAmount =
+            Mathf.Max(1, amount);
+    }
+
+    private void TryCollect(
+        ItemCollector collector)
+    {
+        bool wasCollected =
+            collector.TryCollect(this);
+
+        if (!wasCollected)
+        {
+            return;
+        }
+
+        gameObject.SetActive(false);
+    }
+
+    private void UpdateFloatingMovement()
+    {
+        float verticalOffset =
+            Mathf.Sin(
+                Time.time * FloatSpeed
+            ) * FloatHeight;
+
+        transform.position =
+            new Vector3(
+                startPosition.x,
+                startPosition.y +
+                verticalOffset,
+                startPosition.z
+            );
+    }
+
+    private void ValidateReferences()
+    {
+        if (itemData == null)
+        {
+            Debug.LogError(
+                "ItemBase: ItemData reference " +
+                "is missing.",
+                this
+            );
+        }
+
+        if (itemRigidbody == null)
+        {
+            Debug.LogError(
+                "ItemBase: Rigidbody is missing.",
+                this
+            );
+        }
     }
 }

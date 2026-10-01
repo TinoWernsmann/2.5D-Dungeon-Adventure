@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(EnemyPatrol))]
 [RequireComponent(typeof(EnemyPerception))]
-[RequireComponent(typeof(EnemyAttack))]
 public class EnemyBrain : MonoBehaviour
 {
     private enum EnemyState
@@ -11,12 +10,15 @@ public class EnemyBrain : MonoBehaviour
         None,
         Patrol,
         Chase,
-        Attack,
+        Combat,
         Search
     }
 
     [Header("Target")]
     [SerializeField] private Transform player;
+
+    [Header("Combat")]
+    [SerializeField] private EnemyCombatBehaviour combatBehaviour;
 
     [Header("Search")]
     [Min(0f)]
@@ -25,43 +27,90 @@ public class EnemyBrain : MonoBehaviour
     private EnemyMovement movement;
     private EnemyPatrol patrol;
     private EnemyPerception perception;
-    private EnemyAttack attack;
 
     private Health playerHealth;
 
-    private EnemyState currentState = EnemyState.None;
+    private EnemyState currentState =
+        EnemyState.None;
 
     private Vector3 lastKnownPlayerPosition;
 
     private float searchTimer;
     private bool hasReachedSearchPosition;
 
+    private SpearBossCombatBehaviour spearBoss;
+
     private void Awake()
     {
-        movement = GetComponent<EnemyMovement>();
-        patrol = GetComponent<EnemyPatrol>();
-        perception = GetComponent<EnemyPerception>();
-        attack = GetComponent<EnemyAttack>();
+        movement =
+            GetComponent<EnemyMovement>();
+
+        patrol =
+            GetComponent<EnemyPatrol>();
+
+        perception =
+            GetComponent<EnemyPerception>();
+
+        if (combatBehaviour == null)
+        {
+            combatBehaviour =
+                GetComponent<EnemyCombatBehaviour>();
+        }
+
+        spearBoss =
+            combatBehaviour as
+                SpearBossCombatBehaviour;
     }
 
     private void Start()
     {
-        playerHealth = player.GetComponent<Health>();
+        if (player == null)
+        {
+            Debug.LogError(
+                $"{gameObject.name}: " +
+                "EnemyBrain has no Player assigned."
+            );
+
+            enabled = false;
+            return;
+        }
+
+        playerHealth =
+            player.GetComponent<Health>();
 
         if (playerHealth == null)
         {
             Debug.LogError(
-                "EnemyBrain could not find a Health component on the Player."
+                $"{gameObject.name}: " +
+                "Player has no Health component."
             );
+
+            enabled = false;
+            return;
         }
 
-        ChangeState(EnemyState.Patrol);
+        if (combatBehaviour == null)
+        {
+            Debug.LogError(
+                $"{gameObject.name}: " +
+                "No EnemyCombatBehaviour found."
+            );
+
+            enabled = false;
+            return;
+        }
+
+        ChangeState(
+            EnemyState.Patrol
+        );
     }
 
     private void Update()
     {
-        if (playerHealth == null || playerHealth.IsDead)
+        if (playerHealth == null ||
+            playerHealth.IsDead)
         {
+            movement.Stop();
             return;
         }
 
@@ -80,8 +129,8 @@ public class EnemyBrain : MonoBehaviour
                 UpdateChaseState();
                 break;
 
-            case EnemyState.Attack:
-                UpdateAttackState();
+            case EnemyState.Combat:
+                UpdateCombatState();
                 break;
 
             case EnemyState.Search:
@@ -98,46 +147,80 @@ public class EnemyBrain : MonoBehaviour
         }
 
         RememberPlayerPosition();
-        ChangeState(EnemyState.Chase);
+
+        NotifyBossPlayerDetected();
+
+        ChangeState(
+            EnemyState.Chase
+        );
     }
 
     private void UpdateChaseState()
     {
         if (!perception.CanSeePlayer())
         {
-            ChangeState(EnemyState.Search);
+            ChangeState(
+                EnemyState.Search
+            );
+
             return;
         }
 
         RememberPlayerPosition();
 
-        if (attack.IsTargetInRange(player))
+        NotifyBossPlayerDetected();
+
+        if (combatBehaviour.IsInCombatRange(
+                player))
         {
-            ChangeState(EnemyState.Attack);
+            ChangeState(
+                EnemyState.Combat
+            );
+
             return;
         }
 
-        movement.MoveTo(player.position);
+        if (spearBoss != null &&
+            spearBoss.IsCombatPrepared)
+        {
+            movement.MoveToWhileFacing(
+                player.position,
+                player
+            );
+
+            return;
+        }
+
+        // Während PrepareAttack soll der
+        // Boss stehen bleiben.
+        if (spearBoss != null)
+        {
+            movement.StopAndFace(player);
+            return;
+        }
+
+        movement.MoveTo(
+            player.position
+        );
     }
 
-    private void UpdateAttackState()
+    private void UpdateCombatState()
     {
         if (!perception.CanSeePlayer())
         {
-            ChangeState(EnemyState.Search);
+            ChangeState(
+                EnemyState.Search
+            );
+
             return;
         }
 
         RememberPlayerPosition();
 
-        if (!attack.IsTargetInRange(player))
-        {
-            ChangeState(EnemyState.Chase);
-            return;
-        }
-
-        movement.Stop();
-        attack.TryAttack(playerHealth);
+        combatBehaviour.UpdateCombat(
+            player,
+            playerHealth
+        );
     }
 
     private void UpdateSearchState()
@@ -145,7 +228,13 @@ public class EnemyBrain : MonoBehaviour
         if (perception.CanSeePlayer())
         {
             RememberPlayerPosition();
-            ChangeState(EnemyState.Chase);
+
+            NotifyBossPlayerDetected();
+
+            ChangeState(
+                EnemyState.Chase
+            );
+
             return;
         }
 
@@ -166,6 +255,7 @@ public class EnemyBrain : MonoBehaviour
         }
 
         hasReachedSearchPosition = true;
+
         movement.Stop();
     }
 
@@ -178,15 +268,42 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
-        ChangeState(EnemyState.Patrol);
+        ChangeState(
+            EnemyState.Patrol
+        );
     }
 
     private void RememberPlayerPosition()
     {
-        lastKnownPlayerPosition = player.position;
+        lastKnownPlayerPosition =
+            player.position;
     }
 
-    private void ChangeState(EnemyState newState)
+    private void NotifyBossPlayerDetected()
+    {
+        if (spearBoss == null)
+        {
+            return;
+        }
+
+        spearBoss.NotifyPlayerDetected(
+            player,
+            playerHealth
+        );
+    }
+
+    private void NotifyBossPlayerLost()
+    {
+        if (spearBoss == null)
+        {
+            return;
+        }
+
+        spearBoss.NotifyPlayerLost();
+    }
+
+    private void ChangeState(
+        EnemyState newState)
     {
         if (currentState == newState)
         {
@@ -197,26 +314,35 @@ public class EnemyBrain : MonoBehaviour
 
         currentState = newState;
 
-        Debug.Log($"{gameObject.name} state: {currentState}");
-
         EnterState(currentState);
     }
 
-    private void EnterState(EnemyState state)
+    private void EnterState(
+        EnemyState state)
     {
         switch (state)
         {
             case EnemyState.Patrol:
+                NotifyBossPlayerLost();
+
                 patrol.StartPatrol();
                 break;
 
             case EnemyState.Chase:
                 patrol.StopPatrol();
+
+                NotifyBossPlayerDetected();
                 break;
 
-            case EnemyState.Attack:
+            case EnemyState.Combat:
                 patrol.StopPatrol();
-                movement.Stop();
+
+                NotifyBossPlayerDetected();
+
+                combatBehaviour.EnterCombat(
+                    player,
+                    playerHealth
+                );
                 break;
 
             case EnemyState.Search:
@@ -225,11 +351,18 @@ public class EnemyBrain : MonoBehaviour
         }
     }
 
-    private void ExitState(EnemyState state)
+    private void ExitState(
+        EnemyState state)
     {
-        if (state == EnemyState.Patrol)
+        switch (state)
         {
-            patrol.StopPatrol();
+            case EnemyState.Patrol:
+                patrol.StopPatrol();
+                break;
+
+            case EnemyState.Combat:
+                combatBehaviour.ExitCombat();
+                break;
         }
     }
 
@@ -240,6 +373,8 @@ public class EnemyBrain : MonoBehaviour
         searchTimer = searchDuration;
         hasReachedSearchPosition = false;
 
-        movement.MoveTo(lastKnownPlayerPosition);
+        movement.MoveTo(
+            lastKnownPlayerPosition
+        );
     }
 }
