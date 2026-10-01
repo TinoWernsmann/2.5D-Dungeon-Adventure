@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ItemManager : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class ItemManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Transform dropPoint;
+    [SerializeField] private AudioSource itemSound;
 
     private readonly List<ItemBase> playerItems = new(MaxItems);
 
@@ -19,6 +22,7 @@ public class ItemManager : MonoBehaviour
 
     public event Action InventoryChanged;
     public event Action<ItemSO> SelectedItemChanged;
+    public event Action OnHealingUsed;
 
     public int ItemCount => playerItems.Count;
 
@@ -52,6 +56,11 @@ public class ItemManager : MonoBehaviour
             return false;
         }
 
+        if (item.ItemData.PickUpSound != null)
+        {
+            itemSound.PlayOneShot(item.ItemData.PickUpSound);
+        }
+
         playerItems.Add(item);
 
         SelectFirstItemIfNeeded();
@@ -76,8 +85,22 @@ public class ItemManager : MonoBehaviour
 
         selectedSlot = slotIndex;
 
+        ItemSO item = GetItemAt(selectedSlot);
+        if (item.PickUpSound != null)
+        {
+            itemSound.PlayOneShot(item.PickUpSound);
+        }
+
         NotifyInventoryChanged();
         NotifySelectedItemChanged();
+    }
+
+    public void TryUseHealing()
+    {
+        if (GetSelectedItem().ItemName != "Healing" || GetSelectedItem() == null) return;
+
+        OnHealingUsed?.Invoke();
+        RemoveSelectedItem();
     }
 
     public void DropSelectedItem()
@@ -88,6 +111,11 @@ public class ItemManager : MonoBehaviour
         }
 
         ItemBase itemToDrop = playerItems[selectedSlot];
+
+        if (itemToDrop.ItemData.DropSound != null)
+        {
+            itemSound.PlayOneShot(itemToDrop.ItemData.DropSound);
+        }
 
         playerItems.RemoveAt(selectedSlot);
 

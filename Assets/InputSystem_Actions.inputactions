@@ -140,6 +140,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Healing",
+                    "type": "Button",
+                    "id": "2ee3a8aa-b9ae-4a82-86ca-8f76789a361a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -602,6 +611,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "417a2ec0-0656-4bd2-8ca4-30bb351b36d1",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Healing",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float maxLookAngle = 85f;
 
-
     private CharacterController characterController;
 
     private float verticalVelocity;

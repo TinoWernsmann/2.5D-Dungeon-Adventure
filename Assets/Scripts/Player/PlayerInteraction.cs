@@ -11,6 +11,7 @@ public class PlayerInteraction : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputActionReference interactAction;
     [SerializeField] private InputActionReference attackAction;
+    [SerializeField] private InputActionReference healAction;
 
     [Header("Interaction")]
     [SerializeField] private float interactionDistance = 3f;
@@ -52,6 +53,21 @@ public class PlayerInteraction : MonoBehaviour
         HandleInteractionInput();
         HandleCombatInput();
         HandleInventoryInput();
+        HandleHealInput();
+    }
+
+    private void HandleHealInput()
+    {
+        if (healAction != null &&
+            healAction.action.WasPressedThisFrame())
+        {
+            TryHeal();
+        }
+    }
+
+    private void TryHeal()
+    {
+        itemManager?.TryUseHealing();
     }
 
     private void HandleInteractionInput()

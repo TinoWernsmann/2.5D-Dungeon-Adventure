@@ -12,6 +12,7 @@ public class PlayerCombat : MonoBehaviour
     private Health playerHealth;
     private float nextAttackTime;
     private const string DEATH_SCENE = "DeathScene";
+    private const int HEALING_AMOUNT = 20;
 
     private void Awake()
     {
@@ -21,11 +22,20 @@ public class PlayerCombat : MonoBehaviour
     private void OnEnable()
     {
         playerHealth.Died += HandlePlayerDeath;
+        itemManager.OnHealingUsed += HandleHealing;
     }
+
+
 
     private void OnDisable()
     {
         playerHealth.Died -= HandlePlayerDeath;
+        itemManager.OnHealingUsed -= HandleHealing;
+    }
+
+    private void HandleHealing()
+    {
+        playerHealth.Heal(HEALING_AMOUNT);
     }
 
     private void HandlePlayerDeath()
@@ -62,6 +72,8 @@ public class PlayerCombat : MonoBehaviour
 
     private void PlayAttackFeedback(WeaponSO weapon)
     {
+        if (weapon.ItemName == "Key") return;
+
         weaponUI?.PlayAttackAnimation(
             weapon.AttackSprite,
             weapon.IdleSprite,
