@@ -9,21 +9,30 @@ public class ItemBase : MonoBehaviour
     [Header("Item")]
     [SerializeField] private ItemSO itemData;
 
+    [Header("Pickup")]
+    [Min(1)]
+    [SerializeField] private int pickupAmount = 1;
+
     private Rigidbody itemRigidbody;
     private Vector3 startPosition;
 
     public ItemSO ItemData => itemData;
 
+    public int PickupAmount =>
+        Mathf.Max(1, pickupAmount);
+
     private void Awake()
     {
-        itemRigidbody = GetComponent<Rigidbody>();
+        itemRigidbody =
+            GetComponent<Rigidbody>();
 
         ValidateReferences();
     }
 
     private void Start()
     {
-        startPosition = transform.position;
+        startPosition =
+            transform.position;
     }
 
     private void Update()
@@ -31,10 +40,12 @@ public class ItemBase : MonoBehaviour
         UpdateFloatingMovement();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(
+        Collider other)
     {
         ItemCollector collector =
-            other.GetComponentInParent<ItemCollector>();
+            other.GetComponentInParent<
+                ItemCollector>();
 
         if (collector == null)
         {
@@ -44,15 +55,27 @@ public class ItemBase : MonoBehaviour
         TryCollect(collector);
     }
 
-    public void DropAt(Vector3 position)
+    public void DropAt(
+        Vector3 position)
     {
-        transform.position = position;
-        startPosition = position;
+        transform.position =
+            position;
+
+        startPosition =
+            position;
 
         gameObject.SetActive(true);
     }
 
-    private void TryCollect(ItemCollector collector)
+    public void SetPickupAmount(
+        int amount)
+    {
+        pickupAmount =
+            Mathf.Max(1, amount);
+    }
+
+    private void TryCollect(
+        ItemCollector collector)
     {
         bool wasCollected =
             collector.TryCollect(this);
@@ -68,14 +91,17 @@ public class ItemBase : MonoBehaviour
     private void UpdateFloatingMovement()
     {
         float verticalOffset =
-            Mathf.Sin(Time.time * FloatSpeed) *
-            FloatHeight;
+            Mathf.Sin(
+                Time.time * FloatSpeed
+            ) * FloatHeight;
 
-        transform.position = new Vector3(
-            startPosition.x,
-            startPosition.y + verticalOffset,
-            startPosition.z
-        );
+        transform.position =
+            new Vector3(
+                startPosition.x,
+                startPosition.y +
+                verticalOffset,
+                startPosition.z
+            );
     }
 
     private void ValidateReferences()
@@ -83,7 +109,8 @@ public class ItemBase : MonoBehaviour
         if (itemData == null)
         {
             Debug.LogError(
-                "ItemBase: ItemData reference is missing.",
+                "ItemBase: ItemData reference " +
+                "is missing.",
                 this
             );
         }
