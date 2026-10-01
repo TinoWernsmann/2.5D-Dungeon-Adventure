@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3994910828351957578}
   - component: {fileID: 5288073523888259057}
   - component: {fileID: 738477509905787056}
-  - component: {fileID: 5163977728345500225}
+  - component: {fileID: 5762232363905941679}
   m_Layer: 0
   m_Name: Trickster
   m_TagString: Untagged
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   _dialogueData: {fileID: 11400000, guid: bb6933d0fd979a349b9f90e438058dfd, type: 2}
   _talkAudio: {fileID: 0}
---- !u!114 &5163977728345500225
+--- !u!114 &5762232363905941679
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5055385950719853418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4e0475116215784098bb91d8e27f28c, type: 3}
+  m_Script: {fileID: 11500000, guid: 130240b4f1915ce4f927c92653ae3323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
   targetCamera: {fileID: 0}

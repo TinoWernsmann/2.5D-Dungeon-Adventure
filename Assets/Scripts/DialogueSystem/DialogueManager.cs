@@ -6,14 +6,16 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] private DialogueUIManager _dialogueUI;
+    [SerializeField] private PlayerMovement _movement;
     //[SerializeField] private DialogueAudioManager _audioManager;
 
     private List<DialogueInteractable> _interactables;
     private AudioClip _currentSpeakerAudio;
 
     private const float DIALOGUE_TIMER = 4f;
-    private bool _isDialogue = false;
-
+    private int _dialogueIndex = 0;
+    private string[] _currentDialogue;
+    private string _currentSpeaker;
 
     private void Awake()
     {
@@ -35,25 +37,45 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleDialogue(DialogueContext context)
     {
-        _isDialogue = true;
         _currentSpeakerAudio = context.SpeakAudio;
 
-        if (_dialogueUI != null)
-        {
-            //_audioManager.PlayDialogueAudio(_currentSpeakerAudio);
-        }
+        if (_dialogueUI == null) return;
 
-        StartCoroutine(WaitDialoge(context));
+        if (_dialogueIndex == 0)
+        {
+            StartDialogue(context);
+        }
+        else if (_dialogueIndex >= 0 && _dialogueIndex < _currentDialogue.Length)
+        {
+            ContinueDialogue(context);
+        }
+        else
+        {
+            EndDialogue();
+        }
     }
 
-    private IEnumerator WaitDialoge(DialogueContext context)
+    private void StartDialogue(DialogueContext context)
     {
-        _dialogueUI.ShowSpeakingUI(context.Text);
+        _movement.SetPlayerDialogueInput(true);
+        _currentDialogue = context.Text;
+        _currentSpeaker = context.Speaker;
+        _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
+        _dialogueIndex++;
+    }
 
-        yield return new WaitForSeconds(DIALOGUE_TIMER);
+    private void ContinueDialogue(DialogueContext context)
+    {
+        _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
+        _dialogueIndex++;
+    }
 
-        _dialogueUI.ShowSpeakingUI(string.Empty);
-        _isDialogue = false;
+    private void EndDialogue()
+    {
+        _movement.SetPlayerDialogueInput(false);
+        _dialogueUI.HideSpeakingUI();
+        _dialogueIndex = 0;
+        _currentDialogue = null;
     }
 
     private void OnDisable()

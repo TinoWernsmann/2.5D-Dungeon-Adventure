@@ -23,13 +23,13 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 public readonly struct DialogueContext
 {
     public string Speaker { get; }
-    public string Text { get; }
+    public string[] Text { get; }
     public AudioClip SpeakAudio { get; }
 
-    public DialogueContext(string speaker, string text, AudioClip sound)
+    public DialogueContext(string speaker, string[] texts, AudioClip sound)
     {
         Speaker = speaker;
-        Text = text;
+        Text = texts;
         SpeakAudio = sound;
     }
 }

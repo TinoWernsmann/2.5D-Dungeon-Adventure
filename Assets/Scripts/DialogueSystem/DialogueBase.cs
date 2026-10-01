@@ -4,8 +4,8 @@ using UnityEngine;
 public class DialogueBase : ScriptableObject
 {
     [SerializeField] private string _speakerName;
-    [SerializeField] private string _spokenText;
+    [SerializeField] private string[] _spokenText;
 
-    public string SpokenText => _spokenText;
+    public string[] SpokenText => _spokenText;
     public string SpeakerName => _speakerName;
 }
