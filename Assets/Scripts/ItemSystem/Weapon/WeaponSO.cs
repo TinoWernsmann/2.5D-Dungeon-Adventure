@@ -34,6 +34,17 @@ public class WeaponSO : ItemSO
     [SerializeField]
     private float projectileSpeed = 20f;
 
+    [Header("Ammunition")]
+    [SerializeField]
+    private bool usesAmmo;
+
+    [SerializeField]
+    private ItemSO ammoItem;
+
+    [Min(1)]
+    [SerializeField]
+    private int ammoPerShot = 1;
+
     [Header("Visuals")]
     public Sprite IdleSprite;
     public Sprite AttackSprite;
@@ -53,4 +64,13 @@ public class WeaponSO : ItemSO
     public bool UsesProjectile =>
         attackType ==
         WeaponAttackType.Projectile;
+
+    public bool UsesAmmo =>
+        usesAmmo;
+
+    public ItemSO AmmoItem =>
+        ammoItem;
+
+    public int AmmoPerShot =>
+        Mathf.Max(1, ammoPerShot);
 }

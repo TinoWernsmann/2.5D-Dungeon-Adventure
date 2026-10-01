@@ -3,13 +3,22 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private ItemManager itemManager;
-    [SerializeField] private WeaponUI weaponUI;
-    [SerializeField] private WeaponSoundManager weaponSoundManager;
+    [SerializeField]
+    private Camera playerCamera;
+
+    [SerializeField]
+    private ItemManager itemManager;
+
+    [SerializeField]
+    private WeaponUI weaponUI;
+
+    [SerializeField]
+    private WeaponSoundManager
+        weaponSoundManager;
 
     [Header("Projectile")]
-    [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField]
+    private Transform projectileSpawnPoint;
 
     private Health playerHealth;
     private float nextAttackTime;
@@ -30,7 +39,13 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        Attack(weapon);
+        if (weapon.UsesProjectile)
+        {
+            TryProjectileAttack(weapon);
+            return;
+        }
+
+        PerformMeleeAttack(weapon);
     }
 
     private bool CanAttack(
@@ -38,25 +53,111 @@ public class PlayerCombat : MonoBehaviour
     {
         return weapon != null &&
                playerCamera != null &&
-               Time.time >= nextAttackTime;
+               Time.time >=
+               nextAttackTime;
     }
 
-    private void Attack(
+    private void PerformMeleeAttack(
+        WeaponSO weapon)
+    {
+        StartAttackCooldown(weapon);
+
+        PlayAttackFeedback(weapon);
+
+        TryMeleeDamage(weapon);
+    }
+
+    private void TryProjectileAttack(
+        WeaponSO weapon)
+    {
+        if (!CanShootProjectile(
+                weapon))
+        {
+            return;
+        }
+
+        if (!TryConsumeAmmo(
+                weapon))
+        {
+            Debug.Log(
+                $"[PLAYER] No ammo for " +
+                $"{weapon.ItemName}."
+            );
+
+            return;
+        }
+
+        StartAttackCooldown(weapon);
+
+        PlayAttackFeedback(weapon);
+
+        ShootProjectile(weapon);
+    }
+
+    private bool CanShootProjectile(
+        WeaponSO weapon)
+    {
+        if (weapon.ProjectilePrefab ==
+            null)
+        {
+            Debug.LogWarning(
+                $"{weapon.name}: " +
+                "No Projectile Prefab " +
+                "assigned.",
+                weapon
+            );
+
+            return false;
+        }
+
+        if (projectileSpawnPoint ==
+            null)
+        {
+            Debug.LogWarning(
+                $"{gameObject.name}: " +
+                "No Projectile Spawn Point " +
+                "assigned.",
+                gameObject
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool TryConsumeAmmo(
+        WeaponSO weapon)
+    {
+        if (!weapon.UsesAmmo)
+        {
+            return true;
+        }
+
+        if (weapon.AmmoItem == null)
+        {
+            Debug.LogWarning(
+                $"{weapon.name}: Uses Ammo is " +
+                "enabled but no Ammo Item " +
+                "is assigned.",
+                weapon
+            );
+
+            return false;
+        }
+
+        return itemManager.TryConsumeItem(
+            weapon.AmmoItem,
+            weapon.AmmoPerShot
+        );
+    }
+
+    private void StartAttackCooldown(
         WeaponSO weapon)
     {
         nextAttackTime =
             Time.time +
             weapon.AttackDuration;
-
-        PlayAttackFeedback(weapon);
-
-        if (weapon.UsesProjectile)
-        {
-            ShootProjectile(weapon);
-            return;
-        }
-
-        TryMeleeDamage(weapon);
     }
 
     private void PlayAttackFeedback(
@@ -75,28 +176,6 @@ public class PlayerCombat : MonoBehaviour
     private void ShootProjectile(
         WeaponSO weapon)
     {
-        if (weapon.ProjectilePrefab == null)
-        {
-            Debug.LogWarning(
-                $"{weapon.name}: " +
-                "No Projectile Prefab assigned.",
-                weapon
-            );
-
-            return;
-        }
-
-        if (projectileSpawnPoint == null)
-        {
-            Debug.LogWarning(
-                $"{gameObject.name}: " +
-                "No Projectile Spawn Point assigned.",
-                gameObject
-            );
-
-            return;
-        }
-
         Vector3 direction =
             GetProjectileDirection(
                 weapon
@@ -119,13 +198,16 @@ public class PlayerCombat : MonoBehaviour
         );
     }
 
-    private Vector3 GetProjectileDirection(
-        WeaponSO weapon)
+    private Vector3
+        GetProjectileDirection(
+            WeaponSO weapon)
     {
         Ray aimRay =
             new Ray(
-                playerCamera.transform.position,
-                playerCamera.transform.forward
+                playerCamera
+                    .transform.position,
+                playerCamera
+                    .transform.forward
             );
 
         Vector3 targetPoint =
@@ -159,10 +241,13 @@ public class PlayerCombat : MonoBehaviour
     private void TryMeleeDamage(
         WeaponSO weapon)
     {
-        Ray ray = new(
-            playerCamera.transform.position,
-            playerCamera.transform.forward
-        );
+        Ray ray =
+            new Ray(
+                playerCamera
+                    .transform.position,
+                playerCamera
+                    .transform.forward
+            );
 
         RaycastHit[] hits =
             Physics.RaycastAll(
@@ -185,7 +270,8 @@ public class PlayerCombat : MonoBehaviour
                     .GetComponentInParent<
                         Health>();
 
-            if (!CanDamage(targetHealth))
+            if (!CanDamage(
+                    targetHealth))
             {
                 continue;
             }
@@ -213,12 +299,6 @@ public class PlayerCombat : MonoBehaviour
 
         if (bossReceiver != null)
         {
-            Debug.Log(
-                "[PLAYER ATTACK] " +
-                "BossDamageReceiver found on " +
-                $"{bossReceiver.gameObject.name}."
-            );
-
             bossReceiver.ReceiveDamage(
                 damage,
                 transform
@@ -226,12 +306,6 @@ public class PlayerCombat : MonoBehaviour
 
             return;
         }
-
-        Debug.Log(
-            "[PLAYER ATTACK] " +
-            "Normal target hit: " +
-            $"{targetHealth.gameObject.name}."
-        );
 
         targetHealth.TakeDamage(
             damage
@@ -261,32 +335,32 @@ public class PlayerCombat : MonoBehaviour
             return receiver;
         }
 
-        if (targetHealth != null)
+        if (targetHealth == null)
         {
-            receiver =
-                targetHealth.GetComponent<
-                    BossDamageReceiver>();
-
-            if (receiver != null)
-            {
-                return receiver;
-            }
-
-            receiver =
-                targetHealth.GetComponentInChildren<
-                    BossDamageReceiver>();
-
-            if (receiver != null)
-            {
-                return receiver;
-            }
-
-            receiver =
-                targetHealth.GetComponentInParent<
-                    BossDamageReceiver>();
+            return null;
         }
 
-        return receiver;
+        receiver =
+            targetHealth.GetComponent<
+                BossDamageReceiver>();
+
+        if (receiver != null)
+        {
+            return receiver;
+        }
+
+        receiver =
+            targetHealth.GetComponentInChildren<
+                BossDamageReceiver>();
+
+        if (receiver != null)
+        {
+            return receiver;
+        }
+
+        return targetHealth
+            .GetComponentInParent<
+                BossDamageReceiver>();
     }
 
     private bool CanDamage(

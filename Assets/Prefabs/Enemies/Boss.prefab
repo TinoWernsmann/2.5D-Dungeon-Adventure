@@ -211,7 +211,6 @@ MonoBehaviour:
   defeatFrames:
   - {fileID: -1771190885, guid: 2b2250f8f0be9f24a972915690e3fe49, type: 3}
   - {fileID: 2066455419, guid: 2dff904733dae4a4a99e194ca725b98c, type: 3}
-  - {fileID: -1726345529, guid: ca7119e02fcd65c4d8f79b3bff8a7c60, type: 3}
   standFramesPerSecond: 3
   movementFramesPerSecond: 6
   backFramesPerSecond: 5
