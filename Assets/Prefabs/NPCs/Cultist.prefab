@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   _dialogueData: {fileID: 11400000, guid: 5154f080300c5504fa39339c03bd5428, type: 2}
   _talkAudio: {fileID: 0}
+  _sprite: {fileID: 5410504635244496722}
 --- !u!114 &975612381818785766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +165,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: a3f2d362c965cf14a9340af688849120, type: 3}
+  m_Sprite: {fileID: 1613422351, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

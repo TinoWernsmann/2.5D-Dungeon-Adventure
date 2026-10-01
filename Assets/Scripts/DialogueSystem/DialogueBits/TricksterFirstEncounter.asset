@@ -28,3 +28,13 @@ MonoBehaviour:
   - You want to know more? To struggle, escape or resign your fate?
   - Well I don't care why, but... The rest will cost you some leaf. I haven't smoked
     for quite a bit!
+  _speakerSprites:
+  - {fileID: -1494009851, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: 1006831602, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: -149484021, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: -941864616, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: -1494009851, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: -149484021, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: 1006831602, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: -149484021, guid: ab91517b68e399547b727f6843af1563, type: 3}
+  - {fileID: -1782364118, guid: ab91517b68e399547b727f6843af1563, type: 3}

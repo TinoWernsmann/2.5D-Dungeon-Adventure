@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   _dialogueData: {fileID: 11400000, guid: bb6933d0fd979a349b9f90e438058dfd, type: 2}
   _talkAudio: {fileID: 0}
+  _sprite: {fileID: 5410504635244496722}
 --- !u!114 &5762232363905941679
 MonoBehaviour:
   m_ObjectHideFlags: 0

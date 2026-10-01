@@ -44,7 +44,11 @@ public class Door : MonoBehaviour, IInteractable
 
         if (isLocked)
         {
-            if (ItemManager.Instance.GetSelectedItem() == null) return;
+            if (ItemManager.Instance.GetSelectedItem() == null)
+            {
+                PlaySound(lockedSound);
+                return;
+            }
 
             if (ItemManager.Instance.GetSelectedItem().ItemName == neededUnlockItem)
             {

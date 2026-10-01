@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class DialogueManager : MonoBehaviour
     private const float DIALOGUE_TIMER = 4f;
     private int _dialogueIndex = 0;
     private string[] _currentDialogue;
+    private Sprite[] _speakerSprites;
     private string _currentSpeaker;
+    private Sprite _defaultSprite;
 
     private void Awake()
     {
@@ -35,7 +38,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void HandleDialogue(DialogueContext context)
+    private void HandleDialogue(DialogueContext context, SpriteRenderer sprite)
     {
         _currentSpeakerAudio = context.SpeakAudio;
 
@@ -43,38 +46,44 @@ public class DialogueManager : MonoBehaviour
 
         if (_dialogueIndex == 0)
         {
-            StartDialogue(context);
+            StartDialogue(context, sprite);
         }
         else if (_dialogueIndex >= 0 && _dialogueIndex < _currentDialogue.Length)
         {
-            ContinueDialogue(context);
+            ContinueDialogue(context, sprite);
         }
         else
         {
-            EndDialogue();
+            EndDialogue(sprite);
         }
     }
 
-    private void StartDialogue(DialogueContext context)
+    private void StartDialogue(DialogueContext context, SpriteRenderer sprite)
     {
         _movement.SetPlayerDialogueInput(true);
         _currentDialogue = context.Text;
         _currentSpeaker = context.Speaker;
+        _speakerSprites = context.Sprites;
+        _defaultSprite = context.DefaultSprite;
         _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
+        sprite.sprite = _speakerSprites[_dialogueIndex];
         _dialogueIndex++;
     }
 
-    private void ContinueDialogue(DialogueContext context)
+    private void ContinueDialogue(DialogueContext context, SpriteRenderer sprite)
     {
         _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
+        sprite.sprite = _speakerSprites[_dialogueIndex];
         _dialogueIndex++;
     }
 
-    private void EndDialogue()
+    private void EndDialogue(SpriteRenderer sprite)
     {
         _movement.SetPlayerDialogueInput(false);
         _dialogueUI.HideSpeakingUI();
+        sprite.sprite = _defaultSprite;
         _dialogueIndex = 0;
+        _speakerSprites = null;
         _currentDialogue = null;
     }
 
