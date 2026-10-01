@@ -91,6 +91,37 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &6279056267586695203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950988234256527475}
+  m_Layer: 0
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8950988234256527475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279056267586695203}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.165, y: 0.492, z: 0.341}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3113970845522469459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7664568011315287388
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +185,7 @@ MonoBehaviour:
   enemyRoot: {fileID: 3113970845522469459}
   spriteRenderer: {fileID: 7465784643759612908}
   movement: {fileID: 4992716912674233300}
-  attack: {fileID: 3850263267356874813}
+  combatBehaviour: {fileID: 4258443872368493281}
   targetCamera: {fileID: 0}
   health: {fileID: 121343053122972427}
   deathPoint: {fileID: 764994764364833506}
@@ -233,6 +264,7 @@ GameObject:
   - component: {fileID: 901670449927281364}
   - component: {fileID: 3850263267356874813}
   - component: {fileID: 121343053122972427}
+  - component: {fileID: 4258443872368493281}
   - component: {fileID: 2700000000000001}
   m_Layer: 0
   m_Name: HardOpp
@@ -256,6 +288,7 @@ Transform:
   m_Children:
   - {fileID: 8129561734530974439}
   - {fileID: 7308323858064894872}
+  - {fileID: 8950988234256527475}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &7846596299216529493
@@ -342,6 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   player: {fileID: 0}
+  combatBehaviour: {fileID: 4258443872368493281}
   searchDuration: 3
 --- !u!114 &3850263267356874813
 MonoBehaviour:
@@ -373,6 +407,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+--- !u!114 &4258443872368493281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8720ed49f2347408bada5213f479b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MageCombatBehaviour
+  movement: {fileID: 4992716912674233300}
+  projectileSpawnPoint: {fileID: 8950988234256527475}
+  combatRange: 12
+  minimumDistance: 5
+  preferredDistance: 8
+  maximumAttackDistance: 10
+  magicBoltPrefab: {fileID: 8024949328669299552, guid: a2d4470c6a07f424f94ae77f27862a89, type: 3}
+  magicBoltDamage: 10
+  magicBoltCastDuration: 0.5
+  fireballPrefab: {fileID: 8024949328669299552, guid: b20f4d18f97b893409829b2c83fae8f6, type: 3}
+  fireballDamage: 25
+  fireballCastDuration: 1.2
+  fireballChance: 0.35
+  recoveryDuration: 0.8
+  retreatDistance: 3
+  retreatDuration: 1
 --- !u!136 &2700000000000001
 CapsuleCollider:
   m_ObjectHideFlags: 0

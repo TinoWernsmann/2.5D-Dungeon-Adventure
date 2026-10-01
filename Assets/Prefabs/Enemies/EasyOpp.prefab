@@ -154,7 +154,7 @@ MonoBehaviour:
   enemyRoot: {fileID: 3113970845522469459}
   spriteRenderer: {fileID: 7465784643759612908}
   movement: {fileID: 4992716912674233300}
-  attack: {fileID: 3850263267356874813}
+  combatBehaviour: {fileID: 2317255083144556059}
   targetCamera: {fileID: 0}
   health: {fileID: 121343053122972427}
   deathPoint: {fileID: 764994764364833506}
@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 901670449927281364}
   - component: {fileID: 3850263267356874813}
   - component: {fileID: 121343053122972427}
+  - component: {fileID: 2317255083144556059}
   - component: {fileID: 2700000000000001}
   m_Layer: 0
   m_Name: EasyOpp
@@ -347,6 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   player: {fileID: 0}
+  combatBehaviour: {fileID: 2317255083144556059}
   searchDuration: 3
 --- !u!114 &3850263267356874813
 MonoBehaviour:
@@ -378,6 +380,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+--- !u!114 &2317255083144556059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34eeb2463615ef241ba3410ec8f7908c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwordCombatBehaviour
+  movement: {fileID: 4992716912674233300}
+  attackRange: 1.8
+  preferredDistance: 1.4
+  damage: 5
+  windupDuration: 0.3
+  attackDuration: 0.4
+  damageMoment: 0.5
+  recoveryDuration: 0.6
+  repositionDistance: 1.5
+  repositionDuration: 0.5
+  repositionChance: 0.6
 --- !u!136 &2700000000000001
 CapsuleCollider:
   m_ObjectHideFlags: 0

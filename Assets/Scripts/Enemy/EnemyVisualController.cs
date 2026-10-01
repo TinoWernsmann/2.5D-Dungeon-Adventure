@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyVisualController : MonoBehaviour
@@ -14,7 +15,7 @@ public class EnemyVisualController : MonoBehaviour
     [SerializeField] private Transform enemyRoot;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private EnemyMovement movement;
-    [SerializeField] private EnemyAttack attack;
+    [SerializeField] private EnemyCombatBehaviour combatBehaviour;
     [SerializeField] private Camera targetCamera;
     [SerializeField] private Health health;
     [SerializeField] private Transform deathPoint;
@@ -69,27 +70,7 @@ public class EnemyVisualController : MonoBehaviour
 
     private void Start()
     {
-        if (targetCamera == null)
-        {
-            targetCamera = Camera.main;
-        }
-
-        if (health == null)
-        {
-            health = enemyRoot.GetComponent<Health>();
-        }
-
-        if (deathPoint == null)
-        {
-            foreach (Transform child in enemyRoot.GetComponentsInChildren<Transform>(true))
-            {
-                if (child.name == "DeathPoint")
-                {
-                    deathPoint = child;
-                    break;
-                }
-            }
-        }
+        FindMissingReferences();
 
         if (health != null)
         {
@@ -98,7 +79,8 @@ public class EnemyVisualController : MonoBehaviour
         else
         {
             Debug.LogError(
-                "EnemyVisualController could not find enemy Health."
+                $"{gameObject.name}: EnemyVisualController " +
+                "could not find enemy Health."
             );
         }
     }
@@ -121,6 +103,61 @@ public class EnemyVisualController : MonoBehaviour
         UpdateVisual();
     }
 
+    private void FindMissingReferences()
+    {
+        if (targetCamera == null)
+        {
+            targetCamera = Camera.main;
+        }
+
+        if (enemyRoot == null)
+        {
+            enemyRoot = transform.root;
+        }
+
+        if (movement == null)
+        {
+            movement =
+                enemyRoot.GetComponent<EnemyMovement>();
+        }
+
+        if (combatBehaviour == null)
+        {
+            combatBehaviour =
+                enemyRoot.GetComponent<EnemyCombatBehaviour>();
+        }
+
+        if (health == null)
+        {
+            health =
+                enemyRoot.GetComponent<Health>();
+        }
+
+        if (deathPoint == null)
+        {
+            FindDeathPoint();
+        }
+    }
+
+    private void FindDeathPoint()
+    {
+        Transform[] children =
+            enemyRoot.GetComponentsInChildren<Transform>(
+                true
+            );
+
+        foreach (Transform child in children)
+        {
+            if (child.name != "DeathPoint")
+            {
+                continue;
+            }
+
+            deathPoint = child;
+            return;
+        }
+    }
+
     private void HandleDeath()
     {
         if (isDead)
@@ -134,7 +171,8 @@ public class EnemyVisualController : MonoBehaviour
 
         if (deathPoint != null)
         {
-            spriteRenderer.transform.position = deathPoint.position;
+            spriteRenderer.transform.position =
+                deathPoint.position;
         }
 
         spriteRenderer.sprite = deadSprite;
@@ -145,35 +183,74 @@ public class EnemyVisualController : MonoBehaviour
 
     private void DisableEnemySystems()
     {
-        enemyRoot.GetComponent<EnemyBrain>().enabled = false;
-        movement.enabled = false;
-        attack.enabled = false;
-        enemyRoot.GetComponent<EnemyPatrol>().enabled = false;
-        enemyRoot.GetComponent<EnemyPerception>().enabled = false;
+        EnemyBrain brain =
+            enemyRoot.GetComponent<EnemyBrain>();
 
-        foreach (Collider enemyCollider in enemyRoot.GetComponentsInChildren<Collider>())
+        EnemyPatrol patrol =
+            enemyRoot.GetComponent<EnemyPatrol>();
+
+        EnemyPerception perception =
+            enemyRoot.GetComponent<EnemyPerception>();
+
+        if (brain != null)
+        {
+            brain.enabled = false;
+        }
+
+        if (movement != null)
+        {
+            movement.enabled = false;
+        }
+
+        if (combatBehaviour != null)
+        {
+            combatBehaviour.enabled = false;
+        }
+
+        if (patrol != null)
+        {
+            patrol.enabled = false;
+        }
+
+        if (perception != null)
+        {
+            perception.enabled = false;
+        }
+
+        Collider[] colliders =
+            enemyRoot.GetComponentsInChildren<Collider>();
+
+        foreach (Collider enemyCollider in colliders)
         {
             enemyCollider.enabled = false;
         }
     }
 
-    private System.Collections.IEnumerator FadeAndDestroy()
+    private IEnumerator FadeAndDestroy()
     {
-        yield return new WaitForSeconds(corpseDuration);
+        yield return new WaitForSeconds(
+            corpseDuration
+        );
 
         float elapsed = 0f;
-        Color startColor = spriteRenderer.color;
+
+        Color startColor =
+            spriteRenderer.color;
 
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
 
             Color fadedColor = startColor;
-            fadedColor.a = 1f - Mathf.Clamp01(
-                elapsed / fadeDuration
-            );
 
-            spriteRenderer.color = fadedColor;
+            fadedColor.a =
+                1f -
+                Mathf.Clamp01(
+                    elapsed / fadeDuration
+                );
+
+            spriteRenderer.color =
+                fadedColor;
 
             yield return null;
         }
@@ -188,7 +265,7 @@ public class EnemyVisualController : MonoBehaviour
             return;
         }
 
-        if (attack.IsAttacking)
+        if (combatBehaviour.IsPerformingAttack)
         {
             ResetMovementAnimation();
             ResetIdleAnimation();
@@ -197,16 +274,19 @@ public class EnemyVisualController : MonoBehaviour
             return;
         }
 
-        ViewDirection direction = GetViewDirection();
+        ViewDirection direction =
+            GetViewDirection();
 
         if (movement.IsMoving)
         {
             ResetIdleAnimation();
+
             UpdateMovementAnimation(direction);
             return;
         }
 
         ResetMovementAnimation();
+
         UpdateIdleAnimation(direction);
     }
 
@@ -218,77 +298,99 @@ public class EnemyVisualController : MonoBehaviour
             return;
         }
 
-        int frameIndex = Mathf.FloorToInt(
-            attack.AttackProgress * attackFrontFrames.Length
-        );
+        int frameIndex =
+            Mathf.FloorToInt(
+                combatBehaviour.AttackProgress *
+                attackFrontFrames.Length
+            );
 
-        frameIndex = Mathf.Clamp(
-            frameIndex,
-            0,
-            attackFrontFrames.Length - 1
-        );
+        frameIndex =
+            Mathf.Clamp(
+                frameIndex,
+                0,
+                attackFrontFrames.Length - 1
+            );
 
-        spriteRenderer.sprite = attackFrontFrames[frameIndex];
+        spriteRenderer.sprite =
+            attackFrontFrames[frameIndex];
     }
 
-    private void UpdateMovementAnimation(ViewDirection direction)
+    private void UpdateMovementAnimation(
+        ViewDirection direction)
     {
-        Sprite[] frames = GetMovementFrames(direction);
+        Sprite[] frames =
+            GetMovementFrames(direction);
 
-        if (frames == null || frames.Length == 0)
+        if (frames == null ||
+            frames.Length == 0)
         {
             return;
         }
 
-        movementFrameTimer += Time.deltaTime;
+        movementFrameTimer +=
+            Time.deltaTime;
 
-        float frameDuration = 1f / movementFramesPerSecond;
+        float frameDuration =
+            1f / movementFramesPerSecond;
 
         if (movementFrameTimer >= frameDuration)
         {
-            movementFrameTimer -= frameDuration;
+            movementFrameTimer -=
+                frameDuration;
 
             movementFrame =
-                (movementFrame + 1) % frames.Length;
+                (movementFrame + 1) %
+                frames.Length;
         }
 
-        movementFrame = Mathf.Clamp(
-            movementFrame,
-            0,
-            frames.Length - 1
-        );
+        movementFrame =
+            Mathf.Clamp(
+                movementFrame,
+                0,
+                frames.Length - 1
+            );
 
-        spriteRenderer.sprite = frames[movementFrame];
+        spriteRenderer.sprite =
+            frames[movementFrame];
     }
 
-    private void UpdateIdleAnimation(ViewDirection direction)
+    private void UpdateIdleAnimation(
+        ViewDirection direction)
     {
-        Sprite[] frames = GetIdleFrames(direction);
+        Sprite[] frames =
+            GetIdleFrames(direction);
 
-        if (frames == null || frames.Length == 0)
+        if (frames == null ||
+            frames.Length == 0)
         {
             return;
         }
 
-        idleFrameTimer += Time.deltaTime;
+        idleFrameTimer +=
+            Time.deltaTime;
 
-        float frameDuration = 1f / idleFramesPerSecond;
+        float frameDuration =
+            1f / idleFramesPerSecond;
 
         if (idleFrameTimer >= frameDuration)
         {
-            idleFrameTimer -= frameDuration;
+            idleFrameTimer -=
+                frameDuration;
 
             idleFrame =
-                (idleFrame + 1) % frames.Length;
+                (idleFrame + 1) %
+                frames.Length;
         }
 
-        idleFrame = Mathf.Clamp(
-            idleFrame,
-            0,
-            frames.Length - 1
-        );
+        idleFrame =
+            Mathf.Clamp(
+                idleFrame,
+                0,
+                frames.Length - 1
+            );
 
-        spriteRenderer.sprite = frames[idleFrame];
+        spriteRenderer.sprite =
+            frames[idleFrame];
     }
 
     private void ResetMovementAnimation()
@@ -306,7 +408,8 @@ public class EnemyVisualController : MonoBehaviour
     private ViewDirection GetViewDirection()
     {
         Vector3 directionToCamera =
-            targetCamera.transform.position - enemyRoot.position;
+            targetCamera.transform.position -
+            enemyRoot.position;
 
         directionToCamera.y = 0f;
 
@@ -317,17 +420,20 @@ public class EnemyVisualController : MonoBehaviour
 
         directionToCamera.Normalize();
 
-        float forwardDot = Vector3.Dot(
-            enemyRoot.forward,
-            directionToCamera
-        );
+        float forwardDot =
+            Vector3.Dot(
+                enemyRoot.forward,
+                directionToCamera
+            );
 
-        float rightDot = Vector3.Dot(
-            enemyRoot.right,
-            directionToCamera
-        );
+        float rightDot =
+            Vector3.Dot(
+                enemyRoot.right,
+                directionToCamera
+            );
 
-        if (Mathf.Abs(forwardDot) >= Mathf.Abs(rightDot))
+        if (Mathf.Abs(forwardDot) >=
+            Mathf.Abs(rightDot))
         {
             return forwardDot >= 0f
                 ? ViewDirection.Front
@@ -339,26 +445,44 @@ public class EnemyVisualController : MonoBehaviour
             : ViewDirection.Left;
     }
 
-    private Sprite[] GetMovementFrames(ViewDirection direction)
+    private Sprite[] GetMovementFrames(
+        ViewDirection direction)
     {
         return direction switch
         {
-            ViewDirection.Front => frontFrames,
-            ViewDirection.Back => backFrames,
-            ViewDirection.Left => leftFrames,
-            ViewDirection.Right => rightFrames,
+            ViewDirection.Front =>
+                frontFrames,
+
+            ViewDirection.Back =>
+                backFrames,
+
+            ViewDirection.Left =>
+                leftFrames,
+
+            ViewDirection.Right =>
+                rightFrames,
+
             _ => frontFrames
         };
     }
 
-    private Sprite[] GetIdleFrames(ViewDirection direction)
+    private Sprite[] GetIdleFrames(
+        ViewDirection direction)
     {
         return direction switch
         {
-            ViewDirection.Front => idleFrontFrames,
-            ViewDirection.Back => idleBackFrames,
-            ViewDirection.Left => idleLeftFrames,
-            ViewDirection.Right => idleRightFrames,
+            ViewDirection.Front =>
+                idleFrontFrames,
+
+            ViewDirection.Back =>
+                idleBackFrames,
+
+            ViewDirection.Left =>
+                idleLeftFrames,
+
+            ViewDirection.Right =>
+                idleRightFrames,
+
             _ => idleFrontFrames
         };
     }
@@ -368,7 +492,7 @@ public class EnemyVisualController : MonoBehaviour
         return enemyRoot != null &&
                spriteRenderer != null &&
                movement != null &&
-               attack != null &&
+               combatBehaviour != null &&
                targetCamera != null;
     }
 }

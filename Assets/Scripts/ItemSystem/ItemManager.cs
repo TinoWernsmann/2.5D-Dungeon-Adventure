@@ -44,6 +44,42 @@ public class ItemManager : MonoBehaviour
         Instance = this;
     }
 
+    public bool HasItem(string itemName)
+    {
+        return playerItems.Exists(
+            item => item.ItemData != null &&
+                    item.ItemData.ItemName == itemName
+        );
+    }
+
+    public bool RemoveItemByName(string itemName)
+    {
+        int itemIndex = playerItems.FindIndex(
+            item => item.ItemData != null &&
+                    item.ItemData.ItemName == itemName
+        );
+
+        if (itemIndex < 0)
+        {
+            return false;
+        }
+
+        playerItems.RemoveAt(itemIndex);
+
+        if (selectedSlot == itemIndex)
+        {
+            UpdateSelectedSlotAfterRemoval();
+        }
+        else if (selectedSlot > itemIndex)
+        {
+            selectedSlot--;
+        }
+
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
+        return true;
+    }
+
     public void ConfigurePlayer(Transform player)
     {
         playerTransform = player;

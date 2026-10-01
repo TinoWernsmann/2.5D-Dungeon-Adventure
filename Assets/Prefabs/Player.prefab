@@ -44,9 +44,6 @@ GameObject:
   - component: {fileID: 4188527589084267088}
   - component: {fileID: 4772648369287565350}
   - component: {fileID: 6802337269427441995}
-  - component: {fileID: 2969922554337895795}
-  - component: {fileID: 6444305979016087353}
-  - component: {fileID: 7839845420257286536}
   - component: {fileID: 964904284531863866}
   - component: {fileID: 6699359120627354551}
   - component: {fileID: 3654593812399395128}
@@ -117,7 +114,7 @@ MonoBehaviour:
   lookAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   moveSpeed: 5
-  jumpHeight: 1.5
+  jumpHeight: 1.2
   gravity: -20
   groundedVelocity: -2
   mouseSensitivity: 0.1
@@ -153,50 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
---- !u!114 &2969922554337895795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7020891357735276217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f581149e5583b6448a0a1864dc3ec10f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
-  playerCamera: {fileID: 2867891199821086857}
-  itemManager: {fileID: 0}
-  weaponUI: {fileID: 0}
-  weaponSoundManager: {fileID: 0}
---- !u!114 &6444305979016087353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7020891357735276217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcb58c70a77c0194ca47c4996c460749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
-  itemManager: {fileID: 0}
-  weaponUI: {fileID: 0}
-  weaponSoundManager: {fileID: 0}
---- !u!114 &7839845420257286536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7020891357735276217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d387f4b07c3ff744862a8bada340c4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
-  itemManager: {fileID: 0}
 --- !u!114 &964904284531863866
 MonoBehaviour:
   m_ObjectHideFlags: 0
