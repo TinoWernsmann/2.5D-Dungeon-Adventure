@@ -42,6 +42,8 @@ public class CutsceneUI : MonoBehaviour
 
     public void SetDialogueImage(Sprite sprite)
     {
+        if (_dialogueImage.gameObject.activeSelf == false) _dialogueImage.gameObject.SetActive(true);
+
         if (sprite == null)
         {
             Debug.LogError("No Image provided!");

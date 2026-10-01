@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NerveManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _bossEntryObject;
+    [SerializeField] private GameObject _bossObject;
     [SerializeField] private Transform[] _spawnLocations;
-    [SerializeField] private GameObject _nervePrefab;
+    [SerializeField] private Nerve _nervePrefab;
     [SerializeField] private int LEVEL_NERVES;
 
     private List<Nerve> _levelNerves;
@@ -14,15 +14,12 @@ public class NerveManager : MonoBehaviour
     private int _levelNervesAmount;
     private int _cutNerves;
 
-    private void Awake() 
+    private void Awake()
     {
         _levelNerves = new List<Nerve>();
-        _chosenSpawnPos = new List<Transform>(); 
+        _chosenSpawnPos = new List<Transform>();
         _cutNerves = 0;
-    }
 
-    private void Start()
-    {
         if (_spawnLocations == null) return;
 
         int count = 0;
@@ -32,7 +29,8 @@ public class NerveManager : MonoBehaviour
         {
             if (count == LEVEL_NERVES) break;
 
-            GameObject nerve = Instantiate(_nervePrefab);
+            Nerve nerve = Instantiate(_nervePrefab);
+            _levelNerves.Add(nerve);
             nerve.transform.position = GetValidSpawnPos().position;
             nerve.transform.rotation = Quaternion.identity;
             count++;
@@ -80,7 +78,8 @@ public class NerveManager : MonoBehaviour
 
     private void AllNervesFound()
     {
-        if (_bossEntryObject == null) return;
-        _bossEntryObject?.SetActive(false);
+        Debug.Log("All Nerves Cut!");
+        if (_bossObject == null) return;
+        _bossObject.SetActive(true);
     }
 }
