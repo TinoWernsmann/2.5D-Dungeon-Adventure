@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -10,10 +11,26 @@ public class PlayerCombat : MonoBehaviour
 
     private Health playerHealth;
     private float nextAttackTime;
+    private const string DEATH_SCENE = "DeathScene";
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
+    }
+
+    private void OnEnable()
+    {
+        playerHealth.Died += HandlePlayerDeath;
+    }
+
+    private void OnDisable()
+    {
+        playerHealth.Died -= HandlePlayerDeath;
+    }
+
+    private void HandlePlayerDeath()
+    {
+        SceneManager.LoadSceneAsync(DEATH_SCENE);
     }
 
     public void TryAttack()
