@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  m_Sprite: {fileID: -1928092704, guid: 815fcda319cd77a42bad989eb8ab5dbe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 7664568011315287388}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.18, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -159,34 +159,29 @@ MonoBehaviour:
   health: {fileID: 121343053122972427}
   deathPoint: {fileID: 764994764364833506}
   frontFrames:
-  - {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
-  - {fileID: 551905052, guid: 853fca051a24cc74fba5799ba1c43e6a, type: 3}
-  - {fileID: 760640290, guid: 11f29139ec27f2f429d3b3ae07a42b89, type: 3}
+  - {fileID: -1928092704, guid: 815fcda319cd77a42bad989eb8ab5dbe, type: 3}
+  - {fileID: -1445146034, guid: 288e81494376ceb43939809189d3ed51, type: 3}
+  - {fileID: -1239119314, guid: 736a025a7178fba49957213ec9934c43, type: 3}
   backFrames:
-  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
-  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
-  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  - {fileID: -1507099756, guid: 1f727377c92ffab43942cd93f5b50e81, type: 3}
+  - {fileID: -1515355547, guid: 7a07c31ec3b3a3a43aad0f9a503b4f07, type: 3}
+  - {fileID: 511897455, guid: 4927ffd5b8e060f4ab83c3f8caf93670, type: 3}
   leftFrames:
-  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
-  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
-  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  - {fileID: 127714460, guid: 8c77fcbd802e48b49a033c2ee5f8668a, type: 3}
   rightFrames:
-  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
-  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
-  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  - {fileID: -724820488, guid: 5ff72f8e4094e5644af638b5a8dd452b, type: 3}
   idleFrontFrames:
-  - {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  - {fileID: -1928092704, guid: 815fcda319cd77a42bad989eb8ab5dbe, type: 3}
   idleBackFrames:
-  - {fileID: 1517994408, guid: d8cfd7bed72bbfb4d8835bc72f708ba8, type: 3}
+  - {fileID: -1507099756, guid: 1f727377c92ffab43942cd93f5b50e81, type: 3}
   idleLeftFrames:
-  - {fileID: 1517994408, guid: d8cfd7bed72bbfb4d8835bc72f708ba8, type: 3}
+  - {fileID: 127714460, guid: 8c77fcbd802e48b49a033c2ee5f8668a, type: 3}
   idleRightFrames:
-  - {fileID: -1377513048, guid: 7a10c5940aacd8045bdd77edf6c0bb09, type: 3}
+  - {fileID: -724820488, guid: 5ff72f8e4094e5644af638b5a8dd452b, type: 3}
   attackFrontFrames:
-  - {fileID: 230019391, guid: 9b421abd70bbf6d4abcd0771582743a9, type: 3}
-  - {fileID: -1361824585, guid: 0118d12dab66f7048b512ba5f9a4bf03, type: 3}
-  - {fileID: -239005995, guid: d6f9296768c8dc040906ef3f44b62fd3, type: 3}
-  deadSprite: {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  - {fileID: -2125974785, guid: 8bf0b712d6563d0408eec7434c52337a, type: 3}
+  - {fileID: -1071227451, guid: 9a5dfd5659f33d9488fda07c46d10c0f, type: 3}
+  deadSprite: {fileID: -1928092704, guid: 815fcda319cd77a42bad989eb8ab5dbe, type: 3}
   corpseDuration: 1
   fadeDuration: 1
   movementFramesPerSecond: 6
@@ -240,7 +235,7 @@ GameObject:
   - component: {fileID: 121343053122972427}
   - component: {fileID: 2700000000000001}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: HardOpp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
   attackRange: 2
-  damage: 20
+  damage: 10
   attackDuration: 0.6
   damageMoment: 0.5
   attackCooldown: 1.2

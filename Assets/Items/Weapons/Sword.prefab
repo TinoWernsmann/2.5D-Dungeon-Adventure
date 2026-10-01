@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4428025639029288274}
   - component: {fileID: 6871140635326168398}
   - component: {fileID: 1091953983615760258}
-  - component: {fileID: 4344347847625943751}
+  - component: {fileID: 4732234953121599548}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -75,6 +75,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   itemData: {fileID: 11400000, guid: 90069dc5ad8322f4a8a9229c6acd3f86, type: 2}
+--- !u!114 &4732234953121599548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2983898021524214431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130240b4f1915ce4f927c92653ae3323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemBillboard
+  targetCamera: {fileID: 0}
 --- !u!1 &6789816921999746113
 GameObject:
   m_ObjectHideFlags: 0
