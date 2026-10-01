@@ -27,3 +27,7 @@ public class ItemSO : ScriptableObject
             ? Mathf.Max(1, maxStackSize)
             : 1;
 }
+    public bool IsHealing;
+    public AudioClip PickUpSound;
+    public AudioClip DropSound;
+}

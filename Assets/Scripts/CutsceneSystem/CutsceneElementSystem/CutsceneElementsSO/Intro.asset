@@ -16,7 +16,7 @@ MonoBehaviour:
   - Text: Year 1XXX
     VoiceClip: {fileID: 0}
     DialogueSprite: {fileID: 21300000, guid: 6b03a85f77ec8834a84e4990e71f2641, type: 3}
-  - Text: '!"#@ Woods'
+  - Text: Faraway Woods
     VoiceClip: {fileID: 0}
     DialogueSprite: {fileID: 21300000, guid: 9733b585828f01441a64d460bd1426c4, type: 3}
   - Text: '(name): ...?!'

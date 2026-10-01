@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -22,11 +23,37 @@ public class PlayerCombat : MonoBehaviour
 
     private Health playerHealth;
     private float nextAttackTime;
+    private const string DEATH_SCENE = "DeathScene";
+    private const int HEALING_AMOUNT = 20;
 
     private void Awake()
     {
         playerHealth =
             GetComponent<Health>();
+    }
+
+    private void OnEnable()
+    {
+        playerHealth.Died += HandlePlayerDeath;
+        itemManager.OnHealingUsed += HandleHealing;
+    }
+
+
+
+    private void OnDisable()
+    {
+        playerHealth.Died -= HandlePlayerDeath;
+        itemManager.OnHealingUsed -= HandleHealing;
+    }
+
+    private void HandleHealing()
+    {
+        playerHealth.Heal(HEALING_AMOUNT);
+    }
+
+    private void HandlePlayerDeath()
+    {
+        SceneManager.LoadSceneAsync(DEATH_SCENE);
     }
 
     public void TryAttack()
@@ -163,6 +190,8 @@ public class PlayerCombat : MonoBehaviour
     private void PlayAttackFeedback(
         WeaponSO weapon)
     {
+        if (weapon.ItemName == "Key") return;
+
         weaponUI?.PlayAttackAnimation(
             weapon.AttackSprite,
             weapon.IdleSprite,
