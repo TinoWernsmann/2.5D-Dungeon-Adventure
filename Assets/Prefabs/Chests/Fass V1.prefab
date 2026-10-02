@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2464731729730971423
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.785739
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.7266395
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.86392903
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -4.3297806e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -4.3297806e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      propertyPath: m_Name
+      value: Fass V1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 62095738028597085}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3283679191778791020}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8118322419775332280}
+  m_SourcePrefab: {fileID: 100100000, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+--- !u!4 &2719827890769412340 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+  m_PrefabInstance: {fileID: 2464731729730971423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3383634484681415246 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
+  m_PrefabInstance: {fileID: 2464731729730971423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &62095738028597085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383634484681415246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c936bd8677012b459e779491e3fe7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 20
+--- !u!114 &3283679191778791020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383634484681415246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06bf3ca9277a98e40af9f0d9a6596503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestructibleCrate
+  itemPrefab: {fileID: 0}
+  dropPoint: {fileID: 2719827890769412340}
+  upwardForce: 4
+  horizontalForce: 1.5
+  torqueForce: 3
+--- !u!65 &8118322419775332280
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383634484681415246}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0065672477, y: 0.006567248, z: 0.010002732}
+  m_Center: {x: 6.61925e-26, y: -0.0000000011924182, z: 0.005001365}

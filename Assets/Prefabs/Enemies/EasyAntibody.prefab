@@ -232,10 +232,11 @@ GameObject:
   - component: {fileID: 1552544721555742038}
   - component: {fileID: 6553040462468949477}
   - component: {fileID: 901670449927281364}
-  - component: {fileID: 3850263267356874813}
   - component: {fileID: 121343053122972427}
   - component: {fileID: 2910832580064589046}
   - component: {fileID: 2700000000000001}
+  - component: {fileID: 539954712409927871}
+  - component: {fileID: 7872958313411705285}
   m_Layer: 0
   m_Name: EasyAntibody
   m_TagString: Untagged
@@ -310,8 +311,6 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   waitTimeAtPoint: 2
 --- !u!114 &6553040462468949477
 MonoBehaviour:
@@ -348,23 +347,6 @@ MonoBehaviour:
   player: {fileID: 0}
   combatBehaviour: {fileID: 2910832580064589046}
   searchDuration: 3
---- !u!114 &3850263267356874813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8334742394470388967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fec21232f65a48c4a8725b4e1e7db52d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
-  attackRange: 2
-  damage: 5
-  attackDuration: 0.6
-  damageMoment: 0.5
-  attackCooldown: 1.2
 --- !u!114 &121343053122972427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,12 +374,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LightAntibodyCombatBehaviour
   movement: {fileID: 4992716912674233300}
   characterController: {fileID: 0}
+  audioSource: {fileID: 539954712409927871}
+  attackSounds:
+  - {fileID: 8300000, guid: 5187800be4e28184094c1065d562f6a5, type: 3}
+  - {fileID: 8300000, guid: a0119e748cbbc34438b2fb26223c50b9, type: 3}
+  - {fileID: 8300000, guid: d94e2b8a8279f004db29190a8ecef048, type: 3}
   combatRange: 2.5
   lungeStartDistance: 2
   windupDuration: 0.25
   lungeSpeed: 7
   lungeDuration: 0.3
-  hitRange: 1.1
+  hitRange: 2.5
   damage: 15
   recoveryDuration: 0.5
 --- !u!136 &2700000000000001
@@ -423,6 +410,119 @@ CapsuleCollider:
   m_Height: 1.81
   m_Direction: 1
   m_Center: {x: 0, y: 0.17, z: 0}
+--- !u!82 &539954712409927871
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &7872958313411705285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ca03868f75c7445b61ab665a40d15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  health: {fileID: 121343053122972427}
+  spriteRenderer: {fileID: 7465784643759612908}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.1
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

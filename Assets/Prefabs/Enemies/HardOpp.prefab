@@ -262,10 +262,10 @@ GameObject:
   - component: {fileID: 1552544721555742038}
   - component: {fileID: 6553040462468949477}
   - component: {fileID: 901670449927281364}
-  - component: {fileID: 3850263267356874813}
   - component: {fileID: 121343053122972427}
   - component: {fileID: 4258443872368493281}
   - component: {fileID: 2700000000000001}
+  - component: {fileID: 511861278861975631}
   m_Layer: 0
   m_Name: HardOpp
   m_TagString: Untagged
@@ -342,6 +342,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   waitTimeAtPoint: 2
 --- !u!114 &6553040462468949477
 MonoBehaviour:
@@ -378,23 +379,6 @@ MonoBehaviour:
   player: {fileID: 0}
   combatBehaviour: {fileID: 4258443872368493281}
   searchDuration: 3
---- !u!114 &3850263267356874813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8334742394470388967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fec21232f65a48c4a8725b4e1e7db52d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
-  attackRange: 2
-  damage: 10
-  attackDuration: 0.6
-  damageMoment: 0.5
-  attackCooldown: 1.2
 --- !u!114 &121343053122972427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +446,22 @@ CapsuleCollider:
   m_Height: 1.81
   m_Direction: 1
   m_Center: {x: 0, y: 0.17, z: 0}
+--- !u!114 &511861278861975631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ca03868f75c7445b61ab665a40d15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  health: {fileID: 121343053122972427}
+  spriteRenderer: {fileID: 7465784643759612908}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.1
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

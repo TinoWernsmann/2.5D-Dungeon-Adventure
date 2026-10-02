@@ -14,6 +14,10 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
 
     [Header("References")]
     [SerializeField] private EnemyMovement movement;
+    [SerializeField] private AudioSource audioSource;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] attackSounds;
 
     [Header("Range")]
     [Min(0.1f)]
@@ -87,6 +91,11 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
         if (movement == null)
         {
             movement = GetComponent<EnemyMovement>();
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
         }
     }
 
@@ -303,6 +312,29 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
         currentTargetHealth.TakeDamage(damage);
     }
 
+    private void PlayRandomAttackSound()
+    {
+        if (audioSource == null ||
+            attackSounds == null ||
+            attackSounds.Length == 0)
+        {
+            return;
+        }
+
+        int randomIndex =
+            Random.Range(0, attackSounds.Length);
+
+        AudioClip randomClip =
+            attackSounds[randomIndex];
+
+        if (randomClip == null)
+        {
+            return;
+        }
+
+        audioSource.PlayOneShot(randomClip);
+    }
+
     private float GetHorizontalDistance(
         Transform target)
     {
@@ -351,6 +383,8 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
             case CombatState.Attack:
                 attackTimer = 0f;
                 damageApplied = false;
+
+                PlayRandomAttackSound();
                 break;
 
             case CombatState.Recovery:

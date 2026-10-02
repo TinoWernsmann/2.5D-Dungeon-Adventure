@@ -14,6 +14,10 @@ public class LightAntibodyCombatBehaviour : EnemyCombatBehaviour
     [Header("References")]
     [SerializeField] private EnemyMovement movement;
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private AudioSource audioSource;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] attackSounds;
 
     [Header("Combat")]
     [Min(0.1f)]
@@ -90,6 +94,11 @@ public class LightAntibodyCombatBehaviour : EnemyCombatBehaviour
         {
             characterController =
                 GetComponent<CharacterController>();
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
         }
     }
 
@@ -283,6 +292,29 @@ public class LightAntibodyCombatBehaviour : EnemyCombatBehaviour
         }
     }
 
+    private void PlayRandomAttackSound()
+    {
+        if (audioSource == null ||
+            attackSounds == null ||
+            attackSounds.Length == 0)
+        {
+            return;
+        }
+
+        int randomIndex =
+            Random.Range(0, attackSounds.Length);
+
+        AudioClip randomClip =
+            attackSounds[randomIndex];
+
+        if (randomClip == null)
+        {
+            return;
+        }
+
+        audioSource.PlayOneShot(randomClip);
+    }
+
     private void FaceTarget()
     {
         if (currentTarget == null)
@@ -357,6 +389,8 @@ public class LightAntibodyCombatBehaviour : EnemyCombatBehaviour
 
                 attackTimer = 0f;
                 damageApplied = false;
+
+                PlayRandomAttackSound();
                 break;
 
             case CombatState.Recovery:

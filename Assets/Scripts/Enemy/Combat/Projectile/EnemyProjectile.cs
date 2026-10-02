@@ -15,6 +15,10 @@ public class EnemyProjectile : MonoBehaviour
 
     [SerializeField] private LayerMask collisionMask = ~0;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] shootSounds;
+
     private Vector3 direction;
     private GameObject owner;
 
@@ -39,6 +43,8 @@ public class EnemyProjectile : MonoBehaviour
             transform.rotation =
                 Quaternion.LookRotation(direction);
         }
+
+        PlayRandomShootSound();
     }
 
     private void Update()
@@ -133,6 +139,29 @@ public class EnemyProjectile : MonoBehaviour
                hitCollider.transform.IsChildOf(
                    owner.transform
                );
+    }
+
+    private void PlayRandomShootSound()
+    {
+        if (audioSource == null ||
+            shootSounds == null ||
+            shootSounds.Length == 0)
+        {
+            return;
+        }
+
+        int randomIndex =
+            Random.Range(0, shootSounds.Length);
+
+        AudioClip randomClip =
+            shootSounds[randomIndex];
+
+        if (randomClip == null)
+        {
+            return;
+        }
+
+        audioSource.PlayOneShot(randomClip);
     }
 
     private void OnDrawGizmosSelected()

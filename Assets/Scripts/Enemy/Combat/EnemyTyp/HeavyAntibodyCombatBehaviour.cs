@@ -14,6 +14,10 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
     [Header("References")]
     [SerializeField] private EnemyMovement movement;
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private AudioSource audioSource;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] attackSounds;
 
     [Header("Combat Range")]
     [Min(0.1f)]
@@ -90,6 +94,11 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
         {
             characterController =
                 GetComponent<CharacterController>();
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
         }
     }
 
@@ -281,6 +290,29 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
         }
     }
 
+    private void PlayRandomAttackSound()
+    {
+        if (audioSource == null ||
+            attackSounds == null ||
+            attackSounds.Length == 0)
+        {
+            return;
+        }
+
+        int randomIndex =
+            Random.Range(0, attackSounds.Length);
+
+        AudioClip randomClip =
+            attackSounds[randomIndex];
+
+        if (randomClip == null)
+        {
+            return;
+        }
+
+        audioSource.PlayOneShot(randomClip);
+    }
+
     private void FaceTarget()
     {
         if (currentTarget == null)
@@ -353,7 +385,10 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
             case CombatState.Charge:
                 attackTimer = 0f;
                 damageApplied = false;
+
                 movement.Stop();
+
+                PlayRandomAttackSound();
                 break;
 
             case CombatState.Recovery:
