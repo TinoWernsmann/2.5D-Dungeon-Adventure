@@ -30,3 +30,4 @@ MonoBehaviour:
   - {fileID: -1889758372, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   - {fileID: -690329011, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   - {fileID: -651149654, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
+  _despawnAtEnd: 1

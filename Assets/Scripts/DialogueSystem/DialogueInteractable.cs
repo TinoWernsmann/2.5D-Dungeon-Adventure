@@ -12,7 +12,7 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        DialogueContext context = new DialogueContext(_dialogueData.SpeakerName, _dialogueData.SpokenText, _dialogueData.SpeakerSprites, _sprite.sprite, _talkAudio);
+        DialogueContext context = new DialogueContext(_dialogueData.SpeakerName, _dialogueData.SpokenText, _dialogueData.SpeakerSprites, _sprite.sprite, _dialogueData.DespawnAfter, _talkAudio);
         OnDialogueInteract?.Invoke(context, _sprite);
     }
 
@@ -29,11 +29,13 @@ public readonly struct DialogueContext
     public AudioClip SpeakAudio { get; }
     public Sprite[] Sprites { get; }
     public Sprite DefaultSprite { get; }
+    public bool Despawn { get; }
 
-    public DialogueContext(string speaker, string[] texts, Sprite[] sprites, Sprite defaultSprite, AudioClip sound)
+    public DialogueContext(string speaker, string[] texts, Sprite[] sprites, Sprite defaultSprite, bool despawn, AudioClip sound)
     {
         Speaker = speaker;
         Sprites = sprites;
+        Despawn = despawn;
         Text = texts;
         DefaultSprite = defaultSprite;
         SpeakAudio = sound;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class NerveManager : MonoBehaviour
 {
     [SerializeField] private GameObject _bossObject;
+    [SerializeField] private GameObject _bossDoorObject;
     [SerializeField] private Transform[] _spawnLocations;
     [SerializeField] private Nerve _nervePrefab;
     [SerializeField] private int LEVEL_NERVES;
@@ -77,8 +78,8 @@ public class NerveManager : MonoBehaviour
 
     private void AllNervesFound()
     {
-        Debug.Log("All Nerves Cut!");
         if (_bossObject == null) return;
         _bossObject.SetActive(true);
+        _bossDoorObject.SetActive(false);
     }
 }

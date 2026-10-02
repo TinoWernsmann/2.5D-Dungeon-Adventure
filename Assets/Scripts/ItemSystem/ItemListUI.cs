@@ -7,6 +7,7 @@ public class ItemListUI : MonoBehaviour
     [Header("References")]
     [SerializeField]
     private ItemManager itemManager;
+    [SerializeField] private Image _crosshair;
 
     [Header("Inventory")]
     [SerializeField]
@@ -194,5 +195,10 @@ public class ItemListUI : MonoBehaviour
             .SetActive(
                 icon != null
             );
+
+        if (_crosshair != null && item != null)
+        {
+            _crosshair.gameObject.SetActive(item.ItemName == "Crossbow");    
+        }
     }
 }

@@ -11,14 +11,13 @@ public class DialogueManager : MonoBehaviour
     //[SerializeField] private DialogueAudioManager _audioManager;
 
     private List<DialogueInteractable> _interactables;
-    private AudioClip _currentSpeakerAudio;
 
-    private const float DIALOGUE_TIMER = 4f;
     private int _dialogueIndex = 0;
     private string[] _currentDialogue;
     private Sprite[] _speakerSprites;
     private string _currentSpeaker;
     private Sprite _defaultSprite;
+    private bool _isToDespawn;
 
     private void Awake()
     {
@@ -40,8 +39,6 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleDialogue(DialogueContext context, SpriteRenderer sprite)
     {
-        _currentSpeakerAudio = context.SpeakAudio;
-
         if (_dialogueUI == null) return;
 
         if (_dialogueIndex == 0)
@@ -65,6 +62,7 @@ public class DialogueManager : MonoBehaviour
         _currentSpeaker = context.Speaker;
         _speakerSprites = context.Sprites;
         _defaultSprite = context.DefaultSprite;
+        _isToDespawn = context.Despawn;
         _dialogueUI.ShowSpeakingUI(_currentDialogue[_dialogueIndex], _currentSpeaker);
         sprite.sprite = _speakerSprites[_dialogueIndex];
         _dialogueIndex++;
@@ -85,6 +83,8 @@ public class DialogueManager : MonoBehaviour
         _dialogueIndex = 0;
         _speakerSprites = null;
         _currentDialogue = null;
+
+        if (_isToDespawn) sprite.GetComponentInParent<DialogueInteractable>().gameObject?.SetActive(false);
     }
 
     private void OnDisable()
