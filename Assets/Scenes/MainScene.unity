@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (67)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -341,6 +345,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -846,6 +854,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (96)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -922,6 +934,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (140)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1026,6 +1042,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (103)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1177,6 +1197,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_IsActive
@@ -1531,6 +1555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Schlucht V3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d15802e818c54944e86fa3872d3132be, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1635,6 +1663,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (63)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1715,6 +1747,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (130)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2067,6 +2103,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (53)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2254,6 +2294,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (37)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2894,6 +2938,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2988,7 +3036,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.165846
+      value: 9.353
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2996,23 +3044,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.577461
+      value: 9.336
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3020,7 +3068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3186,6 +3234,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (125)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3520,6 +3572,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (95)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3622,6 +3678,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (118)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3769,6 +3829,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (120)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4133,6 +4197,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (134)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4209,6 +4277,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (135)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4301,6 +4373,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis V3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 47e81d19e158ead4895a1728666ef1aa, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4380,7 +4456,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4484,16 +4560,50 @@ PrefabInstance:
       propertyPath: m_Name
       value: Uebergangsraum
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cf2439664d006464d971fb0a50363a17, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cf2439664d006464d971fb0a50363a17, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 284521079}
   m_SourcePrefab: {fileID: 100100000, guid: cf2439664d006464d971fb0a50363a17, type: 3}
 --- !u!4 &284521077 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf2439664d006464d971fb0a50363a17, type: 3}
   m_PrefabInstance: {fileID: 284521076}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &284521078 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf2439664d006464d971fb0a50363a17, type: 3}
+  m_PrefabInstance: {fileID: 284521076}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &284521079
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284521078}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8311503600319563602, guid: cf2439664d006464d971fb0a50363a17, type: 3}
 --- !u!1 &288155839 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
@@ -4791,6 +4901,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (143)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4988,6 +5102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V3 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5093,6 +5211,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5efd9b377bbee7948bd78158eccf688c, type: 3}
       propertyPath: m_Name
       value: Kreuzung Schlucht V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5efd9b377bbee7948bd78158eccf688c, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5236,6 +5358,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5440,6 +5566,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (38)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5985,6 +6115,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (121)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6376,6 +6510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (161)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6668,6 +6806,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 58997147b985bbe4dadd605296c545d0, type: 3}
       propertyPath: m_Name
       value: Herz
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 58997147b985bbe4dadd605296c545d0, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6998,6 +7140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (111)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7075,6 +7221,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7143,6 +7293,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7559,6 +7713,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (148)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7916,6 +8074,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (57)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8572,6 +8734,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V3 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8909,6 +9075,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V3 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9048,6 +9218,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (165)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9352,6 +9526,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (123)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9446,6 +9624,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9b238d59818e6114a84fe33324cf83ea, type: 3}
       propertyPath: m_Name
       value: Herzraum
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9b238d59818e6114a84fe33324cf83ea, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9661,6 +9843,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (70)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9689,7 +9875,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -26.881718
+      value: -27.275
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9697,23 +9883,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.76185
+      value: 18.323
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.63836336
+      value: 0.7268145
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.76973516
+      value: 0.6868338
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9721,7 +9907,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 100.66
+      value: 86.76
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9809,6 +9995,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (73)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9885,6 +10075,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (133)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9984,6 +10178,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (71)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10148,7 +10346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10229,6 +10427,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (65)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10448,6 +10650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (60)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10598,6 +10804,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10819,6 +11029,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (40)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10899,6 +11113,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (126)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11230,6 +11448,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (101)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11500,6 +11722,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (69)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11638,6 +11864,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (160)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11942,6 +12172,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (141)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12021,7 +12255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12292,6 +12526,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12399,6 +12637,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12582,6 +12824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (102)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12660,6 +12906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Schlucht V3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 33813087eab545642939837a9fc2dd9a, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12736,6 +12986,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (48)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12816,7 +13070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12949,6 +13203,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (158)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13164,6 +13422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (122)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13266,6 +13528,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (163)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13459,7 +13725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13642,6 +13908,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (88)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13654,6 +13924,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
   m_PrefabInstance: {fileID: 830370549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &832315715
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1488382547}
+    m_Modifications:
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 12.74299
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.17203
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 45.84299
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4463335413416696145, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+      propertyPath: m_Name
+      value: Healing
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+--- !u!4 &832315716 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4380697095073839480, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+  m_PrefabInstance: {fileID: 832315715}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
@@ -13957,6 +14289,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V3 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14060,6 +14396,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
       propertyPath: m_Name
       value: Nervenstrang V1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14294,6 +14634,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (51)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14315,6 +14659,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1340343271}
     m_Modifications:
+    - target: {fileID: 815481991704166036, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 967023093187158277, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
       propertyPath: m_LocalPosition.x
       value: -45.90387
@@ -14360,7 +14708,27 @@ PrefabInstance:
       value: BossDoorClosed
       objectReference: {fileID: 0}
     - target: {fileID: 2514304896768077342, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2514304896768077342, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3782089750050149615, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5696029705549836359, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282165892091208287, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8015324359806817724, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -14545,6 +14913,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (139)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14711,6 +15083,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (86)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14814,6 +15190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (117)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14912,6 +15292,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (61)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15012,6 +15396,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nervenstrang V1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15089,6 +15477,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (119)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15296,6 +15688,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15628,6 +16024,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (105)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15709,6 +16109,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16016,6 +16420,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (147)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16314,6 +16722,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (77)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16530,6 +16942,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (168)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16754,6 +17170,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (84)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16883,6 +17303,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17217,7 +17641,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.165846
+      value: 8.107
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17225,23 +17649,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.36014
+      value: 9.092
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8191521
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.5735764
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -17249,7 +17673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -17495,6 +17919,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17594,6 +18022,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (83)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17670,6 +18102,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17909,6 +18345,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18045,6 +18485,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nervenstrang V2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18118,6 +18562,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18589,6 +19037,10 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 924168071}
+    - target: {fileID: 2135429697085012221, guid: fa241712f8b9d0947aef992c4058a2a8, type: 3}
+      propertyPath: itemManager
+      value: 
+      objectReference: {fileID: 97898113}
     - target: {fileID: 4029406071991388318, guid: fa241712f8b9d0947aef992c4058a2a8, type: 3}
       propertyPath: m_Name
       value: Door 2 (2)
@@ -18738,6 +19190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18819,6 +19275,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (58)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19193,6 +19653,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (55)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19332,6 +19796,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (128)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19400,6 +19868,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19504,6 +19976,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (97)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19676,6 +20152,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (44)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19774,6 +20254,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (66)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19923,6 +20407,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 20d98fbe2bd2a634baa86dad6602e8cf, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20053,6 +20541,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (56)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20306,6 +20798,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V3 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20496,6 +20992,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (64)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20598,6 +21098,10 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 924168071}
+    - target: {fileID: 2135429697085012221, guid: fa241712f8b9d0947aef992c4058a2a8, type: 3}
+      propertyPath: itemManager
+      value: 
+      objectReference: {fileID: 97898113}
     - target: {fileID: 4029406071991388318, guid: fa241712f8b9d0947aef992c4058a2a8, type: 3}
       propertyPath: m_Name
       value: Door 2
@@ -20727,6 +21231,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (81)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21125,6 +21633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Schlucht V2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0c0364bc7ad3b70449873665f4eeef60, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21219,6 +21731,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5761194075886452613, guid: d15802e818c54944e86fa3872d3132be, type: 3}
+--- !u!4 &1251570786 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
+  m_PrefabInstance: {fileID: 1837582478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1252487931
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21282,6 +21799,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (52)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21561,7 +22082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21682,6 +22203,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21777,6 +22302,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21882,6 +22411,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (159)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21985,6 +22518,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (106)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -22251,6 +22788,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22355,6 +22896,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (42)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22458,6 +23003,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (150)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22556,6 +23105,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (164)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -22797,6 +23350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (127)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22892,6 +23449,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5109c946b3e3a3c4d8d3beda5f96bdd1, type: 3}
       propertyPath: m_Name
       value: Flur Schlucht V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5109c946b3e3a3c4d8d3beda5f96bdd1, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23062,6 +23623,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (154)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23165,6 +23730,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (137)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23296,6 +23865,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23779,6 +24352,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (156)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23869,6 +24446,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 61a7fd389fc43054e95cfdda398771ec, type: 3}
       propertyPath: m_Name
       value: T Stueck Dach V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 61a7fd389fc43054e95cfdda398771ec, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24046,6 +24627,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (109)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24144,6 +24729,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24280,6 +24869,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24628,6 +25221,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (142)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24704,6 +25301,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25046,6 +25647,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fe32b467910073d42a4714edadb773d0, type: 3}
       propertyPath: m_Name
       value: T Stueck Schlucht V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fe32b467910073d42a4714edadb773d0, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25495,6 +26100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (41)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -25696,6 +26305,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: edcac344622fe814f855e381b224cfe2, type: 3}
       propertyPath: m_Name
       value: Bossraum
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: edcac344622fe814f855e381b224cfe2, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25932,6 +26545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (78)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26071,6 +26688,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26196,6 +26817,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (99)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -26423,6 +27048,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (166)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26518,6 +27147,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -26655,6 +27288,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (104)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26754,6 +27391,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26802,6 +27443,7 @@ Transform:
   - {fileID: 2018508401}
   - {fileID: 19525371}
   - {fileID: 598105634}
+  - {fileID: 832315716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1492376892 stripped
@@ -26926,6 +27568,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (87)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27112,6 +27758,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (43)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27281,6 +27931,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (155)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27407,6 +28061,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27505,6 +28163,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (113)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27744,6 +28406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27842,6 +28508,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (72)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27944,7 +28614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28583,6 +29253,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (136)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28763,6 +29437,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29084,6 +29762,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (153)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29174,6 +29856,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 861aec7af9decfe4dbd2f633eaf28e99, type: 3}
       propertyPath: m_Name
       value: Flur V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 861aec7af9decfe4dbd2f633eaf28e99, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29310,6 +29996,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (132)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29409,6 +30099,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29487,6 +30181,10 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 924168071}
+    - target: {fileID: 2135429697085012221, guid: fa241712f8b9d0947aef992c4058a2a8, type: 3}
+      propertyPath: itemManager
+      value: 
+      objectReference: {fileID: 97898113}
     - target: {fileID: 4029406071991388318, guid: fa241712f8b9d0947aef992c4058a2a8, type: 3}
       propertyPath: m_Name
       value: Door 2 (1)
@@ -29636,6 +30334,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (75)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29734,6 +30436,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (108)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30102,6 +30808,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (144)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30264,6 +30974,7 @@ Transform:
   - {fileID: 458623843}
   - {fileID: 578360376}
   - {fileID: 598342622}
+  - {fileID: 1251570786}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1644063219
@@ -30411,6 +31122,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (116)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30509,6 +31224,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30745,6 +31464,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31126,6 +31849,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (138)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -31287,6 +32014,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Schlucht V1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f607d059b5070cc4e99e9772be9d817f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -31412,6 +32143,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (162)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31942,6 +32677,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (114)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -32072,6 +32811,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (68)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32224,6 +32967,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 53565dc0e1a62ec40863dbcedd087b41, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 53565dc0e1a62ec40863dbcedd087b41, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32392,7 +33139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32583,6 +33330,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (90)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -32735,6 +33486,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32931,6 +33686,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2155597149225ff4fb1cb594a22cb006, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33030,6 +33789,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (91)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33128,6 +33891,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (30)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33254,6 +34021,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (94)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33491,6 +34262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (54)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33589,6 +34364,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (89)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34015,6 +34794,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34181,6 +34964,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nervenstrang V2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34254,6 +35041,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (76)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34349,6 +35140,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2155597149225ff4fb1cb594a22cb006, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2155597149225ff4fb1cb594a22cb006, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34580,6 +35375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34681,7 +35480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34788,6 +35587,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4633b4d9613589443ab81622ebd690b4, type: 3}
       propertyPath: m_Name
       value: Kreuzung Dach V1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4633b4d9613589443ab81622ebd690b4, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34910,6 +35713,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35054,19 +35861,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1642750912}
     m_Modifications:
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.302
+      value: 18.052988
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.296
+      value: -0.63064
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.063
+      value: 12.61314
       objectReference: {fileID: 0}
     - target: {fileID: 1152755904292289531, guid: 0d00f1cc411b0a3439d7a977fde78e57, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35164,6 +35971,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
       propertyPath: m_Name
       value: Flur V3 (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2fc6db0b210edd4ba4e0f0a26865b4b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35573,6 +36384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (59)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -35806,6 +36621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36032,6 +36851,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36183,6 +37006,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (98)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36404,6 +37231,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis V2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7adb6d6d14fa1f04abd0d31ea582db50, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36506,6 +37337,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (152)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36691,6 +37526,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (107)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37002,6 +37841,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37101,6 +37944,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (50)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37199,6 +38046,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fe989a464434a5740ad36495dde04df0, type: 3}
       propertyPath: m_Name
       value: Herz Dach V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fe989a464434a5740ad36495dde04df0, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37336,6 +38187,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (62)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37435,6 +38290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (115)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37503,6 +38362,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37696,6 +38559,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (151)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37841,6 +38708,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kreuzung V1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 509f3c9a2bcd54a4eb4d056c823f16d2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37909,6 +38780,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 25779bcf2ec085c4f8890554940fed7f, type: 3}
       propertyPath: m_Name
       value: Flur Schlucht V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 25779bcf2ec085c4f8890554940fed7f, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38000,6 +38875,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 586753d17bb131845b7f41744e3671cf, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 586753d17bb131845b7f41744e3671cf, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38219,6 +39098,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur V1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 20d98fbe2bd2a634baa86dad6602e8cf, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38396,6 +39279,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kreuzung Dach V1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4633b4d9613589443ab81622ebd690b4, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38494,6 +39381,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (149)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38734,6 +39625,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (110)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38895,6 +39790,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (100)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38993,6 +39892,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (129)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39146,6 +40049,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (74)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39439,6 +40346,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (124)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -39547,6 +40458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (167)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -39646,6 +40561,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 802db755299e29f43aaf187494e09ec2, type: 3}
       propertyPath: m_Name
       value: Herz Dach V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 802db755299e29f43aaf187494e09ec2, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39881,6 +40800,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 06cc31d91d848b54d81b6ae06a6a5561, type: 3}
       propertyPath: m_Name
       value: T Stueck V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06cc31d91d848b54d81b6ae06a6a5561, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40135,6 +41058,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -40233,6 +41160,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (49)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40387,6 +41318,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (131)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -40485,6 +41420,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (85)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40741,6 +41680,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (112)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -41483,6 +42426,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -41664,16 +42611,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: Uebergangsraum Gitter
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d86e3cffe1b321b44b6a141cf4f88060, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d86e3cffe1b321b44b6a141cf4f88060, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2112222063}
   m_SourcePrefab: {fileID: 100100000, guid: d86e3cffe1b321b44b6a141cf4f88060, type: 3}
 --- !u!4 &2112222061 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d86e3cffe1b321b44b6a141cf4f88060, type: 3}
   m_PrefabInstance: {fileID: 2112222060}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2112222062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d86e3cffe1b321b44b6a141cf4f88060, type: 3}
+  m_PrefabInstance: {fileID: 2112222060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2112222063
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112222062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0068084025, y: 0.041796193, z: 0.027363412}
+  m_Center: {x: -0.00048020168, y: -0.00089644565, z: 0.0136817}
 --- !u!1001 &2112360029
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41737,6 +42717,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (157)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_IsActive
@@ -41849,6 +42833,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (146)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42075,6 +43063,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
       propertyPath: m_Name
       value: Flur Gefaengnis Dach V1 (145)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36e847a65c98b8447b9ba6d669a59d88, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42429,6 +43421,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1340343271}
     m_Modifications:
+    - target: {fileID: 815481991704166036, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 967023093187158277, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.4907837
@@ -42474,8 +43470,28 @@ PrefabInstance:
       value: BossDoor
       objectReference: {fileID: 0}
     - target: {fileID: 2514304896768077342, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2514304896768077342, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3782089750050149615, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5696029705549836359, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282165892091208287, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8015324359806817724, guid: 09f178d2f93325a438dc40b2d79a9522, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42631,4 +43647,3 @@ SceneRoots:
   - {fileID: 1488382547}
   - {fileID: 1197206209}
   - {fileID: 1642750912}
-  - {fileID: 1837582478}

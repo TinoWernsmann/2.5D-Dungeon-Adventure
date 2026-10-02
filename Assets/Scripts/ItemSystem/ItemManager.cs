@@ -293,10 +293,13 @@ public class ItemManager : MonoBehaviour
     public void TryUseHealing()
     {
         var item = GetSelectedItem();
-        if (item == null || item.ItemName != "Healing") return;
+        if (item == null || item.ItemName != "Healing")
+        {
+            return;
+        }
 
         OnHealingUsed?.Invoke();
-        RemoveSelectedItem();
+        TryConsumeItem(item);
     }
 
     public void DropSelectedItem()
@@ -319,24 +322,26 @@ public class ItemManager : MonoBehaviour
         ItemBase itemToDrop =
             slot.ItemInstance;
 
-        int amountToDrop =
-            slot.Amount;
+        bool removeSlot =
+            slot.Amount <= 1;
 
-        inventorySlots.RemoveAt(
-            selectedSlot
-        );
+        slot.Amount--;
 
-        UpdateSelectedSlotAfterRemoval();
+        if (removeSlot)
+        {
+            inventorySlots.RemoveAt(selectedSlot);
+            UpdateSelectedSlotAfterRemoval();
+        }
 
         if (itemToDrop != null)
         {
-            itemToDrop.SetPickupAmount(
-                amountToDrop
-            );
+            ItemBase droppedItem =
+                removeSlot
+                    ? itemToDrop
+                    : Instantiate(itemToDrop);
 
-            itemToDrop.DropAt(
-                GetDropPosition()
-            );
+            droppedItem.SetPickupAmount(1);
+            droppedItem.DropAt(GetDropPosition());
         }
 
         NotifyInventoryChanged();
