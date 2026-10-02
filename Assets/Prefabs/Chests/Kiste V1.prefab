@@ -1,0 +1,163 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5702652583827711272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 635727296616277318}
+  m_Layer: 0
+  m_Name: DropItemPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &635727296616277318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5702652583827711272}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -0, z: 0.00322}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6136371652277329393}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5954459079135541786
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.2396555
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.7073957
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.5408616
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -4.3297806e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -4.3297806e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      propertyPath: m_Name
+      value: Kiste V1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 635727296616277318}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8789794605813949670}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8555270378962813684}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8608199261628670129}
+  m_SourcePrefab: {fileID: 100100000, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+--- !u!4 &6136371652277329393 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+  m_PrefabInstance: {fileID: 5954459079135541786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6801303149126879051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cea393be5f83bc3409472c5c142ccabf, type: 3}
+  m_PrefabInstance: {fileID: 5954459079135541786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8789794605813949670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801303149126879051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c936bd8677012b459e779491e3fe7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 30
+--- !u!114 &8555270378962813684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801303149126879051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06bf3ca9277a98e40af9f0d9a6596503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestructibleCrate
+  itemPrefab: {fileID: 0}
+  dropPoint: {fileID: 635727296616277318}
+  upwardForce: 4
+  horizontalForce: 1.5
+  torqueForce: 3
+--- !u!65 &8608199261628670129
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801303149126879051}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010011168, y: 0.010011169, z: 0.010011164}
+  m_Center: {x: 6.370134e-26, y: -0.0000000011475414, z: 0.004813138}

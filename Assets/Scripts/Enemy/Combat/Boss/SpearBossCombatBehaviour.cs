@@ -148,6 +148,10 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     [Min(1f)]
     [SerializeField] private float phaseThreeDamageMultiplier = 1.20f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] attackSounds;
+    [SerializeField] private AudioSource audioSource;
+
     private CombatState currentState = CombatState.None;
     private BossPhase currentPhase = BossPhase.PhaseOne;
 
@@ -226,6 +230,34 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
         {
             health = GetComponent<Health>();
         }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+    }
+
+    private void PlayRandomAttackSound()
+    {
+        if (audioSource == null ||
+            attackSounds == null ||
+            attackSounds.Length == 0)
+        {
+            return;
+        }
+
+        int randomIndex =
+            Random.Range(0, attackSounds.Length);
+
+        AudioClip randomClip =
+            attackSounds[randomIndex];
+
+        if (randomClip == null)
+        {
+            return;
+        }
+
+        audioSource.PlayOneShot(randomClip);
     }
 
     private void OnEnable()
@@ -1213,6 +1245,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
             case CombatState.Attack:
                 attackTimer = 0f;
                 damageApplied = false;
+                PlayRandomAttackSound();
                 break;
 
             case CombatState.Recovery:
@@ -1236,6 +1269,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
             case CombatState.DodgeFollowUp:
                 attackTimer = 0f;
                 damageApplied = false;
+                PlayRandomAttackSound();
                 break;
 
             case CombatState.Backstep:
@@ -1260,6 +1294,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
             case CombatState.BlockCounter:
                 attackTimer = 0f;
                 damageApplied = false;
+                PlayRandomAttackSound();
                 break;
 
             case CombatState.Dead:
