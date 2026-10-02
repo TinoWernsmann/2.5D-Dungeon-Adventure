@@ -1503,7 +1503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2958f2d988717c644831aecc73255447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathScreenManager
-  _sceneToLoad: KevinScene 2
+  _sceneToLoad: MainScene
   TIME_TO_WAIT: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

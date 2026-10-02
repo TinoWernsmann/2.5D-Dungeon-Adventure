@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8379bd3db1444041be37b222234756f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  combatRotationSpeed: 12
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c936bd8677012b459e779491e3fe7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 100
+  maxHealth: 120
 --- !u!114 &79553458408629010
 MonoBehaviour:
   m_ObjectHideFlags: 0

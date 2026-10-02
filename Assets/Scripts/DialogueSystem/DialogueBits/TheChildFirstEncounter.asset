@@ -23,6 +23,7 @@ MonoBehaviour:
   - No? You were on a quest at Faraway Woods? Hmm I have only read about this Faraway
     Country before...
   - So you saw THAT tooo...?
+  - Well... I need to investigate something by myself. Let's meet again!
   _speakerSprites:
   - {fileID: 1454123833, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   - {fileID: -1889758372, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
@@ -30,4 +31,5 @@ MonoBehaviour:
   - {fileID: -1889758372, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   - {fileID: -690329011, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   - {fileID: -651149654, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
+  - {fileID: 1454123833, guid: d9f494dc84939d84bafa4b1c392acd50, type: 3}
   _despawnAtEnd: 1

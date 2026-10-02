@@ -16,6 +16,8 @@ public class MainMenuManager : MonoBehaviour
         _mainAmbience.clip = _ambience;
         _mainAmbience.loop = true;
         _mainAmbience.Play();
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 
     public void SubmitName(string name)

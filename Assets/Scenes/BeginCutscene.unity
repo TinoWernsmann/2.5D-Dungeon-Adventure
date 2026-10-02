@@ -639,7 +639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneInitiator
   _cutsceneToBegin: {fileID: 11400000, guid: 30f060c758f577c43a08549813484fbb, type: 2}
   _cutsceneManager: {fileID: 396631509}
-  NEXT_SCENE_TO_LOAD: KevinScene 2
+  NEXT_SCENE_TO_LOAD: MainScene
   waitAtEnd: 1
   TIME_TO_WAIT: 3
 --- !u!1 &1291611009

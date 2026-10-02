@@ -325,6 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8379bd3db1444041be37b222234756f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  combatRotationSpeed: 12
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,7 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c936bd8677012b459e779491e3fe7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 100
+  maxHealth: 125
 --- !u!114 &4258443872368493281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,13 +429,16 @@ MonoBehaviour:
   magicBoltPrefab: {fileID: 8024949328669299552, guid: a2d4470c6a07f424f94ae77f27862a89, type: 3}
   magicBoltDamage: 10
   magicBoltCastDuration: 0.5
+  magicBoltRecoveryDuration: 0.65
   fireballPrefab: {fileID: 8024949328669299552, guid: b20f4d18f97b893409829b2c83fae8f6, type: 3}
   fireballDamage: 25
   fireballCastDuration: 1.2
+  fireballRecoveryDuration: 1.4
   fireballChance: 0.35
-  recoveryDuration: 0.8
+  fireballCooldown: 4
   retreatDistance: 3
   retreatDuration: 1
+  debugCombat: 0
 --- !u!136 &2700000000000001
 CapsuleCollider:
   m_ObjectHideFlags: 0

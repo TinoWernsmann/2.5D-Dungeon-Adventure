@@ -3,7 +3,12 @@ guid: 58997147b985bbe4dadd605296c545d0
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Herz Textuer
+    second: {fileID: 2100000, guid: 765a17d0ee798f2459f77f3f840ffbe0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

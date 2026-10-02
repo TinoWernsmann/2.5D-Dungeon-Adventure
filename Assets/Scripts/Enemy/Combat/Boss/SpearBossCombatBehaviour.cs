@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SpearBossCombatBehaviour : EnemyCombatBehaviour
 {
@@ -30,8 +28,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     [Header("References")]
     [SerializeField] private EnemyMovement movement;
     [SerializeField] private Health health;
-    [Min(2)]
-    [SerializeField] private float _bossDeathWaitTime;
+    [SerializeField] private GameObject _doorToDespawn;
 
     [Header("Combat Range")]
     [Min(0.1f)]
@@ -243,14 +240,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
 
     private void Die()
     {
-        StartCoroutine(WaitTillSceneLoad());
-    }
-
-    private IEnumerator WaitTillSceneLoad()
-    {
-        yield return new WaitForSeconds(_bossDeathWaitTime);
-
-        SceneManager.LoadScene("TinoMainMenu");
+        _doorToDespawn?.SetActive(false);
     }
 
     public override bool IsInCombatRange(

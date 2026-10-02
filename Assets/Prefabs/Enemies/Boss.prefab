@@ -391,6 +391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpearBossCombatBehaviour
   movement: {fileID: 4992716912674233300}
   health: {fileID: 121343053122972427}
+  _doorToDespawn: {fileID: 0}
   combatRange: 8
   attackRange: 3
   preferredDistance: 2.3
@@ -439,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c936bd8677012b459e779491e3fe7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 100
+  maxHealth: 175
 --- !u!136 &2700000000000001
 CapsuleCollider:
   m_ObjectHideFlags: 0
