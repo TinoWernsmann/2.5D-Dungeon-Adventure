@@ -392,7 +392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneManager
   _cutsceneAudio: {fileID: 8300000, guid: 0d62e409adb7f6448a823c4f0ae138a7, type: 3}
   _pauseAtStart: 1
-  _pauseLength: 1
+  _pauseLength: 0.5
 --- !u!82 &396631510
 AudioSource:
   m_ObjectHideFlags: 0

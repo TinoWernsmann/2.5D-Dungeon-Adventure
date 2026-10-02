@@ -78,6 +78,7 @@ public class NerveManager : MonoBehaviour
 
     private void AllNervesFound()
     {
+        Debug.Log("Nerves Destroyed!");
         if (_bossObject == null) return;
         _bossObject.SetActive(true);
         _bossDoorObject.SetActive(false);

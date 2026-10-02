@@ -13,10 +13,13 @@ public class BossMusicTrigger : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         if (_musicHasStarted) return;
 
-        _gameMusicSource.Stop();
-        _gameMusicSource.clip = _bossMusic;
-        _gameMusicSource.loop = true;
-        _gameMusicSource.Play();
+        if (_gameMusicSource != null)
+        {
+            _gameMusicSource.Stop();
+            _gameMusicSource.clip = _bossMusic;
+            _gameMusicSource.loop = true;
+            _gameMusicSource.Play();           
+        }
 
         if (_closeDoor != null) _closeDoor.SetActive(true);
     }
