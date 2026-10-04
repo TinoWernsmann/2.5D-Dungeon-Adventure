@@ -31,7 +31,7 @@ public class PlayerInteraction : MonoBehaviour
         itemManager?.ConfigurePlayer(transform);
     }
 
-    private void OnEnable()
+    public void Start()
     {
         GameInput.Instance.OnHeal += HandleHealInput;
         GameInput.Instance.OnInteract += HandleInteractionInput;
@@ -43,6 +43,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnDisable()
     {
+        if (GameInput.Instance == null) return;
+
         GameInput.Instance.OnDialogue -= HandleDialogue;
         GameInput.Instance.OnHeal -= HandleHealInput;
         GameInput.Instance.OnInteract -= HandleInteractionInput;

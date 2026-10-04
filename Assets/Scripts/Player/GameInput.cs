@@ -14,6 +14,7 @@ public class GameInput : MonoBehaviour
     public event Action OnAttack;
     public event Action OnHeal;
     public event Action OnDialogue;
+    public event Action OnPause;
 
     private void Awake()
     {
@@ -26,9 +27,10 @@ public class GameInput : MonoBehaviour
         Instance = this;
         _input = new InputSystem_Actions();
         DontDestroyOnLoad(gameObject);
+        ConnectInput();
     }
 
-    private void OnEnable()
+    private void ConnectInput()
     {
         _input.Player.Enable();
         _input.Player.Dialogue.Disable();
@@ -43,6 +45,7 @@ public class GameInput : MonoBehaviour
         _input.Player.Attack.performed += AttackPerformed;
         _input.Player.Healing.performed += HealPerformed;
         _input.Player.Dialogue.performed += DialoguePerformed;
+        _input.Player.Pause.performed += PausePerformed;
     }
 
     private void OnDisable()
@@ -59,6 +62,7 @@ public class GameInput : MonoBehaviour
         _input.Player.Attack.performed -= AttackPerformed;
         _input.Player.Healing.performed -= HealPerformed;
         _input.Player.Dialogue.performed -= DialoguePerformed;
+        _input.Player.Pause.performed -= PausePerformed;
     }
 
     public void EnableDialogue()
@@ -71,6 +75,11 @@ public class GameInput : MonoBehaviour
     {
         _input.Player.Enable();
         _input.Player.Dialogue.Disable();
+    }
+
+    private void PausePerformed(InputAction.CallbackContext context)
+    {
+        OnPause?.Invoke();
     }
 
     private void DialoguePerformed(InputAction.CallbackContext context)
