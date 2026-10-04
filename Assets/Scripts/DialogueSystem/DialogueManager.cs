@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] private DialogueUIManager _dialogueUI;
-    [SerializeField] private PlayerMovement _movement;
     //[SerializeField] private DialogueAudioManager _audioManager;
 
     private List<DialogueInteractable> _interactables;
@@ -57,7 +56,7 @@ public class DialogueManager : MonoBehaviour
 
     private void StartDialogue(DialogueContext context, SpriteRenderer sprite)
     {
-        _movement.SetPlayerDialogueInput(true);
+        GameInput.Instance.EnableDialogue();
         _currentDialogue = context.Text;
         _currentSpeaker = context.Speaker;
         _speakerSprites = context.Sprites;
@@ -77,7 +76,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue(SpriteRenderer sprite)
     {
-        _movement.SetPlayerDialogueInput(false);
+        GameInput.Instance.DisableDialogue();
         _dialogueUI.HideSpeakingUI();
         sprite.sprite = _defaultSprite;
         _dialogueIndex = 0;

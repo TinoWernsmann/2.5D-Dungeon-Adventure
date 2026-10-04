@@ -8,11 +8,6 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private ItemManager itemManager;
     [SerializeField] private PlayerCombat playerCombat;
 
-    [Header("Input")]
-    [SerializeField] private InputActionReference interactAction;
-    [SerializeField] private InputActionReference attackAction;
-    [SerializeField] private InputActionReference healAction;
-
     [Header("Interaction")]
     [SerializeField] private float interactionDistance = 3f;
 
@@ -38,31 +33,32 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnEnable()
     {
-        interactAction?.action.Enable();
-        attackAction?.action.Enable();
+        GameInput.Instance.OnHeal += HandleHealInput;
+        GameInput.Instance.OnInteract += HandleInteractionInput;
+        GameInput.Instance.OnAttack += HandleCombatInput;
+        GameInput.Instance.OnItemSelect += HandleInventoryInput;
+        GameInput.Instance.OnDropPressed += HandleDropInput;
+        GameInput.Instance.OnDialogue += HandleDialogue;
     }
 
     private void OnDisable()
     {
-        interactAction?.action.Disable();
-        attackAction?.action.Disable();
+        GameInput.Instance.OnDialogue -= HandleDialogue;
+        GameInput.Instance.OnHeal -= HandleHealInput;
+        GameInput.Instance.OnInteract -= HandleInteractionInput;
+        GameInput.Instance.OnAttack -= HandleCombatInput;
+        GameInput.Instance.OnItemSelect -= HandleInventoryInput;
+        GameInput.Instance.OnDropPressed -= HandleDropInput;
     }
 
-    private void Update()
+    private void HandleDialogue()
     {
-        HandleInteractionInput();
-        HandleCombatInput();
-        HandleInventoryInput();
-        HandleHealInput();
+        TryInteract();
     }
 
     private void HandleHealInput()
     {
-        if (healAction != null &&
-            healAction.action.WasPressedThisFrame())
-        {
-            TryHeal();
-        }
+        TryHeal();
     }
 
     private void TryHeal()
@@ -72,57 +68,22 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleInteractionInput()
     {
-        if (interactAction != null &&
-            interactAction.action.WasPressedThisFrame())
-        {
-            TryInteract();
-        }
+        TryInteract();
     }
 
     private void HandleCombatInput()
     {
-        bool attackPressed = attackAction != null
-            ? attackAction.action.WasPressedThisFrame()
-            : Mouse.current != null &&
-              Mouse.current.leftButton.wasPressedThisFrame;
-
-        if (attackPressed)
-        {
-            playerCombat?.TryAttack();
-        }
+        playerCombat?.TryAttack();
     }
 
-    private void HandleInventoryInput()
+    private void HandleInventoryInput(int slot)
     {
-        if (Keyboard.current == null)
-        {
-            return;
-        }
+        itemManager?.SelectSlot(slot);
+    }
 
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
-        {
-            itemManager?.SelectSlot(0);
-        }
-
-        if (Keyboard.current.digit2Key.wasPressedThisFrame)
-        {
-            itemManager?.SelectSlot(1);
-        }
-
-        if (Keyboard.current.digit3Key.wasPressedThisFrame)
-        {
-            itemManager?.SelectSlot(2);
-        }
-
-        if (Keyboard.current.digit4Key.wasPressedThisFrame)
-        {
-            itemManager?.SelectSlot(3);
-        }
-
-        if (Keyboard.current.nKey.wasPressedThisFrame)
-        {
-            itemManager?.DropSelectedItem();
-        }
+    private void HandleDropInput()
+    {
+        itemManager?.DropSelectedItem();
     }
 
     private void TryInteract()
