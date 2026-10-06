@@ -41,4 +41,9 @@ public class MainMenuManager : MonoBehaviour
     {
         _settingsMenu.SetActive(false);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
