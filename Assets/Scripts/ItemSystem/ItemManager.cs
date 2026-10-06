@@ -292,14 +292,20 @@ public class ItemManager : MonoBehaviour
 
     public void TryUseHealing()
     {
-        var item = GetSelectedItem();
-        if (item == null || item.ItemName != "Healing")
-        {
-            return;
-        }
+        if (!HasItem("Healing")) return;
+        ItemSO item = null;
 
         OnHealingUsed?.Invoke();
-        TryConsumeItem(item);
+        for (int i = 0; i < inventorySlots.Count; i++)
+        {
+            item = GetItemAt(i);
+            if (item.ItemName == "Healing") break;
+        }
+
+        if (item != null)
+        {
+            TryConsumeItem(item);
+        }
     }
 
     public void DropSelectedItem()

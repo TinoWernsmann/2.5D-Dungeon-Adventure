@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference jumpAction;
-    [SerializeField] private InputActionReference dialogueAction;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -29,25 +28,24 @@ public class PlayerMovement : MonoBehaviour
 
     private float verticalVelocity;
     private float cameraPitch;
+    private bool _isPaused = false;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
 
-    private void OnEnable()
-    {
-        SetPlayerMovement(true);
-    }
-
     private void OnDisable()
     {
-        SetPlayerMovement(false);
+        if (GameInput.Instance == null) return;
+
+        GameInput.Instance.OnPause -= HandlePause;
     }
 
     private void Start()
     {
         LockCursor();
+        GameInput.Instance.OnPause += HandlePause;
     }
 
     private void Update()
@@ -56,33 +54,9 @@ public class PlayerMovement : MonoBehaviour
         HandleLook();
     }
 
-    public void SetPlayerMovement(bool toggle)
+    private void HandlePause()
     {
-        if (toggle)
-        {
-            moveAction.action.Enable();
-            lookAction.action.Enable();
-            jumpAction.action.Enable();
-        }
-        else
-        {
-            moveAction.action.Disable();
-            lookAction.action.Disable();
-            jumpAction.action.Disable();
-        }
-    }
-
-    public void SetPlayerDialogueInput(bool toggle)
-    {
-        SetPlayerMovement(!toggle);
-        if (toggle)
-        {
-            dialogueAction.action.Enable();
-        }
-        else
-        {
-            dialogueAction.action.Disable();
-        }
+        _isPaused = !_isPaused;
     }
 
     private void HandleMovement()
@@ -139,6 +113,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleLook()
     {
+        if (_isPaused) return;
+
         Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
 
         float yaw = lookInput.x * mouseSensitivity;

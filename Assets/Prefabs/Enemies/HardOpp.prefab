@@ -411,11 +411,11 @@ MonoBehaviour:
   preferredDistance: 8
   maximumAttackDistance: 10
   magicBoltPrefab: {fileID: 8024949328669299552, guid: a2d4470c6a07f424f94ae77f27862a89, type: 3}
-  magicBoltDamage: 10
+  magicBoltDamage: 12
   magicBoltCastDuration: 0.5
   magicBoltRecoveryDuration: 0.65
   fireballPrefab: {fileID: 8024949328669299552, guid: b20f4d18f97b893409829b2c83fae8f6, type: 3}
-  fireballDamage: 25
+  fireballDamage: 20
   fireballCastDuration: 1.2
   fireballRecoveryDuration: 1.4
   fireballChance: 0.35

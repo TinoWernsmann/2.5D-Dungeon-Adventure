@@ -386,7 +386,7 @@ MonoBehaviour:
   chargeSpeed: 10
   chargeDuration: 0.7
   hitRange: 6
-  chargeDamage: 30
+  chargeDamage: 15
   recoveryDuration: 1.5
 --- !u!136 &2700000000000001
 CapsuleCollider:

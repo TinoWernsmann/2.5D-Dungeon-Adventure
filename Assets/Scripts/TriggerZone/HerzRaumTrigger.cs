@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class HerzRaumTrigger : MonoBehaviour
 {
-    [SerializeField] private AudioSource _musicSource;
     [SerializeField] private string SCENE_TO_LOAD;
 
     private const float WAIT_TIMER = 5.5f;
@@ -15,7 +14,6 @@ public class HerzRaumTrigger : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         if (_hasBeenTriggered) return;
 
-        _musicSource?.Stop();
         _hasBeenTriggered = true;
         StartCoroutine(WaitUntilGameOver());
     }

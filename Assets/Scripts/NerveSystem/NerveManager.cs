@@ -12,12 +12,14 @@ public class NerveManager : MonoBehaviour
 
     private List<Nerve> _levelNerves;
     private List<Transform> _chosenSpawnPos;
+    private NerveUIManager _nerveUI;
     private int _cutNerves;
 
     private void Awake()
     {
         _levelNerves = new List<Nerve>();
         _chosenSpawnPos = new List<Transform>();
+        _nerveUI = GetComponent<NerveUIManager>();
         _cutNerves = 0;
 
         if (_spawnLocations == null) return;
@@ -35,6 +37,7 @@ public class NerveManager : MonoBehaviour
             nerve.transform.rotation = Quaternion.identity;
             count++;
         }
+        _nerveUI.UpdateCounter(_cutNerves, LEVEL_NERVES);
     }
 
     private Transform GetValidSpawnPos()
@@ -69,6 +72,7 @@ public class NerveManager : MonoBehaviour
     private void HandleNerveCut() 
     {
         _cutNerves++;
+        _nerveUI.UpdateCounter(_cutNerves, LEVEL_NERVES);
 
         if (_cutNerves >= LEVEL_NERVES)
         {

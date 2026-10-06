@@ -385,7 +385,7 @@ MonoBehaviour:
   lungeSpeed: 7
   lungeDuration: 0.3
   hitRange: 2.5
-  damage: 15
+  damage: 10
   recoveryDuration: 0.5
 --- !u!136 &2700000000000001
 CapsuleCollider:
