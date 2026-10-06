@@ -388,7 +388,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f12f71ae5f0a046429d3eba2f9b3070b, type: 3}
   attackRange: 1.8
   preferredDistance: 1.4
-  damage: 5
+  damage: 10
   windupDuration: 0.3
   attackDuration: 0.4
   damageMoment: 0.5

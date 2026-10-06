@@ -9,7 +9,6 @@ public class GameInput : MonoBehaviour
     private InputSystem_Actions _input;
     public event Action OnDropPressed;
     public event Action<int> OnItemSelect;
-    public event Action OnJump;
     public event Action OnInteract;
     public event Action OnAttack;
     public event Action OnHeal;
@@ -40,7 +39,6 @@ public class GameInput : MonoBehaviour
         _input.Player.Slot2.performed += Slot2Performed;
         _input.Player.Slot3.performed += Slot3Performed;
         _input.Player.Slot4.performed += Slot4Performed;
-        _input.Player.Jump.performed += JumpPerformed;
         _input.Player.Interact.performed += InteractPerformed;
         _input.Player.Attack.performed += AttackPerformed;
         _input.Player.Healing.performed += HealPerformed;
@@ -57,7 +55,6 @@ public class GameInput : MonoBehaviour
         _input.Player.Slot2.performed -= Slot2Performed;
         _input.Player.Slot3.performed -= Slot3Performed;
         _input.Player.Slot4.performed -= Slot4Performed;
-        _input.Player.Jump.performed -= JumpPerformed;
         _input.Player.Interact.performed -= InteractPerformed;
         _input.Player.Attack.performed -= AttackPerformed;
         _input.Player.Healing.performed -= HealPerformed;
@@ -100,11 +97,6 @@ public class GameInput : MonoBehaviour
     private void InteractPerformed(InputAction.CallbackContext context)
     {
         OnInteract?.Invoke();
-    }
-
-    private void JumpPerformed(InputAction.CallbackContext context)
-    {
-        OnJump?.Invoke();
     }
 
     private void DropPerformed(InputAction.CallbackContext context)

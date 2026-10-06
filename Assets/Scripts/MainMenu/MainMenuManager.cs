@@ -8,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private TMP_InputField _nameInput;
     [SerializeField] private AudioSource _mainAmbience;
     [SerializeField] private AudioClip _ambience;
+    [SerializeField] private GameObject _settingsMenu;
 
     private const string BEGIN_SCENE = "BeginCutscene";
 
@@ -29,5 +30,15 @@ public class MainMenuManager : MonoBehaviour
     public void StartGame()
     {
         _nameEntryObject.SetActive(true);
+    }
+
+    public void ShowSettings()
+    {
+        _settingsMenu.SetActive(true);
+    }
+
+    public void HideSettings()
+    {
+        _settingsMenu.SetActive(false);
     }
 }

@@ -151,6 +151,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip[] attackSounds;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource musicSource;
 
     private CombatState currentState = CombatState.None;
     private BossPhase currentPhase = BossPhase.PhaseOne;
@@ -273,6 +274,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     private void Die()
     {
         _doorToDespawn?.SetActive(false);
+        musicSource.Stop();
     }
 
     public override bool IsInCombatRange(

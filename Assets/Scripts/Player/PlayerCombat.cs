@@ -24,7 +24,7 @@ public class PlayerCombat : MonoBehaviour
     private Health playerHealth;
     private float nextAttackTime;
     private const string DEATH_SCENE = "DeathScene";
-    private const int HEALING_AMOUNT = 20;
+    private const int HEALING_AMOUNT = 15;
 
     private void Awake()
     {
@@ -37,8 +37,6 @@ public class PlayerCombat : MonoBehaviour
         playerHealth.Died += HandlePlayerDeath;
         itemManager.OnHealingUsed += HandleHealing;
     }
-
-
 
     private void OnDisable()
     {

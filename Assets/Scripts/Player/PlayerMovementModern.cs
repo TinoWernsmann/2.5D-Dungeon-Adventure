@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference jumpAction;
-    [SerializeField] private InputActionReference dialogueAction;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
