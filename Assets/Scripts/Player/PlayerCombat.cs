@@ -56,6 +56,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void TryAttack()
     {
+        if (Time.timeScale <= 0f)
+        {
+            return;
+        }
+
         WeaponSO weapon =
             itemManager?.SelectedWeapon;
 
@@ -306,7 +311,8 @@ public class PlayerCombat : MonoBehaviour
             ApplyMeleeDamage(
                 hit.collider,
                 targetHealth,
-                weapon.WeaponDamage
+                weapon.WeaponDamage,
+                hit.point
             );
 
             return;
@@ -316,7 +322,8 @@ public class PlayerCombat : MonoBehaviour
     private void ApplyMeleeDamage(
         Collider hitCollider,
         Health targetHealth,
-        int damage)
+        int damage,
+        Vector3 hitPoint)
     {
         BossDamageReceiver bossReceiver =
             FindBossDamageReceiver(
@@ -335,7 +342,8 @@ public class PlayerCombat : MonoBehaviour
         }
 
         targetHealth.TakeDamage(
-            damage
+            damage,
+            hitPoint
         );
     }
 
