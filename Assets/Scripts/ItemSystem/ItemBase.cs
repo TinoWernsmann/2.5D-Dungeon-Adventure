@@ -5,6 +5,7 @@ public class ItemBase : MonoBehaviour
 {
     private const float FloatSpeed = 3f;
     private const float FloatHeight = 0.1f;
+    private bool _questReported;
 
     [Header("Item")]
     [SerializeField] private ItemSO itemData;
@@ -86,6 +87,20 @@ public class ItemBase : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+    }
+
+    public void ReportPickupToQuest()
+    {
+        // Nur einmal pro Item, sonst zählt "Droppen und wieder aufheben" doppelt
+        if (_questReported || itemData == null) return;
+        if (QuestManager.Instance == null) return;
+
+        _questReported = true;
+        QuestManager.Instance.ReportProgress(
+            QuestType.Collect,
+            itemData.ItemName,
+            PickupAmount
+        );
     }
 
     private void UpdateFloatingMovement()

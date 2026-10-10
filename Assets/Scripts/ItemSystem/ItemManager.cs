@@ -65,37 +65,29 @@ public class ItemManager : MonoBehaviour
         playerTransform = player;
     }
 
-    public bool TryAddItem(
-        ItemBase item)
+    public bool TryAddItem(ItemBase item)
     {
-        if (item == null ||
-            item.ItemData == null)
+        if (item == null || item.ItemData == null)
         {
             return false;
         }
 
-        ItemSO itemData =
-            item.ItemData;
+        ItemSO itemData = item.ItemData;
+        int amount = item.PickupAmount;
 
-        int amount =
-            item.PickupAmount;
+        bool added = itemData.Stackable
+            ? TryAddStackableItem(item, itemData, amount)
+            : TryAddNonStackableItem(item);
 
-        if (item.ItemData.PickUpSound != null)
+        if (!added) return false;
+
+        if (itemData.PickUpSound != null && itemSound != null)
         {
-            itemSound.PlayOneShot(item.ItemData.PickUpSound);
-        }
-        if (itemData.Stackable)
-        {
-            return TryAddStackableItem(
-                item,
-                itemData,
-                amount
-            );
+            itemSound.PlayOneShot(itemData.PickUpSound);
         }
 
-        return TryAddNonStackableItem(
-            item
-        );
+        item.ReportPickupToQuest();
+        return true;
     }
 
     private void Awake()

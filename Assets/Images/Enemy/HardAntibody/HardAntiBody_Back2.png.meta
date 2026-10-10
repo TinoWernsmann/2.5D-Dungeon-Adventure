@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 180
+  spritePixelsToUnits: 700
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,23 +97,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HardAntiBody_Back2_3
+      name: HardAntiBody_Back2_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 7
-        width: 273
-        height: 297
+        x: 29
+        y: 153
+        width: 895
+        height: 855
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a0f6ec12543d039458ca3c76066e28b5
-      internalID: 770388454
+      spriteID: b6d3f4a5471f52c419c7ec1d014bba6d
+      internalID: -1503480218
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 24ad2cf023e475b4dbe73e05e75f40fe
+    spriteID: d8f9ccce941ff2946a6148e1878b0d18
     internalID: 0
     vertices: []
     indices: 
@@ -130,14 +130,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":1.0,"y":1.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":1,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      HardAntiBody_Back2_0: 2125846340
-      HardAntiBody_Back2_1: 981119671
-      HardAntiBody_Back2_2: 1957759629
-      HardAntiBody_Back2_3: 770388454
+      HardAntiBody_Back2_0: -1503480218
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

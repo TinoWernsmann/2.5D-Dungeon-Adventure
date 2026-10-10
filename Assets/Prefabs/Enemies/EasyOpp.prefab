@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  m_Sprite: {fileID: 1864943157, guid: 88f440ec9fec1744b86763e2b3a3588f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.3, y: 2.68}
+  m_Size: {x: 6.63, y: 11.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -118,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 7664568011315287388}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0.165, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -159,34 +159,31 @@ MonoBehaviour:
   health: {fileID: 121343053122972427}
   deathPoint: {fileID: 764994764364833506}
   frontFrames:
-  - {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
-  - {fileID: 551905052, guid: 853fca051a24cc74fba5799ba1c43e6a, type: 3}
-  - {fileID: 760640290, guid: 11f29139ec27f2f429d3b3ae07a42b89, type: 3}
+  - {fileID: 1864943157, guid: 88f440ec9fec1744b86763e2b3a3588f, type: 3}
+  - {fileID: 1297568758, guid: 8645433793eeb5645b9247e1dd927bee, type: 3}
+  - {fileID: 1363285136, guid: 34bab8e75a54b054c82341b8395d4e02, type: 3}
+  - {fileID: -1538786047, guid: 80fe3cff13406894aa77d6f3b2e767da, type: 3}
   backFrames:
-  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
-  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
-  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  - {fileID: -985139577, guid: 5f2eb570c6d73d94b86173c91c26d946, type: 3}
+  - {fileID: -1879302742, guid: 1b689153df45ef64cb4325284875d127, type: 3}
+  - {fileID: -899786617, guid: c644fc9a23b8d1141b5ad38456b8f671, type: 3}
   leftFrames:
-  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
-  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
-  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  - {fileID: 1374639822, guid: 416488361185649479338abea097f77d, type: 3}
   rightFrames:
-  - {fileID: -1520833248, guid: 464a16af315a20943bb64de4054bad87, type: 3}
-  - {fileID: -1049295194, guid: fc69ce57e569fbe48b094496bbb58441, type: 3}
-  - {fileID: -922360049, guid: ceade4364feeb1b4c88bae1dc44539cb, type: 3}
+  - {fileID: -319556460, guid: 3c23d5c5003ab1744841fc9468e246da, type: 3}
   idleFrontFrames:
-  - {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  - {fileID: 1864943157, guid: 88f440ec9fec1744b86763e2b3a3588f, type: 3}
   idleBackFrames:
-  - {fileID: 1517994408, guid: d8cfd7bed72bbfb4d8835bc72f708ba8, type: 3}
+  - {fileID: -985139577, guid: 5f2eb570c6d73d94b86173c91c26d946, type: 3}
   idleLeftFrames:
-  - {fileID: 1517994408, guid: d8cfd7bed72bbfb4d8835bc72f708ba8, type: 3}
+  - {fileID: 1374639822, guid: 416488361185649479338abea097f77d, type: 3}
   idleRightFrames:
-  - {fileID: -1377513048, guid: 7a10c5940aacd8045bdd77edf6c0bb09, type: 3}
+  - {fileID: -319556460, guid: 3c23d5c5003ab1744841fc9468e246da, type: 3}
   attackFrontFrames:
-  - {fileID: 230019391, guid: 9b421abd70bbf6d4abcd0771582743a9, type: 3}
-  - {fileID: -1361824585, guid: 0118d12dab66f7048b512ba5f9a4bf03, type: 3}
-  - {fileID: -239005995, guid: d6f9296768c8dc040906ef3f44b62fd3, type: 3}
-  deadSprite: {fileID: 887893858, guid: ec43ef18d08c4d14594e14fc9a151873, type: 3}
+  - {fileID: -297543584, guid: 9b421abd70bbf6d4abcd0771582743a9, type: 3}
+  - {fileID: -370482391, guid: 0118d12dab66f7048b512ba5f9a4bf03, type: 3}
+  - {fileID: -34994154, guid: d6f9296768c8dc040906ef3f44b62fd3, type: 3}
+  deadSprite: {fileID: 1864943157, guid: 88f440ec9fec1744b86763e2b3a3588f, type: 3}
   corpseDuration: 1
   fadeDuration: 1
   movementFramesPerSecond: 6

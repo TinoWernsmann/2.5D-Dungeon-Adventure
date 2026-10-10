@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58797e4b9cf40e345b170c1242bef4f9, type: 3}
+  m_Name: "4_Zerst\xF6reAlleNerven"
+  m_EditorClassIdentifier: Assembly-CSharp::QuestData
+  _title: "Nerv zerst\xF6ren"
+  _goalText: "Zerst\xF6re alle Nervenknoten"
+  _showCounter: 1
+  _type: 1
+  _targetId: Nerve
+  _requiredAmount: 7
+  _nextQuest: {fileID: 11400000, guid: ac6fd4e3cbb7465488ef7fc2d8fea3eb, type: 2}
+  _canBeSkipped: 0
