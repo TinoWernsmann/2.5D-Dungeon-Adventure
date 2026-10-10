@@ -12,7 +12,11 @@ public class Health : MonoBehaviour
     public bool IsDead => CurrentHealth <= 0;
 
     public event Action<int, int> HealthChanged;
+
     public event Action<int> Damaged;
+
+    public event Action<int, Vector3> DamagedAtPosition;
+
     public event Action Died;
 
     private void Awake()
@@ -21,6 +25,16 @@ public class Health : MonoBehaviour
     }
 
     public void TakeDamage(int damage)
+    {
+        TakeDamage(
+            damage,
+            transform.position
+        );
+    }
+
+    public void TakeDamage(
+        int damage,
+        Vector3 hitPoint)
     {
         if (damage <= 0 || IsDead)
         {
@@ -38,6 +52,11 @@ public class Health : MonoBehaviour
         );
 
         Damaged?.Invoke(damage);
+
+        DamagedAtPosition?.Invoke(
+            damage,
+            hitPoint
+        );
 
         HealthChanged?.Invoke(
             CurrentHealth,
@@ -70,7 +89,9 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} died.");
+        Debug.Log(
+            $"{gameObject.name} died."
+        );
 
         Died?.Invoke();
     }

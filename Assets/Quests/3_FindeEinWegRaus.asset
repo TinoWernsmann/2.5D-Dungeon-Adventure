@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58797e4b9cf40e345b170c1242bef4f9, type: 3}
+  m_Name: 3_FindeEinWegRaus
+  m_EditorClassIdentifier: Assembly-CSharp::QuestData
+  _title: Finde ein Weg Raus
+  _goalText: Entkomme aus diesem Ort!
+  _showCounter: 0
+  _type: 0
+  _targetId: Quest3_Escape
+  _requiredAmount: 1
+  _nextQuest: {fileID: 11400000, guid: 84f4592185acf0447b444e0927fb63a4, type: 2}
+  _canBeSkipped: 0

@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  itemData: {fileID: 11400000, guid: debd2aef238204647b988b91432915a8, type: 2}
+  itemData: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
   pickupAmount: 1
 --- !u!114 &3677674488091397640
 MonoBehaviour:
@@ -210,14 +210,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fe0e55439b676444b95bad64d8bdf006, type: 3}
+  m_Sprite: {fileID: 479275709, guid: fb371294aaaaa684b8b6d79d58a2f23e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -27,7 +27,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7032267243731821679, guid: 88505baa233f80c439d0abc0299a4867, type: 3}
   projectileSpeed: 20
   usesAmmo: 1
-  ammoItem: {fileID: 11400000, guid: debd2aef238204647b988b91432915a8, type: 2}
+  ammoItem: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
   ammoPerShot: 1
   IdleSprite: {fileID: 21300000, guid: 42fda31ffcd9ca542aa01a0ae2372f87, type: 3}
   AttackSprite: {fileID: 21300000, guid: 51cef7502a998b74d80bcb5e6c97d8c9, type: 3}

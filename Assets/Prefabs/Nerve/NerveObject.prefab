@@ -65,6 +65,7 @@ MonoBehaviour:
   _audioSource: {fileID: 7685043111179651230}
   _cutClip: {fileID: 8300000, guid: adab0bf89e5f886448985f77c3ae2ef0, type: 3}
   _visual: {fileID: 5848310147997923724}
+  _questTargetId: Nerve
 --- !u!135 &6896998962702452350
 SphereCollider:
   m_ObjectHideFlags: 0

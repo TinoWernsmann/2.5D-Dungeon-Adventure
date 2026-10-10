@@ -30,6 +30,11 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     [SerializeField] private Health health;
     [SerializeField] private GameObject _doorToDespawn;
 
+    [Header("Quest")]
+    [SerializeField] private string _questTargetId = "SpearBoss";
+
+    private bool _questReported;
+
     [Header("Combat Range")]
     [Min(0.1f)]
     [SerializeField] private float combatRange = 8f;
@@ -271,10 +276,26 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
         health.Died -= Die;
     }
 
+
     private void Die()
     {
         _doorToDespawn?.SetActive(false);
-        musicSource.Stop();
+
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+        }
+
+        // Quest-Fortschritt melden, sobald der Boss besiegt wurde.
+        if (!_questReported)
+        {
+            _questReported = true;
+
+            QuestManager.Report(
+                QuestType.Kill,
+                _questTargetId
+            );
+        }
     }
 
     public override bool IsInCombatRange(

@@ -140,6 +140,10 @@ MonoBehaviour:
   upwardForce: 4
   horizontalForce: 1.5
   torqueForce: 3
+  hitVfx: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
+  hitVfxPoint: {fileID: 0}
+  hitVfxLifetime: 0.5
+  randomizeVfxRotation: 1
 --- !u!65 &8608199261628670129
 BoxCollider:
   m_ObjectHideFlags: 0

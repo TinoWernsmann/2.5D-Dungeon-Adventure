@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,14 +11,12 @@ public class NerveManager : MonoBehaviour
 
     private List<Nerve> _levelNerves;
     private List<Transform> _chosenSpawnPos;
-    private NerveUIManager _nerveUI;
     private int _cutNerves;
 
     private void Awake()
     {
         _levelNerves = new List<Nerve>();
         _chosenSpawnPos = new List<Transform>();
-        _nerveUI = GetComponent<NerveUIManager>();
         _cutNerves = 0;
 
         if (_spawnLocations == null) return;
@@ -37,42 +34,40 @@ public class NerveManager : MonoBehaviour
             nerve.transform.rotation = Quaternion.identity;
             count++;
         }
-        _nerveUI.UpdateCounter(_cutNerves, LEVEL_NERVES);
     }
 
     private Transform GetValidSpawnPos()
     {
-        Transform removedTrans = _chosenSpawnPos[UnityEngine.Random.Range(0, _chosenSpawnPos.Count)];
+        Transform removedTrans = _chosenSpawnPos[Random.Range(0, _chosenSpawnPos.Count)];
         _chosenSpawnPos.Remove(removedTrans);
         return removedTrans;
     }
 
     private void OnEnable()
     {
-        if (_levelNerves != null &&  _levelNerves.Count > 0)
+        if (_levelNerves != null && _levelNerves.Count > 0)
         {
-            foreach (Nerve nerves in _levelNerves)
+            foreach (Nerve nerve in _levelNerves)
             {
-                nerves.OnNerveCut += HandleNerveCut;
+                nerve.OnNerveCut += HandleNerveCut;
             }
-        }      
+        }
     }
 
     private void OnDisable()
     {
-        if (_levelNerves != null &&  _levelNerves.Count > 0)
+        if (_levelNerves != null && _levelNerves.Count > 0)
         {
-            foreach (Nerve nerves in _levelNerves)
+            foreach (Nerve nerve in _levelNerves)
             {
-                nerves.OnNerveCut -= HandleNerveCut;
+                nerve.OnNerveCut -= HandleNerveCut;
             }
-        }      
+        }
     }
 
-    private void HandleNerveCut() 
+    private void HandleNerveCut()
     {
         _cutNerves++;
-        _nerveUI.UpdateCounter(_cutNerves, LEVEL_NERVES);
 
         if (_cutNerves >= LEVEL_NERVES)
         {

@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1692718957, guid: 70a25cd809449594e878450601266dfd, type: 3}
+  m_Sprite: {fileID: 1769427236, guid: 188d1f6ce1e4a5a48ac19331b5249ea9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.3, y: 2.68}
+  m_Size: {x: 6.4, y: 5.93}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -159,30 +159,30 @@ MonoBehaviour:
   health: {fileID: 121343053122972427}
   deathPoint: {fileID: 764994764364833506}
   frontFrames:
-  - {fileID: -1692718957, guid: 70a25cd809449594e878450601266dfd, type: 3}
-  - {fileID: 1456917266, guid: 997036ca286c59b4592ed2cc79c093db, type: 3}
-  - {fileID: -1266141505, guid: 2ccf4a8761a81e54580bd5f89ae4c472, type: 3}
+  - {fileID: 1769427236, guid: 188d1f6ce1e4a5a48ac19331b5249ea9, type: 3}
+  - {fileID: -418819867, guid: c00d2bc2d50eff045835db5c711ef130, type: 3}
+  - {fileID: -2038716187, guid: 3a91f3d55e805524c826cbc3d6c35005, type: 3}
   backFrames:
-  - {fileID: 2019065661, guid: 4adc1a838d6903645a480db54f751c08, type: 3}
-  - {fileID: 1859693543, guid: 0c14449bfbda54641b67edfdb3d10470, type: 3}
-  - {fileID: 1556887186, guid: 335d106deae0c554a89d0b8d7b083373, type: 3}
+  - {fileID: 1291172952, guid: 4adc1a838d6903645a480db54f751c08, type: 3}
+  - {fileID: -94351758, guid: 0c14449bfbda54641b67edfdb3d10470, type: 3}
+  - {fileID: -863086585, guid: 335d106deae0c554a89d0b8d7b083373, type: 3}
   leftFrames:
-  - {fileID: 539781147, guid: 4c57c10fd2e9885488ee183f86a57a80, type: 3}
+  - {fileID: -549449275, guid: b853876b983ca624eb2ab2afebc19cce, type: 3}
   rightFrames:
-  - {fileID: 342705767, guid: 0d1f02ed1ec397342b6197b44f2e5d01, type: 3}
+  - {fileID: -599880201, guid: 2cb4bf0b9b54cbc48b65078bbbf23077, type: 3}
   idleFrontFrames:
-  - {fileID: -1692718957, guid: 70a25cd809449594e878450601266dfd, type: 3}
+  - {fileID: 1769427236, guid: 188d1f6ce1e4a5a48ac19331b5249ea9, type: 3}
   idleBackFrames:
-  - {fileID: 2019065661, guid: 4adc1a838d6903645a480db54f751c08, type: 3}
+  - {fileID: 1291172952, guid: 4adc1a838d6903645a480db54f751c08, type: 3}
   idleLeftFrames:
-  - {fileID: 539781147, guid: 4c57c10fd2e9885488ee183f86a57a80, type: 3}
+  - {fileID: -549449275, guid: b853876b983ca624eb2ab2afebc19cce, type: 3}
   idleRightFrames:
-  - {fileID: 342705767, guid: 0d1f02ed1ec397342b6197b44f2e5d01, type: 3}
+  - {fileID: -599880201, guid: 2cb4bf0b9b54cbc48b65078bbbf23077, type: 3}
   attackFrontFrames:
-  - {fileID: -1471650955, guid: 7fe5ee91524f7af49a009c1dd2de8e53, type: 3}
-  - {fileID: -1427189090, guid: 92d9dd548d6e31e43844a4c744b1e65b, type: 3}
-  - {fileID: -1418943757, guid: da691721596bcab40b0d2a5d0b2481ba, type: 3}
-  deadSprite: {fileID: -1692718957, guid: 70a25cd809449594e878450601266dfd, type: 3}
+  - {fileID: 225801233, guid: 7fe5ee91524f7af49a009c1dd2de8e53, type: 3}
+  - {fileID: -1925390876, guid: 92d9dd548d6e31e43844a4c744b1e65b, type: 3}
+  - {fileID: -821339944, guid: da691721596bcab40b0d2a5d0b2481ba, type: 3}
+  deadSprite: {fileID: 1769427236, guid: 188d1f6ce1e4a5a48ac19331b5249ea9, type: 3}
   corpseDuration: 1
   fadeDuration: 1
   movementFramesPerSecond: 6

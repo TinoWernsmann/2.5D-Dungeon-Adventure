@@ -65,7 +65,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -273,7 +273,6 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   lookAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  dialogueAction: {fileID: -4547808577317323362, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   moveSpeed: 5
   jumpHeight: 1.2
   gravity: -20
@@ -295,10 +294,7 @@ MonoBehaviour:
   playerCamera: {fileID: 2867891199821086857}
   itemManager: {fileID: 0}
   playerCombat: {fileID: 964904284531863866}
-  interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  attackAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  healAction: {fileID: -3363820490601195433, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  interactionDistance: 5
+  interactionDistance: 1
 --- !u!114 &6802337269427441995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,13 +380,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8400896203194356152}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000008940696}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.6, z: -0.00000047683716}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2945315213607041491}
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2867891199821086857
 Camera:
   m_ObjectHideFlags: 0
@@ -400,8 +396,8 @@ Camera:
   m_GameObject: {fileID: 8400896203194356152}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -423,7 +419,7 @@ Camera:
     width: 0.65
     height: 0.8
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
