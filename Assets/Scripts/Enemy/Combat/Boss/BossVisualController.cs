@@ -49,6 +49,9 @@ public class BossVisualController : MonoBehaviour
     [Header("Defeat")]
     [SerializeField] private Sprite[] defeatFrames;
 
+    [Tooltip("Wird nach dem Dialog nach der Niederlage dauerhaft angezeigt.")]
+    [SerializeField] private Sprite defeatCrySprite;
+
     [Header("Animation Speed")]
     [Min(0.01f)]
     [SerializeField] private float standFramesPerSecond = 3f;
@@ -69,6 +72,7 @@ public class BossVisualController : MonoBehaviour
     private float frameTimer;
 
     private bool isDefeated;
+    private bool isShowingFinalPose;
 
     private void Awake()
     {
@@ -95,6 +99,12 @@ public class BossVisualController : MonoBehaviour
     {
         if (spriteRenderer == null || combatBehaviour == null)
         {
+            return;
+        }
+
+        if (isShowingFinalPose)
+        {
+            SetSprite(defeatCrySprite);
             return;
         }
 
@@ -312,6 +322,12 @@ public class BossVisualController : MonoBehaviour
     {
         frameIndex = 0;
         frameTimer = 0f;
+    }
+
+    /// <summary>Zeigt ab jetzt dauerhaft das "DefeatCry"-Sprite.</summary>
+    public void ShowFinalDefeatPose()
+    {
+        isShowingFinalPose = true;
     }
 
     private void HandleDeath()

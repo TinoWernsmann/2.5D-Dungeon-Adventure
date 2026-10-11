@@ -213,6 +213,7 @@ MonoBehaviour:
   defeatFrames:
   - {fileID: -1663304899, guid: 736d971a889269a4c912211861ffcf5a, type: 3}
   - {fileID: -177657514, guid: 502dd109ee61fd449bc5a76580af8e8a, type: 3}
+  defeatCrySprite: {fileID: -1439598550, guid: 9fc12689ff9119648bd77adbbdeb1cec, type: 3}
   standFramesPerSecond: 3
   movementFramesPerSecond: 6
   prepareFramesPerSecond: 3.33
@@ -268,6 +269,7 @@ GameObject:
   - component: {fileID: 2435050788907585401}
   - component: {fileID: 6689909783343714701}
   - component: {fileID: 2702597105588741353}
+  - component: {fileID: 5813402917764031234}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -705,3 +707,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3113970845522469459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5813402917764031234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ffdd14b0d74b04b52902b655bbd721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossDialogue
+  boss: {fileID: 457409782893092702}
+  health: {fileID: 121343053122972427}
+  visualController: {fileID: 0}
+  dialogueUI: {fileID: 0}
+  introDialogue: {fileID: 11400000, guid: 00069ef7a5e6447d96b222c59017b537, type: 2}
+  introSecondsPerLine: 2.5
+  defeatDialogue: {fileID: 11400000, guid: 05cba37b61e74ea1817c5986487afcf2, type: 2}
+  defeatDialogueDelay: 1.5

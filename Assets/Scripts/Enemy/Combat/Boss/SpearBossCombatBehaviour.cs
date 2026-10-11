@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Speer-Boss. Dieses Script ist nur der "Dirigent":
@@ -13,6 +15,8 @@ using UnityEngine;
 ///  5. Blocken nur von vorne und nur, wenn er gerade nichts anderes tut.
 ///     Spammt der Player Angriffe, blockt er häufiger (er "lernt").
 ///  6. Phasenwechsel bei bestimmten Lebenspunkten: kurz unverwundbar, danach schneller und aggressiver.
+///
+/// Der Kampfbeginn kann angehalten werden (<see cref="HoldEncounter"/>), z.B. für einen Intro-Dialog.
 /// </summary>
 public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
 {
@@ -117,9 +121,14 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     private bool isDead;
     private bool isPhaseTransitionPending;
     private bool questReported;
+    private bool hasSpottedPlayer;
+    private bool isEncounterOnHold;
 
     private float decisionTimer;
     private float blockPressure;
+
+    /// <summary>Der Player wurde zum ersten Mal entdeckt (z.B. für einen Intro-Dialog).</summary>
+    public event Action PlayerSpottedFirstTime;
 
     private BossPhaseSettings Phase => currentPhase switch
     {
@@ -224,10 +233,13 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
         SetTarget(target, targetHealth);
         isEngaged = true;
 
-        if (!isCombatPrepared && currentAction == null)
+        if (!hasSpottedPlayer)
         {
-            StartAction(prepareStance);
+            hasSpottedPlayer = true;
+            PlayerSpottedFirstTime?.Invoke();
         }
+
+        EnsureCombatStance();
     }
 
     public override void OnTargetLost()
@@ -247,6 +259,12 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
             return;
         }
 
+        if (isEncounterOnHold)
+        {
+            movement.StopAndFace(target);
+            return;
+        }
+
         if (currentAction != null)
         {
             TickCurrentAction();
@@ -261,10 +279,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
         isEngaged = true;
         decisionTimer = Phase.DecisionDelay;
 
-        if (!isCombatPrepared && currentAction == null)
-        {
-            StartAction(prepareStance);
-        }
+        EnsureCombatStance();
     }
 
     protected override void OnCombatUpdate()
@@ -274,11 +289,23 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
             return;
         }
 
+        if (isEncounterOnHold)
+        {
+            movement.StopAndFace(Target);
+            return;
+        }
+
         UpdatePhase();
 
         if (currentAction != null)
         {
             TickCurrentAction();
+            return;
+        }
+
+        if (!isCombatPrepared)
+        {
+            EnsureCombatStance();
             return;
         }
 
@@ -295,6 +322,33 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     {
         AbortCurrentAction();
         movement.Stop();
+    }
+
+    /// <summary>Hält den Kampfbeginn an: Der Boss steht still und schaut zum Player.</summary>
+    public void HoldEncounter()
+    {
+        isEncounterOnHold = true;
+
+        AbortCurrentAction();
+        movement.Stop();
+    }
+
+    /// <summary>Der Kampf darf beginnen (zieht zuerst seine Waffe).</summary>
+    public void ReleaseEncounter()
+    {
+        isEncounterOnHold = false;
+    }
+
+    private void EnsureCombatStance()
+    {
+        if (isEncounterOnHold ||
+            isCombatPrepared ||
+            currentAction != null)
+        {
+            return;
+        }
+
+        StartAction(prepareStance);
     }
 
     #endregion
