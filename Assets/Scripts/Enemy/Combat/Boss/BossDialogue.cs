@@ -8,14 +8,15 @@ using UnityEngine;
 /// Intro: Startet beim ersten Sichtkontakt. Der Boss wartet, der Player bleibt steuerbar,
 ///        die Zeilen laufen automatisch weiter. Greift der Player an, startet der Kampf sofort.
 ///
-/// Niederlage: Startet kurz nach dem Tod des Bosses.
+/// Niederlage: Startet, sobald der Boss UND seine Wachen besiegt sind (siehe <see cref="BossEncounter"/>).
 /// </summary>
 [RequireComponent(typeof(SpearBossCombatBehaviour))]
+[RequireComponent(typeof(BossEncounter))]
 public class BossDialogue : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SpearBossCombatBehaviour boss;
-    [SerializeField] private Health health;
+    [SerializeField] private BossEncounter encounter;
     [SerializeField] private BossVisualController visualController;
 
     [Tooltip("Leer lassen = wird automatisch in der Szene gesucht.")]
@@ -30,9 +31,17 @@ public class BossDialogue : MonoBehaviour
     [Header("Defeat (nach dem Kampf)")]
     [SerializeField] private DialogueBase defeatDialogue;
 
-    [Tooltip("Wartezeit nach dem Tod, damit die Niederlage-Animation erst zu sehen ist.")]
+    [Tooltip("Wartezeit nach dem letzten besiegten Gegner, damit die Niederlage-Animation erst zu sehen ist.")]
     [Min(0f)]
     [SerializeField] private float defeatDialogueDelay = 1.5f;
+
+    [Header("Despawn (nach dem Dialog)")]
+    [Tooltip("So lange bleibt der Boss nach dem Dialog sichtbar.")]
+    [Min(0f)]
+    [SerializeField] private float despawnDelay = 5f;
+
+    [Min(0.01f)]
+    [SerializeField] private float fadeOutDuration = 1.5f;
 
     private Coroutine introRoutine;
 
@@ -47,9 +56,9 @@ public class BossDialogue : MonoBehaviour
             boss = GetComponent<SpearBossCombatBehaviour>();
         }
 
-        if (health == null)
+        if (encounter == null)
         {
-            health = GetComponent<Health>();
+            encounter = GetComponent<BossEncounter>();
         }
 
         if (visualController == null)
@@ -66,15 +75,15 @@ public class BossDialogue : MonoBehaviour
     private void OnEnable()
     {
         boss.PlayerSpottedFirstTime += StartIntro;
-        health.Damaged += HandleDamaged;
-        health.Died += HandleDeath;
+        encounter.Provoked += HandleEncounterProvoked;
+        encounter.Completed += HandleEncounterCompleted;
     }
 
     private void OnDisable()
     {
         boss.PlayerSpottedFirstTime -= StartIntro;
-        health.Damaged -= HandleDamaged;
-        health.Died -= HandleDeath;
+        encounter.Provoked -= HandleEncounterProvoked;
+        encounter.Completed -= HandleEncounterCompleted;
 
         StopListeningForDialogueInput();
     }
@@ -83,7 +92,10 @@ public class BossDialogue : MonoBehaviour
 
     private void StartIntro()
     {
-        if (hasPlayedIntro || !CanShow(introDialogue))
+        // Hat der Kampf schon begonnen (z.B. eine Wache angegriffen), kein Intro mehr.
+        if (hasPlayedIntro ||
+            encounter.IsProvoked ||
+            !CanShow(introDialogue))
         {
             return;
         }
@@ -108,8 +120,8 @@ public class BossDialogue : MonoBehaviour
         EndIntro();
     }
 
-    /// <summary>Angriff während des Intros -> Kampf startet sofort.</summary>
-    private void HandleDamaged(int damage)
+    /// <summary>Angriff auf den Boss oder eine Wache während des Intros -> Kampf startet sofort.</summary>
+    private void HandleEncounterProvoked()
     {
         if (introRoutine == null)
         {
@@ -132,7 +144,7 @@ public class BossDialogue : MonoBehaviour
 
     #region Defeat
 
-    private void HandleDeath()
+    private void HandleEncounterCompleted()
     {
         StartCoroutine(StartDefeatDialogueAfterDelay());
     }
@@ -143,7 +155,7 @@ public class BossDialogue : MonoBehaviour
 
         if (!CanShow(defeatDialogue) || GameInput.Instance == null)
         {
-            ShowFinalDefeatPose();
+            FinishDefeat();
             yield break;
         }
 
@@ -176,15 +188,19 @@ public class BossDialogue : MonoBehaviour
         GameInput.Instance.DisableDialogue();
         dialogueUI.HideSpeakingUI();
 
-        ShowFinalDefeatPose();
+        FinishDefeat();
     }
 
-    private void ShowFinalDefeatPose()
+    /// <summary>DefeatCry zeigen, kurz stehen lassen, dann ausblenden und entfernen.</summary>
+    private void FinishDefeat()
     {
-        if (visualController != null)
+        if (visualController == null)
         {
-            visualController.ShowFinalDefeatPose();
+            return;
         }
+
+        visualController.ShowFinalDefeatPose();
+        visualController.FadeOutAndDestroy(despawnDelay, fadeOutDuration);
     }
 
     private void StopListeningForDialogueInput()

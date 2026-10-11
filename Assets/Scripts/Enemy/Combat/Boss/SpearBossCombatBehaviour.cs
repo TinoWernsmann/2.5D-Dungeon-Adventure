@@ -130,6 +130,9 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     /// <summary>Der Player wurde zum ersten Mal entdeckt (z.B. für einen Intro-Dialog).</summary>
     public event Action PlayerSpottedFirstTime;
 
+    /// <summary>Der Boss hat seine Waffe gezogen und beginnt zu kämpfen.</summary>
+    public event Action CombatStarted;
+
     private BossPhaseSettings Phase => currentPhase switch
     {
         BossPhase.PhaseTwo => phaseTwo,
@@ -436,6 +439,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
         if (finishedAction == prepareStance)
         {
             isCombatPrepared = true;
+            CombatStarted?.Invoke();
         }
         else if (finishedAction == sidestep)
         {

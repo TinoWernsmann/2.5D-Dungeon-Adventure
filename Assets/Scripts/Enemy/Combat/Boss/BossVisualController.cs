@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -349,6 +350,33 @@ public class BossVisualController : MonoBehaviour
     public void ShowFinalDefeatPose()
     {
         isShowingFinalPose = true;
+    }
+
+    /// <summary>Wartet, blendet den Boss aus und zerstört ihn danach.</summary>
+    public void FadeOutAndDestroy(float delay, float fadeDuration)
+    {
+        StartCoroutine(FadeOutAndDestroyRoutine(delay, fadeDuration));
+    }
+
+    private IEnumerator FadeOutAndDestroyRoutine(float delay, float fadeDuration)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Color startColor = spriteRenderer.color;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            Color fadedColor = startColor;
+            fadedColor.a = Mathf.Lerp(startColor.a, 0f, elapsed / fadeDuration);
+            spriteRenderer.color = fadedColor;
+
+            yield return null;
+        }
+
+        Destroy(bossRoot.gameObject);
     }
 
     private void HandleDeath()

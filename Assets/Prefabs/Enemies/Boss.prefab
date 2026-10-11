@@ -1,5 +1,134 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3562253681228658766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7695447993480717403}
+  - component: {fileID: 5376294363207600744}
+  m_Layer: 0
+  m_Name: FoodStepsSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7695447993480717403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3562253681228658766}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3113970845522469459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &5376294363207600744
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3562253681228658766}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4959062712054593443
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +400,7 @@ GameObject:
   - component: {fileID: 2702597105588741353}
   - component: {fileID: 5813402917764031234}
   - component: {fileID: 7247249887242897219}
+  - component: {fileID: 1203880342902358544}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -294,6 +424,7 @@ Transform:
   - {fileID: 8129561734530974439}
   - {fileID: 7308323858064894872}
   - {fileID: 8950988234256527475}
+  - {fileID: 7695447993480717403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &7846596299216529493
@@ -700,13 +831,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossDialogue
   boss: {fileID: 457409782893092702}
-  health: {fileID: 121343053122972427}
+  encounter: {fileID: 1203880342902358544}
   visualController: {fileID: 5831512288307352162}
   dialogueUI: {fileID: 0}
   introDialogue: {fileID: 11400000, guid: 00069ef7a5e6447d96b222c59017b537, type: 2}
   introSecondsPerLine: 2.5
   defeatDialogue: {fileID: 11400000, guid: 05cba37b61e74ea1817c5986487afcf2, type: 2}
   defeatDialogueDelay: 1.5
+  despawnDelay: 5
+  fadeOutDuration: 1.5
 --- !u!114 &7247249887242897219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,10 +853,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootstepAudio
   soundSet: {fileID: 11400000, guid: d34efb45ac8448b7a016c6dc41dab4ac, type: 2}
-  audioSource: {fileID: 6689909783343714701}
+  audioSource: {fileID: 5376294363207600744}
   stepDistance: 1.8
   minMoveSpeed: 0.5
   minWalkDistanceForStop: 1
+--- !u!114 &1203880342902358544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42388a24a003456da47cfa6b8f702c0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossEncounter
+  boss: {fileID: 457409782893092702}
+  bossHealth: {fileID: 121343053122972427}
+  guards:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

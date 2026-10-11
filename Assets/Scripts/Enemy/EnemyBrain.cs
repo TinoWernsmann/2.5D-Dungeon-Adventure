@@ -9,6 +9,7 @@ using UnityEngine;
 /// - Wird der Gegner getroffen, dreht er sich zum Angreifer und greift an.
 /// - Entdeckt er den Player, alarmiert er Verbündete in der Nähe.
 /// - Verliert er den Player, sucht er ihn (siehe <see cref="EnemySearch"/>).
+/// - Passiv (z.B. Wachen eines Bosses): ignoriert den Player, bis er provoziert wird.
 /// </summary>
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(EnemyPatrol))]
@@ -54,6 +55,9 @@ public class EnemyBrain : MonoBehaviour
 
     private Vector3 lastKnownPlayerPosition;
     private Vector3 lastKnownPlayerVelocity;
+
+    /// <summary>Passiv = greift nicht von selbst an, nur wenn er provoziert wird.</summary>
+    public bool IsPassive { get; private set; }
 
     private void Awake()
     {
@@ -133,6 +137,11 @@ public class EnemyBrain : MonoBehaviour
 
     private void UpdatePatrolState()
     {
+        if (IsPassive)
+        {
+            return;
+        }
+
         if (perception.CanSeePlayer())
         {
             SpotPlayer();
@@ -265,6 +274,24 @@ public class EnemyBrain : MonoBehaviour
         }
 
         // Getroffen = weiß sofort, wo der Player ist (auch von hinten).
+        Provoke();
+    }
+
+    public void SetPassive(bool isPassive)
+    {
+        IsPassive = isPassive;
+    }
+
+    /// <summary>Beendet den passiven Modus und greift den Player sofort an.</summary>
+    public void Provoke()
+    {
+        if (!enabled || playerHealth == null)
+        {
+            return;
+        }
+
+        IsPassive = false;
+
         perception.ExtendAwareness(damageAwarenessDuration);
         SpotPlayer();
     }
@@ -293,6 +320,11 @@ public class EnemyBrain : MonoBehaviour
     /// <summary>Ein Verbündeter hat den Player gesehen -> dort nachsehen.</summary>
     private void ReceiveAlert(Vector3 playerPosition)
     {
+        if (IsPassive)
+        {
+            return;
+        }
+
         if (currentState != EnemyState.Patrol &&
             currentState != EnemyState.Search)
         {
