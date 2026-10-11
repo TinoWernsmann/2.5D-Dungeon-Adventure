@@ -1,35 +1,47 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
+/// <summary>
+/// Wählt die Sprites des Bosses anhand seines <see cref="BossVisualState"/>.
+/// Laufen und Stehen werden abhängig vom Kamerawinkel gezeigt (vorne / hinten / links / rechts),
+/// damit man sieht, wohin der Boss wirklich schaut. Angriffe und Blocken zeigen immer die Front,
+/// weil der Boss dabei zum Player schaut.
+/// (Das Ausrichten zur Kamera übernimmt die <see cref="EnemyBillboard"/>-Komponente.)
+/// </summary>
 public class BossVisualController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform bossRoot;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private SpearBossCombatBehaviour combatBehaviour;
+    [SerializeField] private EnemyMovement movement;
     [SerializeField] private Health health;
     [SerializeField] private Camera targetCamera;
 
-    [Header("Stand")]
+    [Header("Front - Stand / Walk")]
     [SerializeField] private Sprite[] standFrames;
+    [SerializeField] private Sprite[] forwardFrames;
+
+    [Header("Side - Stand")]
     [SerializeField] private Sprite standLeft;
     [SerializeField] private Sprite standRight;
 
-    [Header("Forward")]
-    [SerializeField] private Sprite[] forwardFrames;
-
-    [Header("Back")]
+    [Header("Back View")]
+    [Tooltip("Rückenansicht. Das erste Bild wird im Stehen verwendet.")]
     [SerializeField] private Sprite[] backFrames;
 
-    [Header("Prepare Combat")]
+    [Header("Combat Stance")]
     [SerializeField] private Sprite[] prepareCombatFrames;
 
     [Header("Attack")]
+    [FormerlySerializedAs("dodgeLeft")]
+    [SerializeField] private Sprite windupLeft;
+
+    [FormerlySerializedAs("dodgeRight")]
+    [SerializeField] private Sprite windupRight;
+
     [SerializeField] private Sprite attackLeft;
     [SerializeField] private Sprite attackRight;
-
-    [Header("Dodge")]
-    [SerializeField] private Sprite dodgeLeft;
-    [SerializeField] private Sprite dodgeRight;
 
     [Header("Block")]
     [SerializeField] private Sprite blockSprite;
@@ -45,16 +57,13 @@ public class BossVisualController : MonoBehaviour
     [SerializeField] private float movementFramesPerSecond = 6f;
 
     [Min(0.01f)]
-    [SerializeField] private float backFramesPerSecond = 5f;
-
-    [Min(0.01f)]
     [SerializeField] private float prepareFramesPerSecond = 3.33f;
 
     [Min(0.01f)]
     [SerializeField] private float defeatFramesPerSecond = 3f;
 
-    private BossVisualState previousState =
-        BossVisualState.Stand;
+    private BossVisualState previousState = BossVisualState.Idle;
+    private SpriteViewDirection previousDirection = SpriteViewDirection.Front;
 
     private int frameIndex;
     private float frameTimer;
@@ -72,8 +81,6 @@ public class BossVisualController : MonoBehaviour
         {
             health.Died += HandleDeath;
         }
-
-        ResetAnimation();
     }
 
     private void OnDestroy()
@@ -86,11 +93,14 @@ public class BossVisualController : MonoBehaviour
 
     private void LateUpdate()
     {
-        FaceCamera();
+        if (spriteRenderer == null || combatBehaviour == null)
+        {
+            return;
+        }
 
         if (isDefeated)
         {
-            UpdateDefeatVisual();
+            PlayLoop(defeatFrames, defeatFramesPerSecond);
             return;
         }
 
@@ -106,8 +116,7 @@ public class BossVisualController : MonoBehaviour
 
         if (spriteRenderer == null)
         {
-            spriteRenderer =
-                GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         if (targetCamera == null)
@@ -115,73 +124,79 @@ public class BossVisualController : MonoBehaviour
             targetCamera = Camera.main;
         }
 
-        if (bossRoot == null)
-        {
-            return;
-        }
-
         if (combatBehaviour == null)
         {
-            combatBehaviour =
-                bossRoot.GetComponent<
-                    SpearBossCombatBehaviour
-                >();
+            combatBehaviour = bossRoot.GetComponent<SpearBossCombatBehaviour>();
+        }
+
+        if (movement == null)
+        {
+            movement = bossRoot.GetComponent<EnemyMovement>();
         }
 
         if (health == null)
         {
-            health =
-                bossRoot.GetComponent<Health>();
+            health = bossRoot.GetComponent<Health>();
         }
     }
 
     private void UpdateVisual()
     {
-        if (combatBehaviour == null ||
-            spriteRenderer == null)
+        BossVisualState state = combatBehaviour.VisualState;
+        SpriteViewDirection direction = GetViewDirection(state);
+
+        HandleAnimationChange(state, direction);
+
+        if (direction != SpriteViewDirection.Front)
         {
+            ShowFromSideOrBack(direction);
             return;
         }
 
-        BossVisualState state =
-            combatBehaviour.VisualState;
+        ShowFromFront(state);
+    }
 
-        HandleStateChange(state);
+    private SpriteViewDirection GetViewDirection(BossVisualState state)
+    {
+        bool usesDirectionalSprites =
+            state == BossVisualState.Idle ||
+            state == BossVisualState.Walk ||
+            state == BossVisualState.CombatIdle;
 
+        if (!usesDirectionalSprites || targetCamera == null)
+        {
+            return SpriteViewDirection.Front;
+        }
+
+        return SpriteViewDirectionResolver.Resolve(
+            bossRoot,
+            targetCamera.transform.position
+        );
+    }
+
+    private void ShowFromFront(BossVisualState state)
+    {
         switch (state)
         {
-            case BossVisualState.Stand:
-                PlayLoop(
-                    standFrames,
-                    standFramesPerSecond
-                );
+            case BossVisualState.Idle:
+                PlayLoop(standFrames, standFramesPerSecond);
                 break;
 
-            case BossVisualState.StandLeft:
-                SetSprite(standLeft);
-                break;
-
-            case BossVisualState.StandRight:
-                SetSprite(standRight);
-                break;
-
-            case BossVisualState.Forward:
-                PlayLoop(
-                    forwardFrames,
-                    movementFramesPerSecond
-                );
-                break;
-
-            case BossVisualState.Back:
-                PlayBackAnimation();
+            case BossVisualState.Walk:
+                PlayLoop(forwardFrames, movementFramesPerSecond);
                 break;
 
             case BossVisualState.PrepareCombat:
-                PlayPrepareCombatLoop();
+            case BossVisualState.CombatIdle:
+                PlayLoop(prepareCombatFrames, prepareFramesPerSecond);
                 break;
 
-            case BossVisualState.CombatIdle:
-                PlayPrepareCombatLoop();
+            case BossVisualState.WindupLeft:
+                SetSprite(windupLeft);
+                break;
+
+            case BossVisualState.WindupRight:
+                SetSprite(windupRight);
                 break;
 
             case BossVisualState.AttackLeft:
@@ -192,197 +207,105 @@ public class BossVisualController : MonoBehaviour
                 SetSprite(attackRight);
                 break;
 
-            case BossVisualState.DodgeLeft:
-                SetSprite(dodgeLeft);
-                break;
-
-            case BossVisualState.DodgeRight:
-                SetSprite(dodgeRight);
-                break;
-
             case BossVisualState.Block:
                 SetSprite(blockSprite);
                 break;
+        }
+    }
 
-            case BossVisualState.Defeated:
+    private void ShowFromSideOrBack(SpriteViewDirection direction)
+    {
+        switch (direction)
+        {
+            case SpriteViewDirection.Back:
+                ShowBack();
+                break;
+
+            case SpriteViewDirection.Left:
+                SetSprite(standLeft);
+                break;
+
+            case SpriteViewDirection.Right:
+                SetSprite(standRight);
                 break;
         }
     }
 
-    private void HandleStateChange(
-        BossVisualState newState)
+    private void ShowBack()
     {
-        if (newState == previousState)
+        bool isMoving = movement != null && movement.IsMoving;
+
+        if (isMoving)
         {
+            PlayLoop(backFrames, movementFramesPerSecond);
             return;
         }
 
-        BossVisualState oldState =
-            previousState;
+        if (HasFrames(backFrames))
+        {
+            SetSprite(backFrames[0]);
+        }
+    }
+
+    private void HandleAnimationChange(
+        BossVisualState newState,
+        SpriteViewDirection newDirection)
+    {
+        bool stateChanged = newState != previousState;
+        bool directionChanged = newDirection != previousDirection;
+
+        bool isSameStanceLoop =
+            IsCombatStance(previousState) &&
+            IsCombatStance(newState);
 
         previousState = newState;
+        previousDirection = newDirection;
 
-        bool switchingBetweenCombatIdleStates =
-            IsPrepareLoopState(oldState) &&
-            IsPrepareLoopState(newState);
-
-        if (switchingBetweenCombatIdleStates)
+        if (directionChanged || (stateChanged && !isSameStanceLoop))
         {
-            return;
+            ResetAnimation();
         }
-
-        ResetAnimation();
     }
 
-    private bool IsPrepareLoopState(
-        BossVisualState state)
+    private static bool IsCombatStance(BossVisualState state)
     {
-        return state ==
-                   BossVisualState.PrepareCombat ||
-               state ==
-                   BossVisualState.CombatIdle;
+        return state == BossVisualState.PrepareCombat ||
+               state == BossVisualState.CombatIdle;
     }
 
-    private void PlayPrepareCombatLoop()
-    {
-        PlayLoop(
-            prepareCombatFrames,
-            prepareFramesPerSecond
-        );
-    }
-
-    private void PlayBackAnimation()
-    {
-        PlayOnceAndHoldLastFrame(
-            backFrames,
-            backFramesPerSecond
-        );
-    }
-
-    private void UpdateDefeatVisual()
-    {
-        PlayLoop(
-            defeatFrames,
-            defeatFramesPerSecond
-        );
-    }
-
-    private void PlayLoop(
-        Sprite[] frames,
-        float framesPerSecond)
+    private void PlayLoop(Sprite[] frames, float framesPerSecond)
     {
         if (!HasFrames(frames))
         {
             return;
         }
 
-        if (framesPerSecond <= 0f)
-        {
-            return;
-        }
-
-        float frameDuration =
-            1f / framesPerSecond;
+        float frameDuration = 1f / framesPerSecond;
 
         frameTimer += Time.deltaTime;
 
         while (frameTimer >= frameDuration)
         {
             frameTimer -= frameDuration;
-
-            frameIndex++;
-
-            if (frameIndex >= frames.Length)
-            {
-                frameIndex = 0;
-            }
+            frameIndex = (frameIndex + 1) % frames.Length;
         }
 
-        SetCurrentFrame(frames);
+        frameIndex = Mathf.Clamp(frameIndex, 0, frames.Length - 1);
+
+        SetSprite(frames[frameIndex]);
     }
 
-    private void PlayOnceAndHoldLastFrame(
-        Sprite[] frames,
-        float framesPerSecond)
+    private void SetSprite(Sprite sprite)
     {
-        if (!HasFrames(frames))
+        if (sprite != null)
         {
-            return;
+            spriteRenderer.sprite = sprite;
         }
-
-        if (framesPerSecond <= 0f)
-        {
-            return;
-        }
-
-        if (frameIndex >= frames.Length - 1)
-        {
-            frameIndex =
-                frames.Length - 1;
-
-            SetCurrentFrame(frames);
-            return;
-        }
-
-        float frameDuration =
-            1f / framesPerSecond;
-
-        frameTimer += Time.deltaTime;
-
-        while (frameTimer >= frameDuration)
-        {
-            frameTimer -= frameDuration;
-            frameIndex++;
-
-            if (frameIndex >=
-                frames.Length - 1)
-            {
-                frameIndex =
-                    frames.Length - 1;
-
-                break;
-            }
-        }
-
-        SetCurrentFrame(frames);
     }
 
-    private void SetCurrentFrame(
-        Sprite[] frames)
+    private static bool HasFrames(Sprite[] frames)
     {
-        if (!HasFrames(frames))
-        {
-            return;
-        }
-
-        frameIndex = Mathf.Clamp(
-            frameIndex,
-            0,
-            frames.Length - 1
-        );
-
-        SetSprite(
-            frames[frameIndex]
-        );
-    }
-
-    private void SetSprite(
-        Sprite sprite)
-    {
-        if (spriteRenderer == null ||
-            sprite == null)
-        {
-            return;
-        }
-
-        spriteRenderer.sprite = sprite;
-    }
-
-    private bool HasFrames(
-        Sprite[] frames)
-    {
-        return frames != null &&
-               frames.Length > 0;
+        return frames != null && frames.Length > 0;
     }
 
     private void ResetAnimation()
@@ -401,52 +324,14 @@ public class BossVisualController : MonoBehaviour
         isDefeated = true;
 
         ResetAnimation();
-
-        if (combatBehaviour != null)
-        {
-            combatBehaviour.EnterDeathState();
-        }
-
         DisableBossSystems();
     }
 
     private void DisableBossSystems()
     {
-        if (bossRoot == null)
-        {
-            return;
-        }
-
-        EnemyBrain brain =
-            bossRoot.GetComponent<EnemyBrain>();
-
-        EnemyPatrol patrol =
-            bossRoot.GetComponent<EnemyPatrol>();
-
-        EnemyPerception perception =
-            bossRoot.GetComponent<
-                EnemyPerception
-            >();
-
-        EnemyMovement movement =
-            bossRoot.GetComponent<
-                EnemyMovement
-            >();
-
-        if (brain != null)
-        {
-            brain.enabled = false;
-        }
-
-        if (patrol != null)
-        {
-            patrol.enabled = false;
-        }
-
-        if (perception != null)
-        {
-            perception.enabled = false;
-        }
+        DisableComponent<EnemyBrain>();
+        DisableComponent<EnemyPatrol>();
+        DisableComponent<EnemyPerception>();
 
         if (movement != null)
         {
@@ -454,48 +339,19 @@ public class BossVisualController : MonoBehaviour
             movement.enabled = false;
         }
 
-        DisableBossColliders();
-    }
-
-    private void DisableBossColliders()
-    {
-        Collider[] colliders =
-            bossRoot.GetComponentsInChildren<
-                Collider
-            >();
-
-        foreach (Collider bossCollider in colliders)
+        foreach (Collider bossCollider in bossRoot.GetComponentsInChildren<Collider>())
         {
             bossCollider.enabled = false;
         }
     }
 
-    private void FaceCamera()
+    private void DisableComponent<T>() where T : Behaviour
     {
-        if (targetCamera == null ||
-            spriteRenderer == null)
+        T component = bossRoot.GetComponent<T>();
+
+        if (component != null)
         {
-            return;
+            component.enabled = false;
         }
-
-        Transform visualTransform =
-            spriteRenderer.transform;
-
-        Vector3 directionToCamera =
-            targetCamera.transform.position -
-            visualTransform.position;
-
-        directionToCamera.y = 0f;
-
-        if (directionToCamera.sqrMagnitude
-            <= 0.001f)
-        {
-            return;
-        }
-
-        visualTransform.rotation =
-            Quaternion.LookRotation(
-                directionToCamera.normalized
-            );
     }
 }

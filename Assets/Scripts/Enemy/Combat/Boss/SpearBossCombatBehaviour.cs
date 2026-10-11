@@ -1,41 +1,31 @@
 using UnityEngine;
 
-public class SpearBossCombatBehaviour : EnemyCombatBehaviour
+/// <summary>
+/// Speer-Boss. Dieses Script ist nur der "Dirigent":
+/// Es entscheidet, WELCHE Aktion als Nächstes kommt. Die Aktionen selbst
+/// (Kombo, Sprungangriff, Ausweichen, Blocken, ...) liegen in eigenen Klassen unter Actions/.
+///
+/// Kampfablauf:
+///  1. Kampfhaltung einnehmen, sobald er den Player sieht.
+///  2. Zwischen den Angriffen hält er Abstand und umkreist den Player (Footsies).
+///  3. Angriff wählen: Kombo, Seitschritt + Konter oder Sprungangriff aus der Distanz.
+///  4. Nach Angriffen: Verschnaufen (Angriffsfenster für den Player!) oder Rückzug.
+///  5. Blocken nur von vorne und nur, wenn er gerade nichts anderes tut.
+///     Spammt der Player Angriffe, blockt er häufiger (er "lernt").
+///  6. Phasenwechsel bei bestimmten Lebenspunkten: kurz unverwundbar, danach schneller und aggressiver.
+/// </summary>
+public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
 {
-    private enum CombatState
-    {
-        None,
-        PrepareCombat,
-        Approach,
-        Attack,
-        Recovery,
-        DodgeLeft,
-        DodgeRight,
-        DodgeFollowUp,
-        Backstep,
-        Block,
-        BlockCounter,
-        Dead
-    }
-
-    private enum BossPhase
-    {
-        PhaseOne,
-        PhaseTwo,
-        PhaseThree
-    }
-
-    [Header("References")]
-    [SerializeField] private EnemyMovement movement;
+    [Header("Encounter")]
     [SerializeField] private Health health;
     [SerializeField] private GameObject _doorToDespawn;
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioClip phaseTransitionSound;
 
     [Header("Quest")]
     [SerializeField] private string _questTargetId = "SpearBoss";
 
-    private bool _questReported;
-
-    [Header("Combat Range")]
+    [Header("Ranges")]
     [Min(0.1f)]
     [SerializeField] private float combatRange = 8f;
 
@@ -43,66 +33,28 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     [SerializeField] private float attackRange = 3f;
 
     [Min(0.1f)]
+    [Tooltip("Abstand, den der Boss zwischen seinen Angriffen hält.")]
     [SerializeField] private float preferredDistance = 2.3f;
 
-    [Header("Prepare Combat")]
-    [Min(0.01f)]
-    [SerializeField] private float prepareCombatDuration = 0.9f;
-
-    [Header("Base Attack")]
-    [Min(1)]
-    [SerializeField] private int attackDamage = 30;
-
-    [Min(0.01f)]
-    [SerializeField] private float attackDuration = 0.5f;
-
-    [Range(0f, 1f)]
-    [SerializeField] private float damageMoment = 0.55f;
-
-    [Min(0f)]
-    [SerializeField] private float recoveryDuration = 0.55f;
-
-    [Header("Dodge")]
     [Min(0.1f)]
-    [SerializeField] private float dodgeDistance = 2.5f;
-
-    [Min(0.01f)]
-    [SerializeField] private float dodgeDuration = 0.45f;
-
-    [Min(0.1f)]
-    [SerializeField] private float dodgeAttackRange = 3.5f;
-
-    [Min(1)]
-    [SerializeField] private int dodgeAttackDamage = 35;
-
-    [Min(0.01f)]
-    [SerializeField] private float dodgeAttackDuration = 0.55f;
+    [Tooltip("Bis zu dieser Distanz kann der Boss einen Sprungangriff machen.")]
+    [SerializeField] private float lungeMaxRange = 7f;
 
     [Header("Block")]
-    [Range(0f, 180f)]
-    [SerializeField] private float blockAngle = 140f;
+    [Range(0f, 360f)]
+    [SerializeField] private float blockAngle = 100f;
 
-    [Min(0.01f)]
-    [SerializeField] private float blockDuration = 0.6f;
+    [Range(0f, 1f)]
+    [Tooltip("Zusätzliche Blockchance pro erlittenem Treffer (Player spammt Angriffe).")]
+    [SerializeField] private float blockPressurePerHit = 0.12f;
 
-    [Min(1)]
-    [SerializeField] private int blockCounterDamage = 40;
+    [Range(0f, 1f)]
+    [SerializeField] private float maxBlockPressure = 0.35f;
 
-    [Min(0.1f)]
-    [SerializeField] private float blockCounterRange = 3.2f;
+    [Min(0f)]
+    [SerializeField] private float blockPressureDecayPerSecond = 0.2f;
 
-    [Min(0.01f)]
-    [SerializeField] private float blockCounterDuration = 0.5f;
-
-    [Header("Block Debug")]
-    [SerializeField] private bool debugBlock = true;
-
-    [Header("Backstep")]
-    [Min(0.1f)]
-    [SerializeField] private float backstepDistance = 2f;
-
-    [Min(0.01f)]
-    [SerializeField] private float backstepDuration = 0.5f;
+    [SerializeField] private bool debugBlock;
 
     [Header("Phase Thresholds")]
     [Range(0.01f, 0.99f)]
@@ -111,781 +63,519 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
     [Range(0.01f, 0.99f)]
     [SerializeField] private float phaseThreeHealthPercent = 0.30f;
 
-    [Header("Phase 1 - Defensive")]
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseOneBlockChance = 0.45f;
+    [Header("Phases")]
+    [SerializeField] private BossPhaseSettings phaseOne = new(
+        blockChance: 0.25f, dodgeChance: 0.25f, backstepChance: 0.45f, lungeChance: 0.25f,
+        comboHits: 1, decisionDelay: 0.9f, speedMultiplier: 1f, damageMultiplier: 1f);
 
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseOneDodgeChance = 0.25f;
+    [SerializeField] private BossPhaseSettings phaseTwo = new(
+        blockChance: 0.45f, dodgeChance: 0.45f, backstepChance: 0.25f, lungeChance: 0.4f,
+        comboHits: 2, decisionDelay: 0.6f, speedMultiplier: 1.15f, damageMultiplier: 1.1f);
 
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseOneBackstepChance = 0.45f;
+    [SerializeField] private BossPhaseSettings phaseThree = new(
+        blockChance: 0.5f, dodgeChance: 0.6f, backstepChance: 0.1f, lungeChance: 0.55f,
+        comboHits: 3, decisionDelay: 0.35f, speedMultiplier: 1.3f, damageMultiplier: 1.2f);
 
-    [Header("Phase 2 - Mobile")]
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseTwoBlockChance = 0.30f;
+    [Header("Actions")]
+    [SerializeField] private BossPoseAction prepareStance =
+        new(duration: 0.9f, BossVisualState.PrepareCombat);
 
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseTwoDodgeChance = 0.45f;
+    [SerializeField] private BossStrikeAction comboStrike =
+        new(windupDuration: 0.45f, strikeDuration: 0.5f, range: 3f, damage: 5);
 
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseTwoBackstepChance = 0.25f;
+    [SerializeField] private BossLungeAction lunge = new();
 
-    [Min(1f)]
-    [SerializeField] private float phaseTwoSpeedMultiplier = 1.15f;
+    [SerializeField] private BossDashAction sidestep =
+        new(distance: 2.5f, duration: 0.45f);
 
-    [Min(1f)]
-    [SerializeField] private float phaseTwoDamageMultiplier = 1.10f;
+    [SerializeField] private BossStrikeAction dodgeCounter =
+        new(windupDuration: 0.2f, strikeDuration: 0.55f, range: 3.5f, damage: 5);
 
-    [Header("Phase 3 - Aggressive")]
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseThreeBlockChance = 0.15f;
+    [SerializeField] private BossDashAction backstep =
+        new(distance: 2f, duration: 0.5f);
 
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseThreeDodgeChance = 0.60f;
+    [SerializeField] private BossPoseAction block =
+        new(duration: 0.35f, BossVisualState.Block, blocksFrontalDamage: true);
 
-    [Range(0f, 1f)]
-    [SerializeField] private float phaseThreeBackstepChance = 0.10f;
+    [SerializeField] private BossStrikeAction blockCounter =
+        new(windupDuration: 0.15f, strikeDuration: 0.5f, range: 3.2f, damage: 5);
 
-    [Min(1f)]
-    [SerializeField] private float phaseThreeSpeedMultiplier = 1.30f;
+    [Tooltip("Verschnaufpause nach einem Angriff: dreht sich nicht mit, blockt nicht.")]
+    [SerializeField] private BossPoseAction recover =
+        new(duration: 0.8f, BossVisualState.Idle, facesTarget: false);
 
-    [Min(1f)]
-    [SerializeField] private float phaseThreeDamageMultiplier = 1.20f;
+    [SerializeField] private BossPoseAction phaseTransition =
+        new(duration: 1.2f, BossVisualState.PrepareCombat, isInvulnerable: true);
 
-    [Header("Audio")]
-    [SerializeField] private AudioClip[] attackSounds;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource musicSource;
+    private BossAction currentAction;
+    private BossAction lastChosenAttack;
 
-    private CombatState currentState = CombatState.None;
     private BossPhase currentPhase = BossPhase.PhaseOne;
 
-    private Transform currentTarget;
-    private Health currentTargetHealth;
+    private bool isCombatPrepared;
+    private bool isEngaged;
+    private bool isDead;
+    private bool isPhaseTransitionPending;
+    private bool questReported;
 
-    private float stateTimer;
-    private float attackTimer;
+    private float decisionTimer;
+    private float blockPressure;
 
-    private bool damageApplied;
-    private bool dodgeToLeft;
-    private bool combatPrepared;
-    private bool combatAwarenessActive;
+    private BossPhaseSettings Phase => currentPhase switch
+    {
+        BossPhase.PhaseTwo => phaseTwo,
+        BossPhase.PhaseThree => phaseThree,
+        _ => phaseOne
+    };
 
-    private BossVisualState visualState =
-        BossVisualState.Stand;
-
-    public BossVisualState VisualState => visualState;
-
-    public bool IsCombatPrepared => combatPrepared;
-
-    public bool IsCombatAwarenessActive =>
-        combatAwarenessActive;
-
-    public override bool IsPerformingAttack =>
-        currentState == CombatState.Attack ||
-        currentState == CombatState.DodgeFollowUp ||
-        currentState == CombatState.BlockCounter;
-
-    public override float AttackProgress
+    public BossVisualState VisualState
     {
         get
         {
-            float duration;
-
-            switch (currentState)
+            if (isDead)
             {
-                case CombatState.Attack:
-                    duration =
-                        GetAdjustedDuration(attackDuration);
-                    break;
-
-                case CombatState.DodgeFollowUp:
-                    duration =
-                        GetAdjustedDuration(dodgeAttackDuration);
-                    break;
-
-                case CombatState.BlockCounter:
-                    duration =
-                        GetAdjustedDuration(blockCounterDuration);
-                    break;
-
-                default:
-                    return 0f;
+                return BossVisualState.Defeated;
             }
 
-            if (duration <= 0f)
+            if (currentAction != null)
             {
-                return 0f;
+                return currentAction.VisualState;
             }
 
-            return Mathf.Clamp01(
-                attackTimer / duration
-            );
+            if (!isCombatPrepared)
+            {
+                return movement.IsMoving
+                    ? BossVisualState.Walk
+                    : BossVisualState.Idle;
+            }
+
+            return BossVisualState.CombatIdle;
         }
     }
 
-    private void Awake()
+    public override bool IsPerformingAttack =>
+        currentAction != null && currentAction.IsAttacking;
+
+    public override float AttackProgress =>
+        currentAction?.AttackProgress ?? 0f;
+
+    // Nur zwischen zwei Aktionen ausbrechen – nicht mitten im Block, Phasenwechsel usw.
+    protected override bool CanEscapeFromCorner =>
+        !isDead &&
+        isCombatPrepared &&
+        currentAction == null &&
+        !isPhaseTransitionPending;
+
+    #region Unity
+
+    protected override void Awake()
     {
-        if (movement == null)
-        {
-            movement = GetComponent<EnemyMovement>();
-        }
+        base.Awake();
 
         if (health == null)
         {
             health = GetComponent<Health>();
         }
 
-        if (audioSource == null)
+        foreach (BossAction action in AllActions())
         {
-            audioSource = GetComponent<AudioSource>();
+            action.Bind(this);
         }
-    }
-
-    private void PlayRandomAttackSound()
-    {
-        if (audioSource == null ||
-            attackSounds == null ||
-            attackSounds.Length == 0)
-        {
-            return;
-        }
-
-        int randomIndex =
-            Random.Range(0, attackSounds.Length);
-
-        AudioClip randomClip =
-            attackSounds[randomIndex];
-
-        if (randomClip == null)
-        {
-            return;
-        }
-
-        audioSource.PlayOneShot(randomClip);
     }
 
     private void OnEnable()
     {
-        health.Died += Die;
+        health.Died += HandleDeath;
+        health.Damaged += HandleDamaged;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        health.Died -= Die;
+        base.OnDisable();
+
+        health.Died -= HandleDeath;
+        health.Damaged -= HandleDamaged;
     }
 
-
-    private void Die()
+    private void Update()
     {
-        _doorToDespawn?.SetActive(false);
-
-        if (musicSource != null)
-        {
-            musicSource.Stop();
-        }
-
-        // Quest-Fortschritt melden, sobald der Boss besiegt wurde.
-        if (!_questReported)
-        {
-            _questReported = true;
-
-            QuestManager.Report(
-                QuestType.Kill,
-                _questTargetId
-            );
-        }
-    }
-
-    public override bool IsInCombatRange(
-        Transform target)
-    {
-        if (target == null)
-        {
-            return false;
-        }
-
-        return GetHorizontalDistance(target)
-               <= combatRange;
-    }
-
-    public void NotifyPlayerDetected(
-        Transform target,
-        Health targetHealth)
-    {
-        if (currentState == CombatState.Dead)
-        {
-            return;
-        }
-
-        combatAwarenessActive = true;
-
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
-        if (combatPrepared)
-        {
-            return;
-        }
-
-        if (currentState ==
-            CombatState.PrepareCombat)
-        {
-            return;
-        }
-
-        ChangeState(
-            CombatState.PrepareCombat
+        blockPressure = Mathf.Max(
+            0f,
+            blockPressure - blockPressureDecayPerSecond * Time.deltaTime
         );
     }
 
-    public void NotifyPlayerLost()
+    #endregion
+
+    #region Brain Hooks
+
+    public override bool IsInCombatRange(Transform target)
     {
-        if (currentState == CombatState.Dead)
+        return GetHorizontalDistance(target) <= combatRange;
+    }
+
+    public override void OnTargetSpotted(Transform target, Health targetHealth)
+    {
+        if (isDead)
         {
             return;
         }
 
-        combatAwarenessActive = false;
+        SetTarget(target, targetHealth);
+        isEngaged = true;
 
-        currentTarget = null;
-        currentTargetHealth = null;
-
-        attackTimer = 0f;
-        stateTimer = 0f;
-        damageApplied = false;
-
-        currentState = CombatState.None;
-        visualState = BossVisualState.Stand;
-
-        if (movement != null)
+        if (!isCombatPrepared && currentAction == null)
         {
-            movement.ResetRotationControl();
+            StartAction(prepareStance);
         }
     }
 
-    public override void EnterCombat(
-        Transform target,
-        Health targetHealth)
+    public override void OnTargetLost()
     {
-        if (currentState == CombatState.Dead)
+        AbortCurrentAction();
+
+        isEngaged = false;
+        isCombatPrepared = false;
+
+        movement.ResetRotationControl();
+    }
+
+    public override void UpdateChase(Transform target)
+    {
+        if (isDead)
         {
             return;
         }
 
-        combatAwarenessActive = true;
-
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
-        UpdateBossPhase();
-
-        if (!combatPrepared)
+        if (currentAction != null)
         {
-            if (currentState !=
-                CombatState.PrepareCombat)
+            TickCurrentAction();
+            return;
+        }
+
+        movement.MoveToWhileFacing(target.position, target);
+    }
+
+    protected override void OnCombatEntered()
+    {
+        isEngaged = true;
+        decisionTimer = Phase.DecisionDelay;
+
+        if (!isCombatPrepared && currentAction == null)
+        {
+            StartAction(prepareStance);
+        }
+    }
+
+    protected override void OnCombatUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        UpdatePhase();
+
+        if (currentAction != null)
+        {
+            TickCurrentAction();
+            return;
+        }
+
+        if (isPhaseTransitionPending)
+        {
+            StartPhaseTransition();
+            return;
+        }
+
+        UpdateFootsies();
+    }
+
+    protected override void OnCombatExited()
+    {
+        AbortCurrentAction();
+        movement.Stop();
+    }
+
+    #endregion
+
+    #region Decision Making
+
+    /// <summary>Zwischen den Angriffen: Abstand halten, umkreisen, auf eine Lücke warten.</summary>
+    private void UpdateFootsies()
+    {
+        float distance = DistanceToTarget();
+
+        decisionTimer -= Time.deltaTime;
+
+        if (distance > lungeMaxRange)
+        {
+            movement.MoveToWhileFacing(Target.position, Target);
+            return;
+        }
+
+        if (decisionTimer > 0f)
+        {
+            HoldDistance(distance);
+            return;
+        }
+
+        ChooseAttack(distance);
+    }
+
+    private void HoldDistance(float distance)
+    {
+        const float Tolerance = 0.5f;
+
+        if (distance > preferredDistance + Tolerance)
+        {
+            movement.MoveToWhileFacing(Target.position, Target);
+            return;
+        }
+
+        if (distance < preferredDistance - Tolerance)
+        {
+            movement.MoveToWhileFacing(GetRetreatPoint(1f), Target);
+            return;
+        }
+
+        StrafeAroundTarget(preferredDistance, stepDegrees: 25f);
+    }
+
+    private void ChooseAttack(float distance)
+    {
+        if (distance > attackRange)
+        {
+            if (Random.value <= Phase.LungeChance)
             {
-                ChangeState(
-                    CombatState.PrepareCombat
-                );
+                StartAttack(lunge);
+                return;
             }
 
+            // Kein Sprungangriff -> näher ran und kurz danach neu entscheiden.
+            decisionTimer = 0.3f;
             return;
         }
 
-        ChangeState(
-            CombatState.Approach
+        bool dodgedLastTime = lastChosenAttack == sidestep;
+
+        if (!dodgedLastTime && Random.value <= Phase.DodgeChance)
+        {
+            StartSidestep();
+            return;
+        }
+
+        comboStrike.SetHitCount(Phase.ComboHits);
+        StartAttack(comboStrike);
+    }
+
+    private void OnActionFinished(BossAction finishedAction)
+    {
+        decisionTimer = Phase.DecisionDelay;
+
+        if (finishedAction == prepareStance)
+        {
+            isCombatPrepared = true;
+        }
+        else if (finishedAction == sidestep)
+        {
+            StartAction(dodgeCounter);
+        }
+        else if (finishedAction == block)
+        {
+            StartAction(blockCounter);
+        }
+        else if (finishedAction.IsAttacking)
+        {
+            FollowUpAfterAttack();
+        }
+        else if (finishedAction == backstep)
+        {
+            TryMixUpLunge();
+        }
+    }
+
+    private void FollowUpAfterAttack()
+    {
+        if (Random.value <= Phase.BackstepChance)
+        {
+            StartBackstep();
+            return;
+        }
+
+        StartAction(recover);
+    }
+
+    /// <summary>Ab Phase 2: Rückzug direkt gefolgt von einem Sprungangriff.</summary>
+    private void TryMixUpLunge()
+    {
+        bool canMixUp =
+            currentPhase != BossPhase.PhaseOne &&
+            HasValidTarget() &&
+            DistanceToTarget() <= lungeMaxRange &&
+            Random.value <= Phase.LungeChance;
+
+        if (canMixUp)
+        {
+            StartAction(lunge);
+        }
+    }
+
+    private void StartAttack(BossAction attack)
+    {
+        lastChosenAttack = attack;
+        StartAction(attack);
+    }
+
+    private void StartSidestep()
+    {
+        bool toLeft = Random.value < 0.5f;
+
+        sidestep.SetDirection(
+            toLeft ? -transform.right : transform.right,
+            toLeft ? BossVisualState.WindupLeft : BossVisualState.WindupRight
         );
+
+        StartAttack(sidestep);
     }
 
-    public override void UpdateCombat(
-        Transform target,
-        Health targetHealth)
+    private void StartBackstep()
     {
-        if (currentState == CombatState.Dead)
+        backstep.SetDirection(-DirectionToTarget(), BossVisualState.CombatIdle);
+        StartAction(backstep);
+    }
+
+    #endregion
+
+    #region Action Handling
+
+    private void StartAction(BossAction action)
+    {
+        currentAction?.Exit();
+
+        currentAction = action;
+        currentAction.Enter();
+    }
+
+    private void TickCurrentAction()
+    {
+        if (!currentAction.Tick(Time.deltaTime))
         {
             return;
         }
 
-        combatAwarenessActive = true;
+        BossAction finishedAction = currentAction;
 
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
+        currentAction.Exit();
+        currentAction = null;
 
-        if (!HasValidTarget())
+        OnActionFinished(finishedAction);
+    }
+
+    private void AbortCurrentAction()
+    {
+        currentAction?.Exit();
+        currentAction = null;
+    }
+
+    private BossAction[] AllActions()
+    {
+        return new BossAction[]
+        {
+            prepareStance, comboStrike, lunge, sidestep, dodgeCounter,
+            backstep, block, blockCounter, recover, phaseTransition
+        };
+    }
+
+    #endregion
+
+    #region Phases
+
+    private void UpdatePhase()
+    {
+        if (health.MaxHealth <= 0)
         {
             return;
         }
 
-        UpdateBossPhase();
+        float healthPercent = (float)health.CurrentHealth / health.MaxHealth;
 
-        switch (currentState)
-        {
-            case CombatState.PrepareCombat:
-                UpdatePrepareCombat();
-                break;
+        BossPhase newPhase =
+            healthPercent <= phaseThreeHealthPercent ? BossPhase.PhaseThree :
+            healthPercent <= phaseTwoHealthPercent ? BossPhase.PhaseTwo :
+            BossPhase.PhaseOne;
 
-            case CombatState.None:
-                ChangeState(
-                    combatPrepared
-                        ? CombatState.Approach
-                        : CombatState.PrepareCombat
-                );
-                break;
-
-            case CombatState.Approach:
-                UpdateApproach();
-                break;
-
-            case CombatState.Attack:
-                UpdateAttack();
-                break;
-
-            case CombatState.Recovery:
-                UpdateRecovery();
-                break;
-
-            case CombatState.DodgeLeft:
-            case CombatState.DodgeRight:
-                UpdateDodge();
-                break;
-
-            case CombatState.DodgeFollowUp:
-                UpdateDodgeFollowUp();
-                break;
-
-            case CombatState.Backstep:
-                UpdateBackstep();
-                break;
-
-            case CombatState.Block:
-                UpdateBlock();
-                break;
-
-            case CombatState.BlockCounter:
-                UpdateBlockCounter();
-                break;
-        }
-    }
-
-    public override void ExitCombat()
-    {
-        if (currentState == CombatState.Dead)
-        {
-            return;
-        }
-
-        attackTimer = 0f;
-        stateTimer = 0f;
-        damageApplied = false;
-
-        currentState = CombatState.None;
-
-        visualState =
-            combatAwarenessActive && combatPrepared
-                ? BossVisualState.CombatIdle
-                : BossVisualState.Stand;
-    }
-
-    public bool TryBlockAttack(
-        Transform attacker)
-    {
-        if (!CanAttemptBlock(attacker))
-        {
-            if (debugBlock)
-            {
-                Debug.Log(
-                    $"[BOSS BLOCK] Cannot block. " +
-                    $"State: {currentState} | " +
-                    $"Prepared: {combatPrepared} | " +
-                    $"Aware: {combatAwarenessActive}",
-                    gameObject
-                );
-            }
-
-            return false;
-        }
-
-        float blockChance =
-            GetBlockChance();
-
-        float roll = Random.value;
-
-        if (debugBlock)
-        {
-            Debug.Log(
-                $"[BOSS BLOCK] Attempt | " +
-                $"Phase: {currentPhase} | " +
-                $"Chance: {blockChance:P0} | " +
-                $"Roll: {roll:F2}",
-                gameObject
-            );
-        }
-
-        if (roll > blockChance)
-        {
-            if (debugBlock)
-            {
-                Debug.Log(
-                    $"[BOSS BLOCK] FAILED | " +
-                    $"Damage will be received.",
-                    gameObject
-                );
-            }
-
-            return false;
-        }
-
-        Debug.Log(
-            $"<color=cyan><b>[BOSS BLOCK]</b></color> " +
-            $"{gameObject.name} BLOCKED THE ATTACK!",
-            gameObject
-        );
-
-        StartBlock(attacker);
-
-        return true;
-    }
-
-    public void EnterDeathState()
-    {
-        if (currentState == CombatState.Dead)
-        {
-            return;
-        }
-
-        if (movement != null)
-        {
-            movement.Stop();
-            movement.ResetRotationControl();
-        }
-
-        combatAwarenessActive = false;
-
-        currentState = CombatState.Dead;
-        visualState = BossVisualState.Defeated;
-
-        stateTimer = 0f;
-        attackTimer = 0f;
-        damageApplied = false;
-
-        currentTarget = null;
-        currentTargetHealth = null;
-    }
-
-    private void UpdateBossPhase()
-    {
-        if (health == null ||
-            health.MaxHealth <= 0)
-        {
-            return;
-        }
-
-        float healthPercent =
-            (float)health.CurrentHealth /
-            health.MaxHealth;
-
-        BossPhase newPhase;
-
-        if (healthPercent <=
-            phaseThreeHealthPercent)
-        {
-            newPhase =
-                BossPhase.PhaseThree;
-        }
-        else if (healthPercent <=
-                 phaseTwoHealthPercent)
-        {
-            newPhase =
-                BossPhase.PhaseTwo;
-        }
-        else
-        {
-            newPhase =
-                BossPhase.PhaseOne;
-        }
-
-        if (newPhase == currentPhase)
+        if (newPhase <= currentPhase)
         {
             return;
         }
 
         currentPhase = newPhase;
+        isPhaseTransitionPending = true;
 
-        Debug.Log(
-            $"[BOSS] Entered {currentPhase}.",
-            gameObject
-        );
+        movement.SetSpeedMultiplier(Phase.SpeedMultiplier);
+
+        LogBoss($"Entered {currentPhase}.");
     }
 
-    private void UpdatePrepareCombat()
+    private void StartPhaseTransition()
     {
-        if (currentTarget != null)
+        isPhaseTransitionPending = false;
+
+        if (audioSource != null && phaseTransitionSound != null)
         {
-            movement.StopAndFace(
-                currentTarget
-            );
+            audioSource.PlayOneShot(phaseTransitionSound);
         }
 
-        stateTimer -= Time.deltaTime;
-
-        if (stateTimer > 0f)
-        {
-            return;
-        }
-
-        combatPrepared = true;
-
-        if (debugBlock)
-        {
-            Debug.Log(
-                "[BOSS] Combat stance prepared.",
-                gameObject
-            );
-        }
-
-        if (currentTarget != null)
-        {
-            ChangeState(
-                CombatState.Approach
-            );
-        }
-        else
-        {
-            currentState =
-                CombatState.None;
-
-            visualState =
-                BossVisualState.CombatIdle;
-        }
+        StartAction(phaseTransition);
     }
 
-    private void UpdateApproach()
+    #endregion
+
+    #region Block & Damage
+
+    /// <summary>Wird von <see cref="BossDamageReceiver"/> bei jedem Treffer gefragt.</summary>
+    public bool TryBlockAttack(Transform attacker)
     {
-        float distance =
-            GetHorizontalDistance(
-                currentTarget
-            );
-
-        if (distance <= preferredDistance)
-        {
-            movement.StopAndFace(
-                currentTarget
-            );
-
-            visualState =
-                BossVisualState.CombatIdle;
-
-            DecideCombatAction();
-            return;
-        }
-
-        visualState =
-            BossVisualState.CombatIdle;
-
-        movement.MoveToWhileFacing(
-            currentTarget.position,
-            currentTarget
-        );
-    }
-
-    private void DecideCombatAction()
-    {
-        float distance =
-            GetHorizontalDistance(
-                currentTarget
-            );
-
-        if (distance > attackRange)
-        {
-            ChangeState(
-                CombatState.Approach
-            );
-
-            return;
-        }
-
-        if (Random.value <=
-            GetDodgeChance())
-        {
-            StartRandomDodge();
-            return;
-        }
-
-        StartNormalAttack();
-    }
-
-    private void StartNormalAttack()
-    {
-        bool attackLeft =
-            Random.value < 0.5f;
-
-        visualState = attackLeft
-            ? BossVisualState.AttackLeft
-            : BossVisualState.AttackRight;
-
-        ChangeState(
-            CombatState.Attack
-        );
-    }
-
-    private void UpdateAttack()
-    {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        attackTimer += Time.deltaTime;
-
-        float duration =
-            GetAdjustedDuration(
-                attackDuration
-            );
-
-        TryApplyDamage(
-            attackRange,
-            GetAdjustedDamage(
-                attackDamage
-            ),
-            duration
-        );
-
-        if (attackTimer >= duration)
-        {
-            ChangeState(
-                CombatState.Recovery
-            );
-        }
-    }
-
-    private void StartRandomDodge()
-    {
-        StartDodge(
-            Random.value < 0.5f
-        );
-    }
-
-    private void StartDodge(
-        bool toLeft)
-    {
-        dodgeToLeft = toLeft;
-
-        Vector3 sideDirection =
-            toLeft
-                ? -transform.right
-                : transform.right;
-
-        Vector3 destination =
-            transform.position +
-            sideDirection * dodgeDistance;
-
-        visualState = toLeft
-            ? BossVisualState.DodgeLeft
-            : BossVisualState.DodgeRight;
-
-        movement.MoveToWhileFacing(
-            destination,
-            currentTarget
-        );
-
-        ChangeState(
-            toLeft
-                ? CombatState.DodgeLeft
-                : CombatState.DodgeRight
-        );
-    }
-
-    private void UpdateDodge()
-    {
-        stateTimer -= Time.deltaTime;
-
-        if (stateTimer > 0f &&
-            !movement.HasReachedDestination)
-        {
-            return;
-        }
-
-        StartDodgeFollowUp();
-    }
-
-    private void StartDodgeFollowUp()
-    {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        visualState = dodgeToLeft
-            ? BossVisualState.AttackLeft
-            : BossVisualState.AttackRight;
-
-        ChangeState(
-            CombatState.DodgeFollowUp
-        );
-    }
-
-    private void UpdateDodgeFollowUp()
-    {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        attackTimer += Time.deltaTime;
-
-        float duration =
-            GetAdjustedDuration(
-                dodgeAttackDuration
-            );
-
-        TryApplyDamage(
-            dodgeAttackRange,
-            GetAdjustedDamage(
-                dodgeAttackDamage
-            ),
-            duration
-        );
-
-        if (attackTimer >= duration)
-        {
-            ChangeState(
-                CombatState.Recovery
-            );
-        }
-    }
-
-    private bool CanAttemptBlock(
-        Transform attacker)
-    {
-        if (!combatPrepared ||
-            !combatAwarenessActive ||
-            attacker == null)
+        if (isDead || !isCombatPrepared || !isEngaged || attacker == null)
         {
             return false;
         }
 
-        if (currentState == CombatState.Dead ||
-            currentState == CombatState.Block ||
-            currentState == CombatState.BlockCounter ||
-            currentState == CombatState.Attack ||
-            currentState == CombatState.DodgeLeft ||
-            currentState == CombatState.DodgeRight ||
-            currentState == CombatState.DodgeFollowUp)
+        if (currentAction != null && currentAction.IsInvulnerable)
         {
+            return true;
+        }
+
+        // Von hinten / der Seite getroffen -> kein Block möglich.
+        if (!IsInFrontArc(attacker))
+        {
+            LogBoss("Hit from behind – cannot block.");
             return false;
         }
 
-        return IsAttackerInBlockArc(
-            attacker
-        );
+        if (currentAction != null)
+        {
+            // Nur echtes Blocken hält, alles andere ist ein Angriffsfenster.
+            return currentAction.BlocksFrontalDamage;
+        }
+
+        float blockChance = Mathf.Clamp01(Phase.BlockChance + blockPressure);
+        bool blocked = Random.value <= blockChance;
+
+        LogBoss($"Block attempt ({blockChance:P0}): {(blocked ? "BLOCKED" : "failed")}");
+
+        if (blocked)
+        {
+            StartAction(block);
+        }
+
+        return blocked;
     }
 
-    private bool IsAttackerInBlockArc(
-        Transform attacker)
+    private bool IsInFrontArc(Transform attacker)
     {
-        Vector3 direction =
-            attacker.position -
-            transform.position;
-
+        Vector3 direction = attacker.position - transform.position;
         direction.y = 0f;
 
         if (direction.sqrMagnitude <= 0.001f)
@@ -893,437 +583,92 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour
             return true;
         }
 
-        float angle =
-            Vector3.Angle(
-                transform.forward,
-                direction.normalized
-            );
-
-        return angle <=
-               blockAngle * 0.5f;
+        return Vector3.Angle(transform.forward, direction) <= blockAngle * 0.5f;
     }
 
-    private void StartBlock(
-        Transform attacker)
+    private void HandleDamaged(int damage)
     {
-        currentTarget = attacker;
-
-        Health attackerHealth =
-            attacker.GetComponent<Health>();
-
-        if (attackerHealth == null)
-        {
-            attackerHealth =
-                attacker.GetComponentInParent<Health>();
-        }
-
-        if (attackerHealth != null)
-        {
-            currentTargetHealth =
-                attackerHealth;
-        }
-
-        movement.StopAndFace(attacker);
-
-        ChangeState(
-            CombatState.Block
+        blockPressure = Mathf.Min(
+            maxBlockPressure,
+            blockPressure + blockPressurePerHit
         );
     }
 
-    private void UpdateBlock()
+    private void HandleDeath()
     {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        stateTimer -= Time.deltaTime;
-
-        if (stateTimer > 0f)
+        if (isDead)
         {
             return;
         }
 
-        StartBlockCounter();
-    }
+        isDead = true;
+        isEngaged = false;
 
-    private void StartBlockCounter()
-    {
-        bool attackLeft =
-            Random.value < 0.5f;
+        AbortCurrentAction();
+        movement.Stop();
+        movement.ResetRotationControl();
 
-        visualState = attackLeft
-            ? BossVisualState.AttackLeft
-            : BossVisualState.AttackRight;
+        _doorToDespawn?.SetActive(false);
 
-        ChangeState(
-            CombatState.BlockCounter
-        );
-    }
-
-    private void UpdateBlockCounter()
-    {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        attackTimer += Time.deltaTime;
-
-        float duration =
-            GetAdjustedDuration(
-                blockCounterDuration
-            );
-
-        TryApplyDamage(
-            blockCounterRange,
-            GetAdjustedDamage(
-                blockCounterDamage
-            ),
-            duration
-        );
-
-        if (attackTimer >= duration)
+        if (musicSource != null)
         {
-            ChangeState(
-                CombatState.Recovery
-            );
+            musicSource.Stop();
         }
+
+        ReportQuestProgress();
     }
 
-    private void UpdateRecovery()
+    private void ReportQuestProgress()
     {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        visualState =
-            BossVisualState.CombatIdle;
-
-        stateTimer -= Time.deltaTime;
-
-        if (stateTimer > 0f)
+        if (questReported)
         {
             return;
         }
 
-        if (Random.value <=
-            GetBackstepChance())
-        {
-            StartBackstep();
-            return;
-        }
+        questReported = true;
 
-        ChangeState(
-            CombatState.Approach
-        );
+        QuestManager.Report(QuestType.Kill, _questTargetId);
     }
 
-    private void StartBackstep()
+    #endregion
+
+    #region IBossActionContext
+
+    public Transform Root => transform;
+
+    public EnemyMovement Movement => movement;
+
+    public Transform CurrentTarget => Target;
+
+    public float ScaleDuration(float baseDuration)
     {
-        Vector3 directionAway =
-            transform.position -
-            currentTarget.position;
-
-        directionAway.y = 0f;
-
-        if (directionAway.sqrMagnitude <= 0.001f)
-        {
-            directionAway =
-                -transform.forward;
-        }
-
-        directionAway.Normalize();
-
-        Vector3 destination =
-            transform.position +
-            directionAway *
-            backstepDistance;
-
-        visualState =
-            BossVisualState.Back;
-
-        movement.MoveToWhileFacing(
-            destination,
-            currentTarget
-        );
-
-        ChangeState(
-            CombatState.Backstep
-        );
+        return baseDuration / Phase.SpeedMultiplier;
     }
 
-    private void UpdateBackstep()
+    public bool TryDealDamage(float range, int baseDamage)
     {
-        stateTimer -= Time.deltaTime;
+        int scaledDamage = Mathf.RoundToInt(baseDamage * Phase.DamageMultiplier);
 
-        if (stateTimer > 0f &&
-            !movement.HasReachedDestination)
-        {
-            return;
-        }
-
-        ChangeState(
-            CombatState.Approach
-        );
+        return TryHitTarget(range, scaledDamage);
     }
 
-    private void TryApplyDamage(
-        float range,
-        int damage,
-        float duration)
+    public Vector3 GetDirectionToPredictedTarget(float secondsAhead)
     {
-        if (damageApplied)
-        {
-            return;
-        }
-
-        float damageTime =
-            duration * damageMoment;
-
-        if (attackTimer < damageTime)
-        {
-            return;
-        }
-
-        damageApplied = true;
-
-        if (!HasValidTarget())
-        {
-            return;
-        }
-
-        if (GetHorizontalDistance(
-                currentTarget) > range)
-        {
-            return;
-        }
-
-        currentTargetHealth.TakeDamage(
-            damage
-        );
+        return HorizontalDirectionTo(PredictTargetPosition(secondsAhead));
     }
 
-    private float GetBlockChance()
+    public void PlayAttackSound()
     {
-        return currentPhase switch
+        PlayRandomAttackSound();
+    }
+
+    #endregion
+
+    private void LogBoss(string message)
+    {
+        if (debugBlock)
         {
-            BossPhase.PhaseOne =>
-                phaseOneBlockChance,
-
-            BossPhase.PhaseTwo =>
-                phaseTwoBlockChance,
-
-            BossPhase.PhaseThree =>
-                phaseThreeBlockChance,
-
-            _ => phaseOneBlockChance
-        };
-    }
-
-    private float GetDodgeChance()
-    {
-        return currentPhase switch
-        {
-            BossPhase.PhaseOne =>
-                phaseOneDodgeChance,
-
-            BossPhase.PhaseTwo =>
-                phaseTwoDodgeChance,
-
-            BossPhase.PhaseThree =>
-                phaseThreeDodgeChance,
-
-            _ => phaseOneDodgeChance
-        };
-    }
-
-    private float GetBackstepChance()
-    {
-        return currentPhase switch
-        {
-            BossPhase.PhaseOne =>
-                phaseOneBackstepChance,
-
-            BossPhase.PhaseTwo =>
-                phaseTwoBackstepChance,
-
-            BossPhase.PhaseThree =>
-                phaseThreeBackstepChance,
-
-            _ => phaseOneBackstepChance
-        };
-    }
-
-    private float GetSpeedMultiplier()
-    {
-        return currentPhase switch
-        {
-            BossPhase.PhaseOne => 1f,
-
-            BossPhase.PhaseTwo =>
-                phaseTwoSpeedMultiplier,
-
-            BossPhase.PhaseThree =>
-                phaseThreeSpeedMultiplier,
-
-            _ => 1f
-        };
-    }
-
-    private float GetDamageMultiplier()
-    {
-        return currentPhase switch
-        {
-            BossPhase.PhaseOne => 1f,
-
-            BossPhase.PhaseTwo =>
-                phaseTwoDamageMultiplier,
-
-            BossPhase.PhaseThree =>
-                phaseThreeDamageMultiplier,
-
-            _ => 1f
-        };
-    }
-
-    private float GetAdjustedDuration(
-        float baseDuration)
-    {
-        return baseDuration /
-               GetSpeedMultiplier();
-    }
-
-    private int GetAdjustedDamage(
-        int baseDamage)
-    {
-        return Mathf.RoundToInt(
-            baseDamage *
-            GetDamageMultiplier()
-        );
-    }
-
-    private float GetHorizontalDistance(
-        Transform target)
-    {
-        if (target == null)
-        {
-            return float.MaxValue;
-        }
-
-        Vector3 enemyPosition =
-            transform.position;
-
-        Vector3 targetPosition =
-            target.position;
-
-        enemyPosition.y = 0f;
-        targetPosition.y = 0f;
-
-        return Vector3.Distance(
-            enemyPosition,
-            targetPosition
-        );
-    }
-
-    private bool HasValidTarget()
-    {
-        return currentTarget != null &&
-               currentTargetHealth != null &&
-               !currentTargetHealth.IsDead;
-    }
-
-    private void ChangeState(
-        CombatState newState)
-    {
-        if (currentState == newState)
-        {
-            return;
-        }
-
-        currentState = newState;
-
-        switch (currentState)
-        {
-            case CombatState.PrepareCombat:
-                visualState =
-                    BossVisualState.PrepareCombat;
-
-                stateTimer =
-                    prepareCombatDuration;
-
-                if (currentTarget != null)
-                {
-                    movement.StopAndFace(
-                        currentTarget
-                    );
-                }
-                break;
-
-            case CombatState.Approach:
-                visualState =
-                    BossVisualState.CombatIdle;
-
-                stateTimer = 0f;
-                break;
-
-            case CombatState.Attack:
-                attackTimer = 0f;
-                damageApplied = false;
-                PlayRandomAttackSound();
-                break;
-
-            case CombatState.Recovery:
-                visualState =
-                    BossVisualState.CombatIdle;
-
-                stateTimer =
-                    GetAdjustedDuration(
-                        recoveryDuration
-                    );
-                break;
-
-            case CombatState.DodgeLeft:
-            case CombatState.DodgeRight:
-                stateTimer =
-                    GetAdjustedDuration(
-                        dodgeDuration
-                    );
-                break;
-
-            case CombatState.DodgeFollowUp:
-                attackTimer = 0f;
-                damageApplied = false;
-                PlayRandomAttackSound();
-                break;
-
-            case CombatState.Backstep:
-                stateTimer =
-                    GetAdjustedDuration(
-                        backstepDuration
-                    );
-                break;
-
-            case CombatState.Block:
-                visualState =
-                    BossVisualState.Block;
-
-                stateTimer =
-                    GetAdjustedDuration(
-                        blockDuration
-                    );
-
-                damageApplied = false;
-                break;
-
-            case CombatState.BlockCounter:
-                attackTimer = 0f;
-                damageApplied = false;
-                PlayRandomAttackSound();
-                break;
-
-            case CombatState.Dead:
-                visualState =
-                    BossVisualState.Defeated;
-                break;
+            Debug.Log($"[BOSS] {message}", gameObject);
         }
     }
 }

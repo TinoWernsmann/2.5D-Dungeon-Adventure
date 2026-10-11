@@ -104,9 +104,10 @@ public class PlayerProjectile : MonoBehaviour
 
         if (targetHealth != null)
         {
-            ApplyDamage(
-                hitCollider,
-                targetHealth
+            targetHealth.TakeDamage(
+                damage,
+                transform.position,
+                owner != null ? owner.transform : null
             );
         }
 
@@ -114,82 +115,6 @@ public class PlayerProjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void ApplyDamage(
-        Collider hitCollider,
-        Health targetHealth)
-    {
-        BossDamageReceiver bossReceiver =
-            FindBossDamageReceiver(
-                hitCollider,
-                targetHealth
-            );
-
-        if (bossReceiver != null)
-        {
-            bossReceiver.ReceiveDamage(
-                damage,
-                owner.transform
-            );
-
-            return;
-        }
-
-        targetHealth.TakeDamage(
-            damage
-        );
-    }
-
-    private BossDamageReceiver
-        FindBossDamageReceiver(
-            Collider hitCollider,
-            Health targetHealth)
-    {
-        BossDamageReceiver receiver =
-            hitCollider.GetComponent<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        receiver =
-            hitCollider.GetComponentInParent<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        if (targetHealth == null)
-        {
-            return null;
-        }
-
-        receiver =
-            targetHealth.GetComponent<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        receiver =
-            targetHealth.GetComponentInChildren<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        return targetHealth
-            .GetComponentInParent<
-                BossDamageReceiver>();
     }
 
     private bool IsOwnerCollider(

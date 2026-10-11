@@ -1,7 +1,16 @@
 using UnityEngine;
 
+/// <summary>
+/// Sieht der Gegner den Player? Prüft Distanz, Sichtwinkel und Sichtlinie.
+///
+/// Die Sichtlinie wird auf Körpermitte und Kopf des Player-Colliders geprüft –
+/// NICHT auf player.position. Der Pivot des Players liegt auf Fußhöhe (bzw. darunter),
+/// dadurch würde der Strahl den Boden treffen, sobald dieser auf dem Obstacle-Layer liegt.
+/// </summary>
 public class EnemyPerception : MonoBehaviour
 {
+    private const float HeadHeightFactor = 0.85f;
+
     [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private Transform detectionOrigin;
@@ -18,19 +27,91 @@ public class EnemyPerception : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float proximityDetectionRange = 2f;
 
+    [Tooltip("So lange bleibt der Gegner aufmerksam, nachdem der Sichtkontakt abgerissen ist " +
+             "(verhindert Flackern, wenn z.B. eine Säule kurz die Sicht verdeckt).")]
+    [Min(0f)]
+    [SerializeField] private float sightMemoryDuration = 0.75f;
+
     [Header("Line of Sight")]
+    [Tooltip("Layer, die die Sicht blockieren (z.B. Obstacle). " +
+             "Der Layer des Players wird automatisch ignoriert.")]
     [SerializeField] private LayerMask obstacleMask;
 
+    private Collider playerCollider;
+
+    private float awareUntilTime = float.NegativeInfinity;
+
+    private int cachedFrame = -1;
+    private bool cachedCanSeePlayer;
+
+    /// <summary>Sieht der Gegner den Player in diesem Frame direkt?</summary>
     public bool CanSeePlayer()
     {
-        if (player == null || detectionOrigin == null)
+        if (cachedFrame != Time.frameCount)
+        {
+            cachedFrame = Time.frameCount;
+            cachedCanSeePlayer = EvaluateSight();
+
+            if (cachedCanSeePlayer)
+            {
+                ExtendAwareness(sightMemoryDuration);
+            }
+        }
+
+        return cachedCanSeePlayer;
+    }
+
+    /// <summary>Sieht den Player oder hat ihn gerade eben noch gesehen.</summary>
+    public bool IsAwareOfPlayer =>
+        CanSeePlayer() ||
+        Time.time <= awareUntilTime;
+
+    /// <summary>
+    /// Macht den Gegner für eine Zeit auf den Player aufmerksam,
+    /// z.B. wenn er getroffen wurde.
+    /// </summary>
+    public void ExtendAwareness(float duration)
+    {
+        awareUntilTime = Mathf.Max(
+            awareUntilTime,
+            Time.time + duration
+        );
+    }
+
+    /// <summary>Ist der Punkt von den Augen des Gegners aus sichtbar (keine Wand dazwischen)?</summary>
+    public bool HasLineOfSightTo(Vector3 point)
+    {
+        return detectionOrigin != null &&
+               HasLineOfSight(detectionOrigin.position, point);
+    }
+
+    private void Awake()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        playerCollider =
+            player.GetComponent<Collider>();
+
+        // Der Player selbst darf die Sichtlinie nie blockieren.
+        obstacleMask &= ~(1 << player.gameObject.layer);
+    }
+
+    private bool EvaluateSight()
+    {
+        if (!enabled ||
+            player == null ||
+            detectionOrigin == null)
         {
             return false;
         }
 
-        Vector3 directionToPlayer =
-            player.position - detectionOrigin.position;
+        Vector3 origin = detectionOrigin.position;
+        Vector3 bodyCenter = GetPlayerBodyCenter();
 
+        Vector3 directionToPlayer = bodyCenter - origin;
         float distanceToPlayer = directionToPlayer.magnitude;
 
         if (distanceToPlayer > viewDistance)
@@ -38,20 +119,17 @@ public class EnemyPerception : MonoBehaviour
             return false;
         }
 
-        if (distanceToPlayer <= proximityDetectionRange)
-        {
-            return HasLineOfSight(directionToPlayer, distanceToPlayer);
-        }
+        bool isVeryClose =
+            distanceToPlayer <= proximityDetectionRange;
 
-        if (!IsInsideViewAngle(directionToPlayer))
+        if (!isVeryClose &&
+            !IsInsideViewAngle(directionToPlayer))
         {
             return false;
         }
 
-        return HasLineOfSight(
-            directionToPlayer,
-            distanceToPlayer
-        );
+        return HasLineOfSight(origin, bodyCenter) ||
+               HasLineOfSight(origin, GetPlayerHeadPosition());
     }
 
     private bool IsInsideViewAngle(Vector3 directionToPlayer)
@@ -66,28 +144,43 @@ public class EnemyPerception : MonoBehaviour
 
         float angleToPlayer = Vector3.Angle(
             transform.forward,
-            horizontalDirection.normalized
+            horizontalDirection
         );
 
         return angleToPlayer <= viewAngle * 0.5f;
     }
 
-    private bool HasLineOfSight(
-        Vector3 directionToPlayer,
-        float distanceToPlayer)
+    private bool HasLineOfSight(Vector3 from, Vector3 to)
     {
-        Vector3 normalizedDirection =
-            directionToPlayer.normalized;
-
-        bool obstacleHit = Physics.Raycast(
-            detectionOrigin.position,
-            normalizedDirection,
-            distanceToPlayer,
+        return !Physics.Linecast(
+            from,
+            to,
             obstacleMask,
             QueryTriggerInteraction.Ignore
         );
+    }
 
-        return !obstacleHit;
+    private Vector3 GetPlayerBodyCenter()
+    {
+        if (playerCollider != null)
+        {
+            return playerCollider.bounds.center;
+        }
+
+        return player.position + Vector3.up;
+    }
+
+    private Vector3 GetPlayerHeadPosition()
+    {
+        if (playerCollider == null)
+        {
+            return player.position + Vector3.up * 1.6f;
+        }
+
+        Bounds bounds = playerCollider.bounds;
+
+        return bounds.center +
+               Vector3.up * (bounds.extents.y * HeadHeightFactor);
     }
 
     private void OnDrawGizmosSelected()
@@ -97,31 +190,27 @@ public class EnemyPerception : MonoBehaviour
             return;
         }
 
-        Gizmos.DrawWireSphere(
-            detectionOrigin.position,
-            proximityDetectionRange
-        );
+        Vector3 origin = detectionOrigin.position;
 
-        Vector3 leftBoundary = Quaternion.Euler(
-            0f,
-            -viewAngle * 0.5f,
-            0f
-        ) * transform.forward;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origin, proximityDetectionRange);
 
-        Vector3 rightBoundary = Quaternion.Euler(
-            0f,
-            viewAngle * 0.5f,
-            0f
-        ) * transform.forward;
+        Vector3 leftBoundary =
+            Quaternion.Euler(0f, -viewAngle * 0.5f, 0f) * transform.forward;
 
-        Gizmos.DrawRay(
-            detectionOrigin.position,
-            leftBoundary * viewDistance
-        );
+        Vector3 rightBoundary =
+            Quaternion.Euler(0f, viewAngle * 0.5f, 0f) * transform.forward;
 
-        Gizmos.DrawRay(
-            detectionOrigin.position,
-            rightBoundary * viewDistance
-        );
+        Gizmos.DrawRay(origin, leftBoundary * viewDistance);
+        Gizmos.DrawRay(origin, rightBoundary * viewDistance);
+
+        if (!Application.isPlaying || player == null)
+        {
+            return;
+        }
+
+        Gizmos.color = CanSeePlayer() ? Color.green : Color.red;
+        Gizmos.DrawLine(origin, GetPlayerBodyCenter());
+        Gizmos.DrawLine(origin, GetPlayerHeadPosition());
     }
 }

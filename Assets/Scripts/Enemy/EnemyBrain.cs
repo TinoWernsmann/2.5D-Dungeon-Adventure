@@ -1,5 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Übergeordnete KI eines Gegners: Patrouillieren -> Verfolgen -> Kämpfen -> Suchen.
+/// WIE gekämpft wird, entscheidet das <see cref="EnemyCombatBehaviour"/>.
+///
+/// Zusätzlich:
+/// - Wird der Gegner getroffen, dreht er sich zum Angreifer und greift an.
+/// - Entdeckt er den Player, alarmiert er Verbündete in der Nähe.
+/// - Verliert er den Player, sucht er ihn (siehe <see cref="EnemySearch"/>).
+/// </summary>
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(EnemyPatrol))]
 [RequireComponent(typeof(EnemyPerception))]
@@ -14,6 +24,8 @@ public class EnemyBrain : MonoBehaviour
         Search
     }
 
+    private static readonly List<EnemyBrain> activeBrains = new();
+
     [Header("Target")]
     [SerializeField] private Transform player;
 
@@ -21,104 +33,82 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyCombatBehaviour combatBehaviour;
 
     [Header("Search")]
+    [SerializeField] private EnemySearch search = new();
+
+    [Header("Alert")]
+    [Tooltip("Verbündete in diesem Radius werden alarmiert, wenn der Player entdeckt wird.")]
     [Min(0f)]
-    [SerializeField] private float searchDuration = 3f;
+    [SerializeField] private float allyAlertRadius = 8f;
+
+    [Tooltip("So lange kennt der Gegner die Position des Players, nachdem er getroffen wurde.")]
+    [Min(0f)]
+    [SerializeField] private float damageAwarenessDuration = 2f;
 
     private EnemyMovement movement;
     private EnemyPatrol patrol;
     private EnemyPerception perception;
-
+    private Health ownHealth;
     private Health playerHealth;
 
-    private EnemyState currentState =
-        EnemyState.None;
+    private EnemyState currentState = EnemyState.None;
 
     private Vector3 lastKnownPlayerPosition;
-
-    private float searchTimer;
-    private bool hasReachedSearchPosition;
-
-    private SpearBossCombatBehaviour spearBoss;
+    private Vector3 lastKnownPlayerVelocity;
 
     private void Awake()
     {
-        movement =
-            GetComponent<EnemyMovement>();
-
-        patrol =
-            GetComponent<EnemyPatrol>();
-
-        perception =
-            GetComponent<EnemyPerception>();
+        movement = GetComponent<EnemyMovement>();
+        patrol = GetComponent<EnemyPatrol>();
+        perception = GetComponent<EnemyPerception>();
+        ownHealth = GetComponent<Health>();
 
         if (combatBehaviour == null)
         {
-            combatBehaviour =
-                GetComponent<EnemyCombatBehaviour>();
+            combatBehaviour = GetComponent<EnemyCombatBehaviour>();
         }
 
-        spearBoss =
-            combatBehaviour as
-                SpearBossCombatBehaviour;
+        search.Initialize(transform, movement, perception);
+    }
+
+    private void OnEnable()
+    {
+        activeBrains.Add(this);
+
+        if (ownHealth != null)
+        {
+            ownHealth.DamagedBy += HandleDamagedBy;
+        }
+    }
+
+    private void OnDisable()
+    {
+        activeBrains.Remove(this);
+
+        if (ownHealth != null)
+        {
+            ownHealth.DamagedBy -= HandleDamagedBy;
+        }
     }
 
     private void Start()
     {
-        if (player == null)
+        if (!HasValidSetup())
         {
-            Debug.LogError(
-                $"{gameObject.name}: " +
-                "EnemyBrain has no Player assigned."
-            );
-
             enabled = false;
             return;
         }
 
-        playerHealth =
-            player.GetComponent<Health>();
-
-        if (playerHealth == null)
-        {
-            Debug.LogError(
-                $"{gameObject.name}: " +
-                "Player has no Health component."
-            );
-
-            enabled = false;
-            return;
-        }
-
-        if (combatBehaviour == null)
-        {
-            Debug.LogError(
-                $"{gameObject.name}: " +
-                "No EnemyCombatBehaviour found."
-            );
-
-            enabled = false;
-            return;
-        }
-
-        ChangeState(
-            EnemyState.Patrol
-        );
+        ChangeState(EnemyState.Patrol);
     }
 
     private void Update()
     {
-        if (playerHealth == null ||
-            playerHealth.IsDead)
+        if (playerHealth == null || playerHealth.IsDead)
         {
             movement.Stop();
             return;
         }
 
-        UpdateCurrentState();
-    }
-
-    private void UpdateCurrentState()
-    {
         switch (currentState)
         {
             case EnemyState.Patrol:
@@ -139,173 +129,69 @@ public class EnemyBrain : MonoBehaviour
         }
     }
 
+    #region States
+
     private void UpdatePatrolState()
     {
-        if (!perception.CanSeePlayer())
+        if (perception.CanSeePlayer())
         {
-            return;
+            SpotPlayer();
         }
-
-        RememberPlayerPosition();
-
-        NotifyBossPlayerDetected();
-
-        ChangeState(
-            EnemyState.Chase
-        );
     }
 
     private void UpdateChaseState()
     {
-        if (!perception.CanSeePlayer())
+        if (!perception.IsAwareOfPlayer)
         {
-            ChangeState(
-                EnemyState.Search
-            );
-
+            ChangeState(EnemyState.Search);
             return;
         }
 
         RememberPlayerPosition();
 
-        NotifyBossPlayerDetected();
-
-        if (combatBehaviour.IsInCombatRange(
-                player))
+        if (combatBehaviour.IsInCombatRange(player))
         {
-            ChangeState(
-                EnemyState.Combat
-            );
-
+            ChangeState(EnemyState.Combat);
             return;
         }
 
-        if (spearBoss != null &&
-            spearBoss.IsCombatPrepared)
-        {
-            movement.MoveToWhileFacing(
-                player.position,
-                player
-            );
-
-            return;
-        }
-
-        // Während PrepareAttack soll der
-        // Boss stehen bleiben.
-        if (spearBoss != null)
-        {
-            movement.StopAndFace(player);
-            return;
-        }
-
-        movement.MoveTo(
-            player.position
-        );
+        combatBehaviour.UpdateChase(player);
     }
 
     private void UpdateCombatState()
     {
-        if (!perception.CanSeePlayer())
+        if (!perception.IsAwareOfPlayer)
         {
-            ChangeState(
-                EnemyState.Search
-            );
-
+            ChangeState(EnemyState.Search);
             return;
         }
 
         RememberPlayerPosition();
 
-        combatBehaviour.UpdateCombat(
-            player,
-            playerHealth
-        );
+        combatBehaviour.UpdateCombat(player, playerHealth);
     }
 
     private void UpdateSearchState()
     {
         if (perception.CanSeePlayer())
         {
-            RememberPlayerPosition();
-
-            NotifyBossPlayerDetected();
-
-            ChangeState(
-                EnemyState.Chase
-            );
-
+            SpotPlayer();
             return;
         }
 
-        if (!hasReachedSearchPosition)
+        search.Tick(Time.deltaTime);
+
+        if (search.IsFinished)
         {
-            CheckSearchDestination();
-            return;
+            ChangeState(EnemyState.Patrol);
         }
-
-        UpdateSearchTimer();
-    }
-
-    private void CheckSearchDestination()
-    {
-        if (!movement.HasReachedDestination)
-        {
-            return;
-        }
-
-        hasReachedSearchPosition = true;
-
-        movement.Stop();
-    }
-
-    private void UpdateSearchTimer()
-    {
-        searchTimer -= Time.deltaTime;
-
-        if (searchTimer > 0f)
-        {
-            return;
-        }
-
-        ChangeState(
-            EnemyState.Patrol
-        );
-    }
-
-    private void RememberPlayerPosition()
-    {
-        lastKnownPlayerPosition =
-            player.position;
-    }
-
-    private void NotifyBossPlayerDetected()
-    {
-        if (spearBoss == null)
-        {
-            return;
-        }
-
-        spearBoss.NotifyPlayerDetected(
-            player,
-            playerHealth
-        );
-    }
-
-    private void NotifyBossPlayerLost()
-    {
-        if (spearBoss == null)
-        {
-            return;
-        }
-
-        spearBoss.NotifyPlayerLost();
     }
 
     private void ChangeState(
-        EnemyState newState)
+        EnemyState newState,
+        bool restartIfActive = false)
     {
-        if (currentState == newState)
+        if (currentState == newState && !restartIfActive)
         {
             return;
         }
@@ -317,32 +203,17 @@ public class EnemyBrain : MonoBehaviour
         EnterState(currentState);
     }
 
-    private void EnterState(
-        EnemyState state)
+    private void EnterState(EnemyState state)
     {
         switch (state)
         {
             case EnemyState.Patrol:
-                NotifyBossPlayerLost();
-
+                combatBehaviour.OnTargetLost();
                 patrol.StartPatrol();
                 break;
 
-            case EnemyState.Chase:
-                patrol.StopPatrol();
-
-                NotifyBossPlayerDetected();
-                break;
-
             case EnemyState.Combat:
-                patrol.StopPatrol();
-
-                NotifyBossPlayerDetected();
-
-                combatBehaviour.EnterCombat(
-                    player,
-                    playerHealth
-                );
+                combatBehaviour.EnterCombat(player, playerHealth);
                 break;
 
             case EnemyState.Search:
@@ -351,8 +222,7 @@ public class EnemyBrain : MonoBehaviour
         }
     }
 
-    private void ExitState(
-        EnemyState state)
+    private void ExitState(EnemyState state)
     {
         switch (state)
         {
@@ -366,15 +236,143 @@ public class EnemyBrain : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Detection & Alerts
+
+    private void SpotPlayer()
+    {
+        bool wasAlreadyHunting =
+            currentState == EnemyState.Chase ||
+            currentState == EnemyState.Combat;
+
+        RememberPlayerPosition();
+
+        combatBehaviour.OnTargetSpotted(player, playerHealth);
+
+        if (!wasAlreadyHunting)
+        {
+            AlertNearbyAllies();
+            ChangeState(EnemyState.Chase);
+        }
+    }
+
+    private void HandleDamagedBy(Transform attacker)
+    {
+        if (attacker != player || !enabled)
+        {
+            return;
+        }
+
+        // Getroffen = weiß sofort, wo der Player ist (auch von hinten).
+        perception.ExtendAwareness(damageAwarenessDuration);
+        SpotPlayer();
+    }
+
+    private void AlertNearbyAllies()
+    {
+        float sqrRadius = allyAlertRadius * allyAlertRadius;
+
+        foreach (EnemyBrain ally in activeBrains)
+        {
+            if (ally == this)
+            {
+                continue;
+            }
+
+            float sqrDistance =
+                (ally.transform.position - transform.position).sqrMagnitude;
+
+            if (sqrDistance <= sqrRadius)
+            {
+                ally.ReceiveAlert(lastKnownPlayerPosition);
+            }
+        }
+    }
+
+    /// <summary>Ein Verbündeter hat den Player gesehen -> dort nachsehen.</summary>
+    private void ReceiveAlert(Vector3 playerPosition)
+    {
+        if (currentState != EnemyState.Patrol &&
+            currentState != EnemyState.Search)
+        {
+            return;
+        }
+
+        lastKnownPlayerPosition = playerPosition;
+        lastKnownPlayerVelocity = Vector3.zero;
+
+        // Auch eine laufende Suche wird mit der neuen Position neu gestartet.
+        ChangeState(EnemyState.Search, restartIfActive: true);
+    }
+
+    #endregion
+
+    #region Search
+
     private void StartSearch()
     {
         patrol.StopPatrol();
 
-        searchTimer = searchDuration;
-        hasReachedSearchPosition = false;
+        search.Begin(lastKnownPlayerPosition, lastKnownPlayerVelocity);
+    }
 
-        movement.MoveTo(
-            lastKnownPlayerPosition
-        );
+    private void RememberPlayerPosition()
+    {
+        if (Time.deltaTime > 0f)
+        {
+            Vector3 velocity =
+                (player.position - lastKnownPlayerPosition) / Time.deltaTime;
+
+            velocity.y = 0f;
+
+            // Teleports / erste Sichtung nicht als Geschwindigkeit werten.
+            const float MaxPlausibleSpeed = 20f;
+
+            lastKnownPlayerVelocity =
+                velocity.magnitude <= MaxPlausibleSpeed
+                    ? velocity
+                    : Vector3.zero;
+        }
+
+        lastKnownPlayerPosition = player.position;
+    }
+
+    #endregion
+
+    private bool HasValidSetup()
+    {
+        if (player == null)
+        {
+            Debug.LogError($"{gameObject.name}: EnemyBrain has no Player assigned.", gameObject);
+            return false;
+        }
+
+        playerHealth = player.GetComponent<Health>();
+
+        if (playerHealth == null)
+        {
+            Debug.LogError($"{gameObject.name}: Player has no Health component.", gameObject);
+            return false;
+        }
+
+        if (combatBehaviour == null)
+        {
+            Debug.LogError($"{gameObject.name}: No EnemyCombatBehaviour found.", gameObject);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1f, 0.5f, 0f, 0.4f);
+        Gizmos.DrawWireSphere(transform.position, allyAlertRadius);
+
+        if (currentState == EnemyState.Search)
+        {
+            search.DrawGizmos();
+        }
     }
 }

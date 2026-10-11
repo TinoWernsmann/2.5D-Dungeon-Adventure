@@ -185,18 +185,19 @@ MonoBehaviour:
   bossRoot: {fileID: 3113970845522469459}
   spriteRenderer: {fileID: 7465784643759612908}
   combatBehaviour: {fileID: 457409782893092702}
+  movement: {fileID: 0}
   health: {fileID: 121343053122972427}
   targetCamera: {fileID: 0}
   standFrames:
   - {fileID: 542783552, guid: c6bee76bf36641a499bee42fa36fc75c, type: 3}
   - {fileID: -34880245, guid: be3ecbffecce21348aa2662d6e39fb94, type: 3}
-  standLeft: {fileID: 1640979907, guid: 5ee17351aefa0c343bc613d5d2410cd5, type: 3}
-  standRight: {fileID: -1202392989, guid: 5ffdc712d97a13d4d94509160575af3a, type: 3}
   forwardFrames:
   - {fileID: -342949728, guid: bfcd148eec992d942a04a8a844a4e959, type: 3}
   - {fileID: -545281525, guid: a18ce0df52c728748bc435639c9fb1d8, type: 3}
   - {fileID: -1845561219, guid: 6835b581a0b70934aac2029556102265, type: 3}
   - {fileID: 1357586527, guid: 158ec7a015987b44fad006dd41b2f970, type: 3}
+  standLeft: {fileID: 1640979907, guid: 5ee17351aefa0c343bc613d5d2410cd5, type: 3}
+  standRight: {fileID: -1202392989, guid: 5ffdc712d97a13d4d94509160575af3a, type: 3}
   backFrames:
   - {fileID: -1162761028, guid: fdb52376c4cf1464d98a62b1a87417ba, type: 3}
   - {fileID: 1009239298, guid: f7d1ba97c1b11c7419e480b3a50c574f, type: 3}
@@ -204,17 +205,16 @@ MonoBehaviour:
   prepareCombatFrames:
   - {fileID: 1628719583, guid: ee6708735e5525041b807d766a9228ed, type: 3}
   - {fileID: -1062919325, guid: 4a8fc75d73a6f124189d89b704cfaec0, type: 3}
+  windupLeft: {fileID: -1520291876, guid: bd9fab933134e984281d7371d27f5e28, type: 3}
+  windupRight: {fileID: -110912572, guid: c1e2aad55a2992f40a8e225273d723f0, type: 3}
   attackLeft: {fileID: 1960058043, guid: 2a5fbfb24eb68584088a4bc427f7295c, type: 3}
   attackRight: {fileID: -703726391, guid: eee55fb9e4325d049b8228febf1dba6d, type: 3}
-  dodgeLeft: {fileID: -1520291876, guid: bd9fab933134e984281d7371d27f5e28, type: 3}
-  dodgeRight: {fileID: -110912572, guid: c1e2aad55a2992f40a8e225273d723f0, type: 3}
   blockSprite: {fileID: 686272577, guid: 206d69b470e827542b15186edad8eb06, type: 3}
   defeatFrames:
   - {fileID: -1663304899, guid: 736d971a889269a4c912211861ffcf5a, type: 3}
   - {fileID: -177657514, guid: 502dd109ee61fd449bc5a76580af8e8a, type: 3}
   standFramesPerSecond: 3
   movementFramesPerSecond: 6
-  backFramesPerSecond: 5
   prepareFramesPerSecond: 3.33
   defeatFramesPerSecond: 3
 --- !u!1 &8009179718533681090
@@ -362,6 +362,7 @@ MonoBehaviour:
   viewDistance: 10
   viewAngle: 90
   proximityDetectionRange: 2
+  sightMemoryDuration: 0.75
   obstacleMask:
     serializedVersion: 2
     m_Bits: 8
@@ -380,6 +381,10 @@ MonoBehaviour:
   player: {fileID: 0}
   combatBehaviour: {fileID: 457409782893092702}
   searchDuration: 3
+  searchPredictionTime: 1
+  lookAroundSpeed: 120
+  allyAlertRadius: 8
+  damageAwarenessDuration: 2
 --- !u!114 &457409782893092702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,45 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpearBossCombatBehaviour
   movement: {fileID: 4992716912674233300}
-  health: {fileID: 121343053122972427}
-  _doorToDespawn: {fileID: 0}
-  _questTargetId: KillBoss
-  combatRange: 8
-  attackRange: 3
-  preferredDistance: 2.3
-  prepareCombatDuration: 0.9
-  attackDamage: 5
-  attackDuration: 0.5
-  damageMoment: 0.55
-  recoveryDuration: 0.55
-  dodgeDistance: 2.5
-  dodgeDuration: 0.45
-  dodgeAttackRange: 3.5
-  dodgeAttackDamage: 5
-  dodgeAttackDuration: 0.55
-  blockAngle: 100
-  blockDuration: 0.35
-  blockCounterDamage: 5
-  blockCounterRange: 3.2
-  blockCounterDuration: 0.5
-  debugBlock: 1
-  backstepDistance: 2
-  backstepDuration: 0.5
-  phaseTwoHealthPercent: 0.65
-  phaseThreeHealthPercent: 0.3
-  phaseOneBlockChance: 0.251
-  phaseOneDodgeChance: 0.25
-  phaseOneBackstepChance: 0.45
-  phaseTwoBlockChance: 0.455
-  phaseTwoDodgeChance: 0.45
-  phaseTwoBackstepChance: 0.25
-  phaseTwoSpeedMultiplier: 1.15
-  phaseTwoDamageMultiplier: 1.1
-  phaseThreeBlockChance: 0.5
-  phaseThreeDodgeChance: 0.6
-  phaseThreeBackstepChance: 0.1
-  phaseThreeSpeedMultiplier: 1.3
-  phaseThreeDamageMultiplier: 1.2
+  audioSource: {fileID: 6689909783343714701}
   attackSounds:
   - {fileID: 8300000, guid: 56c27d445cf2ea5488399599abe54fcc, type: 3}
   - {fileID: 8300000, guid: cb38bf04c3151ab46993b7af2906d4eb, type: 3}
@@ -441,8 +408,110 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9f092c12b7bfdcc4bae3645baa91b235, type: 3}
   - {fileID: 8300000, guid: 9f0593bade0188a428098b4f1499619f, type: 3}
   - {fileID: 8300000, guid: 1bb9773405789df48b5806e5467b10a5, type: 3}
-  audioSource: {fileID: 6689909783343714701}
+  health: {fileID: 121343053122972427}
+  _doorToDespawn: {fileID: 0}
   musicSource: {fileID: 0}
+  phaseTransitionSound: {fileID: 0}
+  _questTargetId: KillBoss
+  combatRange: 8
+  attackRange: 3
+  preferredDistance: 2.3
+  lungeMaxRange: 7
+  blockAngle: 100
+  blockPressurePerHit: 0.12
+  maxBlockPressure: 0.35
+  blockPressureDecayPerSecond: 0.2
+  debugBlock: 1
+  phaseTwoHealthPercent: 0.65
+  phaseThreeHealthPercent: 0.3
+  phaseOne:
+    blockChance: 0.25
+    dodgeChance: 0.25
+    backstepChance: 0.45
+    lungeChance: 0.25
+    comboHits: 1
+    decisionDelay: 0.9
+    speedMultiplier: 1
+    damageMultiplier: 1
+  phaseTwo:
+    blockChance: 0.45
+    dodgeChance: 0.45
+    backstepChance: 0.25
+    lungeChance: 0.4
+    comboHits: 2
+    decisionDelay: 0.6
+    speedMultiplier: 1.15
+    damageMultiplier: 1.1
+  phaseThree:
+    blockChance: 0.5
+    dodgeChance: 0.6
+    backstepChance: 0.1
+    lungeChance: 0.55
+    comboHits: 3
+    decisionDelay: 0.35
+    speedMultiplier: 1.3
+    damageMultiplier: 1.2
+  prepareStance:
+    duration: 0.9
+    visual: 2
+    facesTarget: 1
+    blocksFrontalDamage: 0
+    isInvulnerable: 0
+  comboStrike:
+    windupDuration: 0.45
+    followUpWindupFactor: 0.6
+    strikeDuration: 0.5
+    damageMoment: 0.55
+    range: 3
+    damage: 10
+    stepDistance: 0.5
+  lunge:
+    windupDuration: 0.6
+    lungeSpeed: 12
+    maxLungeDuration: 0.45
+    hitRange: 1.6
+    damage: 8
+    aimLeadTime: 0.2
+  sidestep:
+    distance: 2.5
+    duration: 0.45
+  dodgeCounter:
+    windupDuration: 0.2
+    followUpWindupFactor: 0.6
+    strikeDuration: 0.55
+    damageMoment: 0.55
+    range: 3.5
+    damage: 5
+    stepDistance: 0.5
+  backstep:
+    distance: 2
+    duration: 0.5
+  block:
+    duration: 0.35
+    visual: 8
+    facesTarget: 1
+    blocksFrontalDamage: 1
+    isInvulnerable: 0
+  blockCounter:
+    windupDuration: 0.15
+    followUpWindupFactor: 0.6
+    strikeDuration: 0.5
+    damageMoment: 0.55
+    range: 3.2
+    damage: 5
+    stepDistance: 0.5
+  recover:
+    duration: 0.8
+    visual: 0
+    facesTarget: 0
+    blocksFrontalDamage: 0
+    isInvulnerable: 0
+  phaseTransition:
+    duration: 1.2
+    visual: 2
+    facesTarget: 1
+    blocksFrontalDamage: 0
+    isInvulnerable: 1
 --- !u!114 &121343053122972427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,7 +560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3956d29db8cd5ec44a4c718959cc0256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossDamageReceiver
-  health: {fileID: 121343053122972427}
   combatBehaviour: {fileID: 457409782893092702}
 --- !u!82 &6689909783343714701
 AudioSource:

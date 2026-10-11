@@ -1,23 +1,21 @@
 using UnityEngine;
 
+/// <summary>
+/// Nahkämpfer: Nähert sich, umkreist den Player solange kein Angriffs-Slot frei ist,
+/// holt sichtbar aus (Windup), schlägt zu – manchmal als Kombo – und weicht danach aus.
+/// </summary>
 public class SwordCombatBehaviour : EnemyCombatBehaviour
 {
     private enum CombatState
     {
         None,
         Approach,
+        Strafe,
         Windup,
         Attack,
         Recovery,
         Reposition
     }
-
-    [Header("References")]
-    [SerializeField] private EnemyMovement movement;
-    [SerializeField] private AudioSource audioSource;
-
-    [Header("Audio")]
-    [SerializeField] private AudioClip[] attackSounds;
 
     [Header("Range")]
     [Min(0.1f)]
@@ -25,6 +23,14 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
 
     [Min(0.1f)]
     [SerializeField] private float preferredDistance = 1.4f;
+
+    [Tooltip("Ab dieser Distanz wechselt der Brain in den Kampfmodus.")]
+    [Min(0.1f)]
+    [SerializeField] private float engageRange = 4f;
+
+    [Tooltip("Abstand, in dem der Gegner den Player umkreist, solange er nicht angreifen darf.")]
+    [Min(0.1f)]
+    [SerializeField] private float strafeRadius = 3f;
 
     [Header("Attack")]
     [Min(1)]
@@ -42,6 +48,17 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
     [Min(0f)]
     [SerializeField] private float recoveryDuration = 0.6f;
 
+    [Header("Combo")]
+    [Range(0f, 1f)]
+    [SerializeField] private float comboChance = 0.35f;
+
+    [Min(1)]
+    [SerializeField] private int maxComboHits = 2;
+
+    [Range(0.1f, 1f)]
+    [Tooltip("Folgeschläge einer Kombo holen schneller aus.")]
+    [SerializeField] private float comboWindupFactor = 0.6f;
+
     [Header("Reposition")]
     [Min(0f)]
     [SerializeField] private float repositionDistance = 1.5f;
@@ -54,89 +71,41 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
 
     private CombatState currentState = CombatState.None;
 
-    private Transform currentTarget;
-    private Health currentTargetHealth;
-
     private float stateTimer;
     private float attackTimer;
-
+    private int comboHitCount;
     private bool damageApplied;
 
     public override bool IsPerformingAttack =>
         currentState == CombatState.Windup ||
         currentState == CombatState.Attack;
 
-    public override float AttackProgress
+    public override float AttackProgress =>
+        currentState == CombatState.Attack
+            ? Mathf.Clamp01(attackTimer / attackDuration)
+            : 0f;
+
+    public override bool IsInCombatRange(Transform target)
     {
-        get
-        {
-            if (currentState == CombatState.Windup)
-            {
-                return 0f;
-            }
-
-            if (currentState != CombatState.Attack)
-            {
-                return 0f;
-            }
-
-            return Mathf.Clamp01(
-                attackTimer / attackDuration
-            );
-        }
+        return GetHorizontalDistance(target) <= engageRange;
     }
 
-    private void Awake()
+    protected override void OnCombatEntered()
     {
-        if (movement == null)
-        {
-            movement = GetComponent<EnemyMovement>();
-        }
-
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
-    }
-
-    public override bool IsInCombatRange(
-        Transform target)
-    {
-        if (target == null)
-        {
-            return false;
-        }
-
-        return GetHorizontalDistance(target)
-               <= attackRange;
-    }
-
-    public override void EnterCombat(
-        Transform target,
-        Health targetHealth)
-    {
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
         ChangeState(CombatState.Approach);
     }
 
-    public override void UpdateCombat(
-        Transform target,
-        Health targetHealth)
+    protected override void OnCombatUpdate()
     {
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
-        if (!HasValidTarget())
-        {
-            return;
-        }
-
         switch (currentState)
         {
+            case CombatState.None:
             case CombatState.Approach:
                 UpdateApproach();
+                break;
+
+            case CombatState.Strafe:
+                UpdateStrafe();
                 break;
 
             case CombatState.Windup:
@@ -157,41 +126,49 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
         }
     }
 
-    public override void ExitCombat()
+    protected override void OnCombatExited()
     {
         movement.Stop();
         movement.ResetRotationControl();
-
-        currentTarget = null;
-        currentTargetHealth = null;
-
-        stateTimer = 0f;
-        attackTimer = 0f;
-
-        damageApplied = false;
 
         currentState = CombatState.None;
     }
 
     private void UpdateApproach()
     {
-        float distance =
-            GetHorizontalDistance(currentTarget);
+        float distance = DistanceToTarget();
+
+        if (distance <= strafeRadius &&
+            !TryAcquireAttackSlot())
+        {
+            ChangeState(CombatState.Strafe);
+            return;
+        }
 
         if (distance <= preferredDistance)
         {
-            movement.StopAndFace(currentTarget);
-
+            comboHitCount = 0;
             ChangeState(CombatState.Windup);
             return;
         }
 
-        movement.MoveTo(currentTarget.position);
+        movement.MoveTo(Target.position);
+    }
+
+    private void UpdateStrafe()
+    {
+        if (TryAcquireAttackSlot())
+        {
+            ChangeState(CombatState.Approach);
+            return;
+        }
+
+        StrafeAroundTarget(strafeRadius);
     }
 
     private void UpdateWindup()
     {
-        movement.StopAndFace(currentTarget);
+        movement.StopAndFace(Target);
 
         stateTimer -= Time.deltaTime;
 
@@ -203,21 +180,42 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
 
     private void UpdateAttack()
     {
-        movement.StopAndFace(currentTarget);
+        movement.StopAndFace(Target);
 
         attackTimer += Time.deltaTime;
 
-        TryApplyDamage();
-
-        if (attackTimer >= attackDuration)
+        if (!damageApplied &&
+            attackTimer >= attackDuration * damageMoment)
         {
-            ChangeState(CombatState.Recovery);
+            damageApplied = true;
+            TryHitTarget(attackRange, damage);
         }
+
+        if (attackTimer < attackDuration)
+        {
+            return;
+        }
+
+        if (ShouldContinueCombo())
+        {
+            ChangeState(CombatState.Windup);
+            stateTimer *= comboWindupFactor;
+            return;
+        }
+
+        ChangeState(CombatState.Recovery);
+    }
+
+    private bool ShouldContinueCombo()
+    {
+        return comboHitCount < maxComboHits &&
+               DistanceToTarget() <= attackRange &&
+               Random.value <= comboChance;
     }
 
     private void UpdateRecovery()
     {
-        movement.StopAndFace(currentTarget);
+        movement.StopAndFace(Target);
 
         stateTimer -= Time.deltaTime;
 
@@ -226,7 +224,29 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
             return;
         }
 
-        DecideNextAction();
+        // Anderen Gegnern eine Chance geben.
+        ReleaseAttackSlot();
+
+        if (Random.value <= repositionChance)
+        {
+            StartReposition();
+            return;
+        }
+
+        ChangeState(CombatState.Approach);
+    }
+
+    private void StartReposition()
+    {
+        // Schräg nach hinten ausweichen statt stur rückwärts.
+        float sideAngle = Random.Range(-60f, 60f);
+
+        movement.MoveToWhileFacing(
+            GetRetreatPoint(repositionDistance, sideAngle),
+            Target
+        );
+
+        ChangeState(CombatState.Reposition);
     }
 
     private void UpdateReposition()
@@ -242,140 +262,12 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
         ChangeState(CombatState.Approach);
     }
 
-    private void DecideNextAction()
+    private void ChangeState(CombatState newState)
     {
-        if (!IsInCombatRange(currentTarget))
-        {
-            ChangeState(CombatState.Approach);
-            return;
-        }
-
-        if (Random.value <= repositionChance)
-        {
-            StartReposition();
-            return;
-        }
-
-        ChangeState(CombatState.Windup);
-    }
-
-    private void StartReposition()
-    {
-        Vector3 directionAway =
-            transform.position -
-            currentTarget.position;
-
-        directionAway.y = 0f;
-
-        if (directionAway.sqrMagnitude <= 0.001f)
-        {
-            directionAway =
-                -transform.forward;
-        }
-
-        directionAway.Normalize();
-
-        Vector3 destination =
-            transform.position +
-            directionAway * repositionDistance;
-
-        movement.MoveToWhileFacing(
-            destination,
-            currentTarget
-        );
-
-        ChangeState(CombatState.Reposition);
-    }
-
-    private void TryApplyDamage()
-    {
-        if (damageApplied)
-        {
-            return;
-        }
-
-        float damageTime =
-            attackDuration * damageMoment;
-
-        if (attackTimer < damageTime)
-        {
-            return;
-        }
-
-        damageApplied = true;
-
-        if (!IsInCombatRange(currentTarget))
-        {
-            return;
-        }
-
-        currentTargetHealth.TakeDamage(damage);
-    }
-
-    private void PlayRandomAttackSound()
-    {
-        if (audioSource == null ||
-            attackSounds == null ||
-            attackSounds.Length == 0)
-        {
-            return;
-        }
-
-        int randomIndex =
-            Random.Range(0, attackSounds.Length);
-
-        AudioClip randomClip =
-            attackSounds[randomIndex];
-
-        if (randomClip == null)
-        {
-            return;
-        }
-
-        audioSource.PlayOneShot(randomClip);
-    }
-
-    private float GetHorizontalDistance(
-        Transform target)
-    {
-        Vector3 enemyPosition =
-            transform.position;
-
-        Vector3 targetPosition =
-            target.position;
-
-        enemyPosition.y = 0f;
-        targetPosition.y = 0f;
-
-        return Vector3.Distance(
-            enemyPosition,
-            targetPosition
-        );
-    }
-
-    private bool HasValidTarget()
-    {
-        return currentTarget != null &&
-               currentTargetHealth != null &&
-               !currentTargetHealth.IsDead;
-    }
-
-    private void ChangeState(
-        CombatState newState)
-    {
-        if (currentState == newState)
-        {
-            return;
-        }
-
         currentState = newState;
 
         switch (currentState)
         {
-            case CombatState.Approach:
-                stateTimer = 0f;
-                break;
-
             case CombatState.Windup:
                 stateTimer = windupDuration;
                 break;
@@ -383,6 +275,7 @@ public class SwordCombatBehaviour : EnemyCombatBehaviour
             case CombatState.Attack:
                 attackTimer = 0f;
                 damageApplied = false;
+                comboHitCount++;
 
                 PlayRandomAttackSound();
                 break;

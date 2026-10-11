@@ -28,35 +28,25 @@ public class PlayerMovement : MonoBehaviour
 
     private float verticalVelocity;
     private float cameraPitch;
-    private bool _isPaused = false;
+
+    // Pausiert = Zeit angehalten. Kein eigener Pause-Zustand, der mit dem
+    // PauseMenu auseinanderlaufen kann (z.B. beim Fortsetzen über den Button).
+    private static bool IsGamePaused => Time.timeScale <= 0f;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
 
-    private void OnDisable()
-    {
-        if (GameInput.Instance == null) return;
-
-        GameInput.Instance.OnPause -= HandlePause;
-    }
-
     private void Start()
     {
         LockCursor();
-        GameInput.Instance.OnPause += HandlePause;
     }
 
     private void Update()
     {
         HandleMovement();
         HandleLook();
-    }
-
-    private void HandlePause()
-    {
-        _isPaused = !_isPaused;
     }
 
     private void HandleMovement()
@@ -113,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleLook()
     {
-        if (_isPaused) return;
+        if (IsGamePaused) return;
 
         Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
 

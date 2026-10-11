@@ -19,9 +19,15 @@ public class Health : MonoBehaviour
 
     public event Action Died;
 
+    /// <summary>Wird ausgelöst, wenn ein bekannter Angreifer Schaden verursacht hat.</summary>
+    public event Action<Transform> DamagedBy;
+
+    private IDamageInterceptor[] damageInterceptors;
+
     private void Awake()
     {
         CurrentHealth = maxHealth;
+        damageInterceptors = GetComponents<IDamageInterceptor>();
     }
 
     public void TakeDamage(int damage)
@@ -36,7 +42,24 @@ public class Health : MonoBehaviour
         int damage,
         Vector3 hitPoint)
     {
+        TakeDamage(
+            damage,
+            hitPoint,
+            null
+        );
+    }
+
+    public void TakeDamage(
+        int damage,
+        Vector3 hitPoint,
+        Transform attacker)
+    {
         if (damage <= 0 || IsDead)
+        {
+            return;
+        }
+
+        if (IsDamageIntercepted(damage, attacker))
         {
             return;
         }
@@ -63,6 +86,11 @@ public class Health : MonoBehaviour
             MaxHealth
         );
 
+        if (attacker != null)
+        {
+            DamagedBy?.Invoke(attacker);
+        }
+
         if (IsDead)
         {
             Die();
@@ -85,6 +113,26 @@ public class Health : MonoBehaviour
             CurrentHealth,
             MaxHealth
         );
+    }
+
+    private bool IsDamageIntercepted(
+        int damage,
+        Transform attacker)
+    {
+        if (damageInterceptors == null)
+        {
+            return false;
+        }
+
+        foreach (IDamageInterceptor interceptor in damageInterceptors)
+        {
+            if (interceptor.TryInterceptDamage(damage, attacker))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void Die()
