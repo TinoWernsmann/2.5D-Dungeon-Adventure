@@ -8,6 +8,11 @@ public class EnemyMovement : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float combatRotationSpeed = 12f;
 
+    [Header("Audio")]
+    [Tooltip("Optional. Am besten auf einem Kind-Objekt mit eigener AudioSource, " +
+             "damit die Tonhöhen-Variation nicht die Angriffssounds verändert.")]
+    [SerializeField] private FootstepAudio footsteps;
+
     private NavMeshAgent agent;
 
     private Transform lookTarget;
@@ -15,6 +20,8 @@ public class EnemyMovement : MonoBehaviour
 
     private float baseMoveSpeed;
     private float speedMultiplier = 1f;
+
+    private Vector3 lastPosition;
 
     public bool HasReachedDestination
     {
@@ -48,6 +55,18 @@ public class EnemyMovement : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         baseMoveSpeed = agent.speed;
+
+        if (footsteps == null)
+        {
+            footsteps = GetComponentInChildren<FootstepAudio>();
+        }
+
+        lastPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        UpdateFootsteps();
     }
 
     private void LateUpdate()
@@ -243,6 +262,29 @@ public class EnemyMovement : MonoBehaviour
         {
             agent.speed = baseMoveSpeed * speedMultiplier;
         }
+    }
+
+    /// <summary>
+    /// Nutzt die tatsächliche Positionsänderung statt agent.velocity,
+    /// damit auch Dashes (Ausfallschritt, Ansturm, Ausweichen) Schritte erzeugen.
+    /// </summary>
+    private void UpdateFootsteps()
+    {
+        if (footsteps == null || Time.deltaTime <= 0f)
+        {
+            return;
+        }
+
+        Vector3 movedDistance = transform.position - lastPosition;
+        movedDistance.y = 0f;
+
+        lastPosition = transform.position;
+
+        footsteps.UpdateMovement(
+            movedDistance.magnitude / Time.deltaTime,
+            CanUseAgent(),
+            Time.deltaTime
+        );
     }
 
     private void EnableManualRotation(Transform target)

@@ -185,12 +185,12 @@ MonoBehaviour:
   bossRoot: {fileID: 3113970845522469459}
   spriteRenderer: {fileID: 7465784643759612908}
   combatBehaviour: {fileID: 457409782893092702}
-  movement: {fileID: 0}
+  movement: {fileID: 4992716912674233300}
   health: {fileID: 121343053122972427}
   targetCamera: {fileID: 0}
   standFrames:
-  - {fileID: 542783552, guid: c6bee76bf36641a499bee42fa36fc75c, type: 3}
-  - {fileID: -34880245, guid: be3ecbffecce21348aa2662d6e39fb94, type: 3}
+  - {fileID: -342949728, guid: bfcd148eec992d942a04a8a844a4e959, type: 3}
+  - {fileID: -545281525, guid: a18ce0df52c728748bc435639c9fb1d8, type: 3}
   forwardFrames:
   - {fileID: -342949728, guid: bfcd148eec992d942a04a8a844a4e959, type: 3}
   - {fileID: -545281525, guid: a18ce0df52c728748bc435639c9fb1d8, type: 3}
@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 6689909783343714701}
   - component: {fileID: 2702597105588741353}
   - component: {fileID: 5813402917764031234}
+  - component: {fileID: 7247249887242897219}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -330,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   combatRotationSpeed: 12
+  footsteps: {fileID: 7247249887242897219}
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,9 +384,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   player: {fileID: 0}
   combatBehaviour: {fileID: 457409782893092702}
-  searchDuration: 3
-  searchPredictionTime: 1
-  lookAroundSpeed: 120
+  search:
+    predictionTime: 1
+    searchRadius: 6
+    extraSearchPoints: 2
+    lookAroundDuration: 1.5
+    lookAroundSpeed: 120
   allyAlertRadius: 8
   damageAwarenessDuration: 2
 --- !u!114 &457409782893092702
@@ -410,6 +415,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9f092c12b7bfdcc4bae3645baa91b235, type: 3}
   - {fileID: 8300000, guid: 9f0593bade0188a428098b4f1499619f, type: 3}
   - {fileID: 8300000, guid: 1bb9773405789df48b5806e5467b10a5, type: 3}
+  corneredEscape:
+    wallDistanceThreshold: 0.9
+    pressureDistance: 2.5
+    escapeDistance: 3
+    maxEscapeDuration: 1.2
+    cooldown: 2
   health: {fileID: 121343053122972427}
   _doorToDespawn: {fileID: 0}
   musicSource: {fileID: 0}
@@ -676,6 +687,43 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7465784643759612908}
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.1
+--- !u!114 &5813402917764031234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ffdd14b0d74b04b52902b655bbd721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossDialogue
+  boss: {fileID: 457409782893092702}
+  health: {fileID: 121343053122972427}
+  visualController: {fileID: 5831512288307352162}
+  dialogueUI: {fileID: 0}
+  introDialogue: {fileID: 11400000, guid: 00069ef7a5e6447d96b222c59017b537, type: 2}
+  introSecondsPerLine: 2.5
+  defeatDialogue: {fileID: 11400000, guid: 05cba37b61e74ea1817c5986487afcf2, type: 2}
+  defeatDialogueDelay: 1.5
+--- !u!114 &7247249887242897219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a510ba6eb0249ca9745cab350deedfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootstepAudio
+  soundSet: {fileID: 11400000, guid: d34efb45ac8448b7a016c6dc41dab4ac, type: 2}
+  audioSource: {fileID: 6689909783343714701}
+  stepDistance: 1.8
+  minMoveSpeed: 0.5
+  minWalkDistanceForStop: 1
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,23 +755,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3113970845522469459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5813402917764031234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8334742394470388967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4ffdd14b0d74b04b52902b655bbd721, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossDialogue
-  boss: {fileID: 457409782893092702}
-  health: {fileID: 121343053122972427}
-  visualController: {fileID: 0}
-  dialogueUI: {fileID: 0}
-  introDialogue: {fileID: 11400000, guid: 00069ef7a5e6447d96b222c59017b537, type: 2}
-  introSecondsPerLine: 2.5
-  defeatDialogue: {fileID: 11400000, guid: 05cba37b61e74ea1817c5986487afcf2, type: 2}
-  defeatDialogueDelay: 1.5

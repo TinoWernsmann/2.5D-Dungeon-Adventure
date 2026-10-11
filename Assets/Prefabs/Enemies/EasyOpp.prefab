@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 2700000000000001}
   - component: {fileID: 482422492616515247}
   - component: {fileID: 2355182186803076664}
+  - component: {fileID: 2673529979195659367}
   m_Layer: 0
   m_Name: EasyOpp
   m_TagString: Untagged
@@ -297,6 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   combatRotationSpeed: 12
+  footsteps: {fileID: 2673529979195659367}
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +332,7 @@ MonoBehaviour:
   viewDistance: 10
   viewAngle: 90
   proximityDetectionRange: 2
+  sightMemoryDuration: 0.75
   obstacleMask:
     serializedVersion: 2
     m_Bits: 8
@@ -347,7 +350,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   player: {fileID: 0}
   combatBehaviour: {fileID: 2317255083144556059}
-  searchDuration: 3
+  search:
+    predictionTime: 1
+    searchRadius: 6
+    extraSearchPoints: 2
+    lookAroundDuration: 1.5
+    lookAroundSpeed: 120
+  allyAlertRadius: 8
+  damageAwarenessDuration: 2
 --- !u!114 &121343053122972427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,13 +393,24 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3b9b8b9620d201d448023b5736325f96, type: 3}
   - {fileID: 8300000, guid: 550276e70e3679b4ca4b9dc0fa7c07c2, type: 3}
   - {fileID: 8300000, guid: f12f71ae5f0a046429d3eba2f9b3070b, type: 3}
+  corneredEscape:
+    wallDistanceThreshold: 0.9
+    pressureDistance: 2.5
+    escapeDistance: 3
+    maxEscapeDuration: 1.2
+    cooldown: 2
   attackRange: 1.8
   preferredDistance: 1.4
+  engageRange: 4
+  strafeRadius: 3
   damage: 10
   windupDuration: 0.3
   attackDuration: 0.4
   damageMoment: 0.5
   recoveryDuration: 0.6
+  comboChance: 0.35
+  maxComboHits: 2
+  comboWindupFactor: 0.6
   repositionDistance: 1.5
   repositionDuration: 0.5
   repositionChance: 0.6
@@ -529,6 +550,23 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7465784643759612908}
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.1
+--- !u!114 &2673529979195659367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a510ba6eb0249ca9745cab350deedfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootstepAudio
+  soundSet: {fileID: 11400000, guid: d34efb45ac8448b7a016c6dc41dab4ac, type: 2}
+  audioSource: {fileID: 482422492616515247}
+  stepDistance: 1.8
+  minMoveSpeed: 0.5
+  minWalkDistanceForStop: 1
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

@@ -331,6 +331,12 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
 
         AbortCurrentAction();
         movement.Stop();
+
+        // Sofort zum Player drehen, nicht erst langsam während des Dialogs.
+        if (Target != null)
+        {
+            movement.LookInDirection(DirectionToTarget());
+        }
     }
 
     /// <summary>Der Kampf darf beginnen (zieht zuerst seine Waffe).</summary>

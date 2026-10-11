@@ -189,7 +189,11 @@ public class BossVisualController : MonoBehaviour
         switch (state)
         {
             case BossVisualState.Idle:
-                PlayLoop(standFrames, standFramesPerSecond);
+                // Fallback, falls keine Steh-Sprites zugewiesen sind.
+                PlayLoop(
+                    HasFrames(standFrames) ? standFrames : forwardFrames,
+                    standFramesPerSecond
+                );
                 break;
 
             case BossVisualState.Walk:
@@ -313,9 +317,26 @@ public class BossVisualController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// true, wenn die Animation abspielbar ist. Fehlende Sprites (z.B. gelöschte Bilder)
+    /// zählen nicht – sonst bliebe einfach das zuletzt gezeigte Sprite hängen.
+    /// </summary>
     private static bool HasFrames(Sprite[] frames)
     {
-        return frames != null && frames.Length > 0;
+        if (frames == null || frames.Length == 0)
+        {
+            return false;
+        }
+
+        foreach (Sprite frame in frames)
+        {
+            if (frame == null)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void ResetAnimation()

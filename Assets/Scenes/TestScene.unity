@@ -589,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.798
+      value: -3.778
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
       propertyPath: m_LocalPosition.z
@@ -627,10 +627,6 @@ PrefabInstance:
       propertyPath: dialogueUI
       value: 
       objectReference: {fileID: 1129420331}
-    - target: {fileID: 5813402917764031234, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
-      propertyPath: visualController
-      value: 
-      objectReference: {fileID: 1884110850}
     - target: {fileID: 5831512288307352162, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
       propertyPath: targetCamera
       value: 
@@ -35532,7 +35528,7 @@ PrefabInstance:
       objectReference: {fileID: 154190540}
     - target: {fileID: 3113970845522469459, guid: 462d9c8d5029d3a438f8eeb7a8e67231, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 73.35
+      value: 76.01
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: 462d9c8d5029d3a438f8eeb7a8e67231, type: 3}
       propertyPath: m_LocalPosition.y
@@ -35540,7 +35536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: 462d9c8d5029d3a438f8eeb7a8e67231, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.95
+      value: 32.77
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: 462d9c8d5029d3a438f8eeb7a8e67231, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35577,10 +35573,6 @@ PrefabInstance:
     - target: {fileID: 8334742394470388967, guid: 462d9c8d5029d3a438f8eeb7a8e67231, type: 3}
       propertyPath: m_Name
       value: HardOpp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8334742394470388967, guid: 462d9c8d5029d3a438f8eeb7a8e67231, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37244,7 +37236,7 @@ PrefabInstance:
       objectReference: {fileID: 701543618}
     - target: {fileID: 3113970845522469459, guid: 9b36b4bc26510fe46af88f2868bd7450, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 74.97
+      value: 74.483
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: 9b36b4bc26510fe46af88f2868bd7450, type: 3}
       propertyPath: m_LocalPosition.y
@@ -37252,7 +37244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: 9b36b4bc26510fe46af88f2868bd7450, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 27.27
+      value: 33.428
       objectReference: {fileID: 0}
     - target: {fileID: 3113970845522469459, guid: 9b36b4bc26510fe46af88f2868bd7450, type: 3}
       propertyPath: m_LocalRotation.w
@@ -37289,10 +37281,6 @@ PrefabInstance:
     - target: {fileID: 8334742394470388967, guid: 9b36b4bc26510fe46af88f2868bd7450, type: 3}
       propertyPath: m_Name
       value: EasyOpp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8334742394470388967, guid: 9b36b4bc26510fe46af88f2868bd7450, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -59032,17 +59020,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!114 &1884110850 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5831512288307352162, guid: aefeae0486ed4e24d9543d397dd19820, type: 3}
-  m_PrefabInstance: {fileID: 20391893}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50d233d0832460a489655da63f4dcf03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossVisualController
 --- !u!1001 &1888076413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68423,10 +68400,6 @@ PrefabInstance:
       propertyPath: weaponSoundManager
       value: 
       objectReference: {fileID: 97898109}
-    - target: {fileID: 6802337269427441995, guid: 85c9c1288fd12a44cb067e6d3134f949, type: 3}
-      propertyPath: maxHealth
-      value: 500
-      objectReference: {fileID: 0}
     - target: {fileID: 7020891357735276217, guid: 85c9c1288fd12a44cb067e6d3134f949, type: 3}
       propertyPath: m_Name
       value: Player
