@@ -25,6 +25,8 @@ public class GameInput : MonoBehaviour
 
         Instance = this;
         _input = new InputSystem_Actions();
+
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         ConnectInput();
     }

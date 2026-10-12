@@ -13,7 +13,8 @@ public class Settings : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
     }
 
