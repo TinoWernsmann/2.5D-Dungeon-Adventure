@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+// Speichern, ob das Objekt schon zerstört wurde (z.B. die eingestürzte Gefängnisdecke).
+[SaveActiveState]
 public class TimedObjectDestroyer : MonoBehaviour
 {
     [Header("Destruction")]

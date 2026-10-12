@@ -6,6 +6,8 @@ using UnityEngine;
 ///
 /// - Die Wachen sind passiv, bis der Boss den Kampf beginnt (nach dem Intro)
 ///   oder der Player vorher einen aus der Gruppe angreift. Dann greifen alle Wachen an.
+/// - Sobald der Kampf läuft, wissen Boss und Wachen immer, wo der Player ist
+///   (der Raum ist geschlossen – Verstecken soll nicht möglich sein).
 /// - Der Kampf ist erst abgeschlossen, wenn der Boss UND alle Wachen besiegt sind.
 /// </summary>
 [DisallowMultipleComponent]
@@ -30,6 +32,9 @@ public class BossEncounter : MonoBehaviour
     public event Action Completed;
 
     public bool IsProvoked { get; private set; }
+
+    /// <summary>Boss und alle Wachen sind besiegt.</summary>
+    public bool IsBossFightOver => AreAllMembersDefeated();
 
     private void Awake()
     {
@@ -130,10 +135,16 @@ public class BossEncounter : MonoBehaviour
 
         IsProvoked = true;
 
+        if (boss != null && boss.TryGetComponent(out EnemyBrain bossBrain))
+        {
+            bossBrain.SetAlwaysAware(true);
+        }
+
         foreach (EnemyBrain guard in guards)
         {
             if (guard != null)
             {
+                guard.SetAlwaysAware(true);
                 guard.Provoke();
             }
         }

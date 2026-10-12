@@ -5,7 +5,7 @@ public class DropDownManager : MonoBehaviour
 {
     [SerializeField] protected TMP_Dropdown _drop;
 
-    private void Start()
+    protected virtual void Start()
     {
         _drop.onValueChanged.AddListener(ValueChanged);
     }

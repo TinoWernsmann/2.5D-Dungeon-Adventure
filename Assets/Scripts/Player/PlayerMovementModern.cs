@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, ISaveable
 {
     [Header("References")]
     [SerializeField] private Transform playerCamera;
@@ -178,6 +179,48 @@ public class PlayerMovement : MonoBehaviour
         playerCamera.localRotation =
             Quaternion.Euler(cameraPitch, 0f, 0f);
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public Vector3 position;
+        public float yaw;
+        public float cameraPitch;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState
+        {
+            position = transform.position,
+            yaw = transform.eulerAngles.y,
+            cameraPitch = cameraPitch
+        });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        // Der CharacterController überschreibt sonst die neue Position.
+        characterController.enabled = false;
+
+        transform.SetPositionAndRotation(
+            saveState.position,
+            Quaternion.Euler(0f, saveState.yaw, 0f)
+        );
+
+        characterController.enabled = true;
+
+        cameraPitch = saveState.cameraPitch;
+        playerCamera.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+
+        verticalVelocity = 0f;
+    }
+
+    #endregion
 
     private static void LockCursor()
     {

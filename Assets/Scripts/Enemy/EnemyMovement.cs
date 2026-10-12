@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : MonoBehaviour, ISaveable
 {
     [Header("Rotation")]
     [Min(0f)]
@@ -12,6 +13,9 @@ public class EnemyMovement : MonoBehaviour
     [Tooltip("Optional. Am besten auf einem Kind-Objekt mit eigener AudioSource, " +
              "damit die Tonhöhen-Variation nicht die Angriffssounds verändert.")]
     [SerializeField] private FootstepAudio footsteps;
+
+    [Header("Doors")]
+    [SerializeField] private EnemyDoorOpener doorOpener = new();
 
     private NavMeshAgent agent;
 
@@ -64,9 +68,20 @@ public class EnemyMovement : MonoBehaviour
         lastPosition = transform.position;
     }
 
+    /// <summary>Wird von der Zone einer Tür aufgerufen, wenn der Gegner sie betritt/verlässt.</summary>
+    public void SetDoorNearby(Door door, bool isNearby)
+    {
+        doorOpener.SetDoorNearby(door, isNearby);
+    }
+
     private void Update()
     {
         UpdateFootsteps();
+
+        if (CanUseAgent())
+        {
+            doorOpener.Tick(transform, agent, Time.deltaTime);
+        }
     }
 
     private void LateUpdate()
@@ -286,6 +301,43 @@ public class EnemyMovement : MonoBehaviour
             Time.deltaTime
         );
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public Vector3 position;
+        public float yaw;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState
+        {
+            position = transform.position,
+            yaw = transform.eulerAngles.y
+        });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        if (agent != null && agent.enabled)
+        {
+            agent.Warp(saveState.position);
+        }
+        else
+        {
+            transform.position = saveState.position;
+        }
+
+        transform.rotation = Quaternion.Euler(0f, saveState.yaw, 0f);
+        lastPosition = transform.position;
+    }
+
+    #endregion
 
     private void EnableManualRotation(Transform target)
     {

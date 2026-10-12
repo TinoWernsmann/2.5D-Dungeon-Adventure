@@ -22,6 +22,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
 {
     [Header("Encounter")]
     [SerializeField] private Health health;
+    [SaveActiveState]
     [SerializeField] private GameObject _doorToDespawn;
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioClip phaseTransitionSound;

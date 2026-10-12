@@ -1,11 +1,28 @@
+using System;
 using UnityEngine;
 
-public class TutorialTriggerZone : MonoBehaviour
+public class TutorialTriggerZone : MonoBehaviour, ISaveable
 {
     [SerializeField] private TutorialSO _tutorial;
     [SerializeField] private bool _triggerOnlyOnce = true;
 
     private bool _hasBeenTriggered;
+
+    [Serializable]
+    private struct SaveState
+    {
+        public bool hasBeenTriggered;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState { hasBeenTriggered = _hasBeenTriggered });
+    }
+
+    public void RestoreState(string state)
+    {
+        _hasBeenTriggered = JsonUtility.FromJson<SaveState>(state).hasBeenTriggered;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

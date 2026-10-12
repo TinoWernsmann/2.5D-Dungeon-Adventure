@@ -17,4 +17,10 @@ public class QuestProgress
     {
         Current += amount;
     }
+
+    /// <summary>Setzt den Fortschritt direkt (z.B. beim Laden eines Spielstands).</summary>
+    public void SetProgress(int current)
+    {
+        Current = current;
+    }
 }

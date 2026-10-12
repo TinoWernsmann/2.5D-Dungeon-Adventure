@@ -1,8 +1,17 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Door : MonoBehaviour, IInteractable
+/// <summary>
+/// Tür, die der Player öffnen/schließen kann. Abgeschlossene Türen brauchen ein Item (Schlüssel).
+///
+/// Gegner: Unverschlossene Türen blockieren das NavMesh NICHT – Gegner planen ihren Weg
+/// hindurch und öffnen sie, wenn sie davor stehen. Dafür erzeugt die Tür eine unsichtbare
+/// Zone (<see cref="DoorProximityTrigger"/>), die Gegnern meldet, dass eine Tür in der Nähe ist.
+/// Abgeschlossene Türen bleiben für Gegner unpassierbar.
+/// </summary>
+public class Door : MonoBehaviour, IInteractable, ISaveable
 {
     [Header("References")]
     [SerializeField] private ItemManager itemManager;
@@ -17,6 +26,14 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private bool isLocked;
     [SerializeField] private string neededUnlockItem;
 
+    [Header("Enemies")]
+    [Tooltip("Gegner können diese Tür öffnen, solange sie nicht abgeschlossen ist.")]
+    [SerializeField] private bool enemiesCanOpen = true;
+
+    [Tooltip("In diesem Umkreis öffnen Gegner die Tür, wenn sie darauf zulaufen.")]
+    [Min(0.5f)]
+    [SerializeField] private float enemyOpenRadius = 2.2f;
+
     [Header("Audio")]
     [SerializeField] private AudioClip openSound;
     [SerializeField] private AudioClip closeSound;
@@ -27,6 +44,22 @@ public class Door : MonoBehaviour, IInteractable
 
     private bool isOpen;
     private bool isAnimating;
+
+    public bool CanBeOpenedByEnemy =>
+        enemiesCanOpen && !isLocked && !isOpen && !isAnimating;
+
+    /// <summary>Mitte der Türöffnung (der Drehpunkt liegt am Rand).</summary>
+    public Vector3 Center =>
+        visionBlocker != null ? visionBlocker.bounds.center : transform.position;
+
+    /// <summary>Ein Gegner läuft auf die geschlossene Tür zu und öffnet sie.</summary>
+    public void OpenByEnemy()
+    {
+        if (CanBeOpenedByEnemy)
+        {
+            OpenDoor();
+        }
+    }
 
     private void Awake()
     {
@@ -39,6 +72,11 @@ public class Door : MonoBehaviour, IInteractable
         openRotation = closedRotation * Quaternion.Euler(0f, openAngle, 0f);
 
         SetDoorBlocking(true);
+
+        if (enemiesCanOpen)
+        {
+            DoorProximityTrigger.Create(this, Center, enemyOpenRadius);
+        }
     }
 
     public virtual void Interact()
@@ -137,9 +175,41 @@ public class Door : MonoBehaviour, IInteractable
 
         if (navMeshObstacle != null)
         {
-            navMeshObstacle.enabled = blocked;
+            // Nur Türen, die Gegner nicht öffnen können, sperren den Weg im NavMesh.
+            bool blocksEnemies = isLocked || !enemiesCanOpen;
+            navMeshObstacle.enabled = blocked && blocksEnemies;
         }
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public bool isOpen;
+        public bool isLocked;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState { isOpen = isOpen, isLocked = isLocked });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        StopAllCoroutines();
+        isAnimating = false;
+
+        isOpen = saveState.isOpen;
+        isLocked = saveState.isLocked;
+
+        doorPivot.localRotation = isOpen ? openRotation : closedRotation;
+        SetDoorBlocking(!isOpen);
+    }
+
+    #endregion
 
     private void PlaySound(AudioClip sound)
     {

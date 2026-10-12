@@ -2,25 +2,32 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : MonoBehaviour, ISaveable
 {
     public static ItemManager Instance { get; private set; }
 
     [Serializable]
     private class InventorySlot
     {
+        public ItemSO ItemData;
         public ItemBase ItemInstance;
         public int Amount;
-
-        public ItemSO ItemData =>
-            ItemInstance != null
-                ? ItemInstance.ItemData
-                : null;
 
         public InventorySlot(
             ItemBase itemInstance,
             int amount)
+            : this(itemInstance.ItemData, itemInstance, amount)
         {
+        }
+
+        public InventorySlot(
+            ItemSO itemData,
+            ItemBase itemInstance,
+            int amount)
+        {
+            ItemData =
+                itemData;
+
             ItemInstance =
                 itemInstance;
 
@@ -555,6 +562,96 @@ public class ItemManager : MonoBehaviour
         NotifyInventoryChanged();
         NotifySelectedItemChanged();
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SavedSlot
+    {
+        public string itemId;
+        public int amount;
+    }
+
+    [Serializable]
+    private struct SaveState
+    {
+        public List<SavedSlot> slots;
+        public int selectedSlot;
+    }
+
+    public string CaptureState()
+    {
+        SaveState state = new()
+        {
+            slots = new List<SavedSlot>(),
+            selectedSlot = selectedSlot
+        };
+
+        SaveRegistry registry = SaveRegistry.Instance;
+
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            string itemId = registry != null ? registry.GetItemId(slot.ItemData) : null;
+
+            if (string.IsNullOrEmpty(itemId))
+            {
+                Debug.LogWarning($"[Save] Item '{slot.ItemData?.ItemName}' fehlt in der SaveRegistry.", this);
+                continue;
+            }
+
+            state.slots.Add(new SavedSlot { itemId = itemId, amount = slot.Amount });
+        }
+
+        return JsonUtility.ToJson(state);
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+        SaveRegistry registry = SaveRegistry.Instance;
+
+        inventorySlots.Clear();
+
+        if (registry != null && saveState.slots != null)
+        {
+            foreach (SavedSlot savedSlot in saveState.slots)
+            {
+                if (!registry.TryGetItem(savedSlot.itemId, out ItemSO itemData, out ItemBase prefab))
+                {
+                    continue;
+                }
+
+                inventorySlots.Add(new InventorySlot(
+                    itemData,
+                    CreateInventoryInstance(prefab),
+                    savedSlot.amount
+                ));
+            }
+        }
+
+        selectedSlot = IsValidSlot(saveState.selectedSlot)
+            ? saveState.selectedSlot
+            : (inventorySlots.Count > 0 ? 0 : -1);
+
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
+    }
+
+    /// <summary>Unsichtbare Instanz im Inventar, damit das Item später wieder gedroppt werden kann.</summary>
+    private static ItemBase CreateInventoryInstance(ItemBase prefab)
+    {
+        if (prefab == null)
+        {
+            return null;
+        }
+
+        ItemBase instance = Instantiate(prefab);
+        instance.gameObject.SetActive(false);
+
+        return instance;
+    }
+
+    #endregion
 
     private Vector3 GetDropPosition()
     {

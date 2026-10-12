@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, ISaveable
 {
     [Header("Health")]
     [Min(1)]
@@ -23,10 +23,16 @@ public class Health : MonoBehaviour
     public event Action<Transform> DamagedBy;
 
     private IDamageInterceptor[] damageInterceptors;
+    private bool isRestoredFromSave;
 
     private void Awake()
     {
-        CurrentHealth = maxHealth;
+        // Wurde das Objekt erst beim Laden aktiviert, nicht den geladenen Wert überschreiben.
+        if (!isRestoredFromSave)
+        {
+            CurrentHealth = maxHealth;
+        }
+
         damageInterceptors = GetComponents<IDamageInterceptor>();
     }
 
@@ -114,6 +120,38 @@ public class Health : MonoBehaviour
             MaxHealth
         );
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public int currentHealth;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState { currentHealth = CurrentHealth });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        isRestoredFromSave = true;
+        CurrentHealth = Mathf.Clamp(saveState.currentHealth, 0, maxHealth);
+
+        // Besiegte Gegner / zerstörte Objekte, deren Überreste noch zu sehen waren.
+        if (IsDead)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        HealthChanged?.Invoke(CurrentHealth, MaxHealth);
+    }
+
+    #endregion
 
     private bool IsDamageIntercepted(
         int damage,

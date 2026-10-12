@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a6b7db866a4b5f40aca11105be0b179, type: 3}
+  m_Name: SaveRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::SaveRegistry
+  items:
+  - id: f4c356b8cf8c05b44983c47b60dc7198
+    item: {fileID: 11400000, guid: f4c356b8cf8c05b44983c47b60dc7198, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
+  - id: 0abe6127d525aa1419da1a519605fca5
+    item: {fileID: 11400000, guid: 0abe6127d525aa1419da1a519605fca5, type: 2}
+    prefab: {fileID: 0}
+  - id: 5ca1e33bc39febe4ca949e4295585ca6
+    item: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
+    prefab: {fileID: 2216420366719847928, guid: 33b3881090d03e842b74e41751d51dcd, type: 3}
+  - id: 33de8fdab3a2b31409ec434affd42c81
+    item: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}
+    prefab: {fileID: 3429332506891082912, guid: 88e5bf80d937e1945a46cc9f059bb4b1, type: 3}
+  - id: a9a79891748e6a4469be2a8d45d85d4a
+    item: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 16121a253592a674a8a32b982d1616bc, type: 3}
+  - id: 319f7ad8deca82740bb14512aecb82be
+    item: {fileID: 11400000, guid: 319f7ad8deca82740bb14512aecb82be, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 62d3e79cb7fa5dd4999aef0b7f3bf092, type: 3}
+  - id: f83f888a874281141a787f8b2dc459b7
+    item: {fileID: 11400000, guid: f83f888a874281141a787f8b2dc459b7, type: 2}
+    prefab: {fileID: 0}
+  - id: 7d7fc37d00862cc46b0af0c3e4821dde
+    item: {fileID: 11400000, guid: 7d7fc37d00862cc46b0af0c3e4821dde, type: 2}
+    prefab: {fileID: 223743874185225283, guid: 6906d19fff7047b478d1cb13af9e42c6, type: 3}
+  - id: 90069dc5ad8322f4a8a9229c6acd3f86
+    item: {fileID: 11400000, guid: 90069dc5ad8322f4a8a9229c6acd3f86, type: 2}
+    prefab: {fileID: 1091953983615760258, guid: bf16aa3ec845b454cacca63f55678263, type: 3}
+  quests:
+  - id: b9495b9021c4fc3489da3d486ed5f60d
+    quest: {fileID: 11400000, guid: b9495b9021c4fc3489da3d486ed5f60d, type: 2}
+  - id: 23dad7f72cb85bb47a15042bdee19428
+    quest: {fileID: 11400000, guid: 23dad7f72cb85bb47a15042bdee19428, type: 2}
+  - id: 430f4cd9e860e7d48a104d1a7e486d48
+    quest: {fileID: 11400000, guid: 430f4cd9e860e7d48a104d1a7e486d48, type: 2}
+  - id: 84f4592185acf0447b444e0927fb63a4
+    quest: {fileID: 11400000, guid: 84f4592185acf0447b444e0927fb63a4, type: 2}
+  - id: ac6fd4e3cbb7465488ef7fc2d8fea3eb
+    quest: {fileID: 11400000, guid: ac6fd4e3cbb7465488ef7fc2d8fea3eb, type: 2}
+  - id: 4d35b934555fb324eb2622d17251db43
+    quest: {fileID: 11400000, guid: 4d35b934555fb324eb2622d17251db43, type: 2}
+  - id: fc7b46f7b0a8e5140b54054ec4c64cb2
+    quest: {fileID: 11400000, guid: fc7b46f7b0a8e5140b54054ec4c64cb2, type: 2}

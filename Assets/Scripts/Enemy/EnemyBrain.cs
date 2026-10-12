@@ -10,6 +10,7 @@ using UnityEngine;
 /// - Entdeckt er den Player, alarmiert er Verbündete in der Nähe.
 /// - Verliert er den Player, sucht er ihn (siehe <see cref="EnemySearch"/>).
 /// - Passiv (z.B. Wachen eines Bosses): ignoriert den Player, bis er provoziert wird.
+/// - "Immer aufmerksam" (z.B. im Boss-Kampf): kennt die Position des Players auch ohne Sicht.
 /// </summary>
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(EnemyPatrol))]
@@ -58,6 +59,11 @@ public class EnemyBrain : MonoBehaviour
 
     /// <summary>Passiv = greift nicht von selbst an, nur wenn er provoziert wird.</summary>
     public bool IsPassive { get; private set; }
+
+    /// <summary>Kennt die Position des Players immer, auch ohne Sichtkontakt (z.B. im Boss-Kampf).</summary>
+    public bool IsAlwaysAware { get; private set; }
+
+    private bool KnowsWherePlayerIs => IsAlwaysAware || perception.IsAwareOfPlayer;
 
     private void Awake()
     {
@@ -142,7 +148,7 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
-        if (perception.CanSeePlayer())
+        if (IsAlwaysAware || perception.CanSeePlayer())
         {
             SpotPlayer();
         }
@@ -150,7 +156,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void UpdateChaseState()
     {
-        if (!perception.IsAwareOfPlayer)
+        if (!KnowsWherePlayerIs)
         {
             ChangeState(EnemyState.Search);
             return;
@@ -169,7 +175,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void UpdateCombatState()
     {
-        if (!perception.IsAwareOfPlayer)
+        if (!KnowsWherePlayerIs)
         {
             ChangeState(EnemyState.Search);
             return;
@@ -182,7 +188,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void UpdateSearchState()
     {
-        if (perception.CanSeePlayer())
+        if (IsAlwaysAware || perception.CanSeePlayer())
         {
             SpotPlayer();
             return;
@@ -280,6 +286,11 @@ public class EnemyBrain : MonoBehaviour
     public void SetPassive(bool isPassive)
     {
         IsPassive = isPassive;
+    }
+
+    public void SetAlwaysAware(bool isAlwaysAware)
+    {
+        IsAlwaysAware = isAlwaysAware;
     }
 
     /// <summary>Beendet den passiven Modus und greift den Player sofort an.</summary>

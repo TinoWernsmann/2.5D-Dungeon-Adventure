@@ -19,6 +19,15 @@ public class FootstepAudio : MonoBehaviour
     [SerializeField] private FootstepSoundSet soundSet;
     [SerializeField] private AudioSource audioSource;
 
+    [Header("Hearing Range")]
+    [Tooltip("Bis zu dieser Entfernung voll laut (der Player hört seine eigenen Schritte daher immer voll).")]
+    [Min(0f)]
+    [SerializeField] private float fullVolumeDistance = 2f;
+
+    [Tooltip("Ab dieser Entfernung sind die Schritte nicht mehr zu hören.")]
+    [Min(0.1f)]
+    [SerializeField] private float maxHearingDistance = 15f;
+
     [Header("Walk")]
     [Tooltip("Gelaufene Strecke zwischen zwei Schritten (in Metern).")]
     [Min(0.1f)]
@@ -45,6 +54,25 @@ public class FootstepAudio : MonoBehaviour
         {
             audioSource = GetComponent<AudioSource>();
         }
+
+        ConfigureAsSpatialSound();
+    }
+
+    /// <summary>
+    /// 3D-Sound mit begrenzter Hörweite. Als 2D-Sound wären die Schritte JEDES Gegners
+    /// im ganzen Level gleich laut zu hören – auch wenn er weit weg in einem anderen Raum läuft.
+    /// </summary>
+    private void ConfigureAsSpatialSound()
+    {
+        if (audioSource == null)
+        {
+            return;
+        }
+
+        audioSource.spatialBlend = 1f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = fullVolumeDistance;
+        audioSource.maxDistance = Mathf.Max(maxHearingDistance, fullVolumeDistance + 0.1f);
     }
 
     /// <summary>Jeden Frame vom Bewegungs-Script aufrufen.</summary>
