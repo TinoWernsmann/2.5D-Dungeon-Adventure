@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : MonoBehaviour, ISaveLoadListener
 {
     public static TutorialManager Instance { get; private set; }
     public bool IsShowing { get; private set; }
@@ -106,6 +106,15 @@ public class TutorialManager : MonoBehaviour
         {
             GameInput.Instance.DisableDialogue();
         }
+    }
+
+    /// <summary>
+    /// Beim Laden steht der Player im ersten Frame noch am Startpunkt und kann ein
+    /// Tutorial auslösen, das zum Spielstand nicht passt – das wird wieder geschlossen.
+    /// </summary>
+    public void OnGameLoaded()
+    {
+        HideTutorial();
     }
 
     private void HandleDialogueInput()

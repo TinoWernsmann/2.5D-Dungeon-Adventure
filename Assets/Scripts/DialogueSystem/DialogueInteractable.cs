@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
+// NPCs können nach dem Gespräch verschwinden -> Aktiv-Zustand speichern.
+[SaveActiveState]
 public class DialogueInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueBase _dialogueData;

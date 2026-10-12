@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   itemData: {fileID: 11400000, guid: 90069dc5ad8322f4a8a9229c6acd3f86, type: 2}
+  pickupAmount: 1
 --- !u!114 &4732234953121599548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +201,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6094632340271675854
 Canvas:

@@ -22,6 +22,6 @@ public class HerzRaumTrigger : MonoBehaviour
     {
         yield return new WaitForSeconds(WAIT_TIMER);
 
-        SceneManager.LoadScene(SCENE_TO_LOAD);
+        SceneLoader.Load(SCENE_TO_LOAD);
     }
 }

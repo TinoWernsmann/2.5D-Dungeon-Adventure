@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>Zerstört ein Tor, sobald eine Quest einen Fortschritt erreicht oder abgeschlossen ist.</summary>
-public class QuestGate : MonoBehaviour
+public class QuestGate : MonoBehaviour, ISaveable
 {
     [Header("Condition")]
     [SerializeField] private QuestData _quest;
@@ -61,6 +62,38 @@ public class QuestGate : MonoBehaviour
 
         Destroy(_gateObject);
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public bool isOpen;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState { isOpen = _isOpen });
+    }
+
+    public void RestoreState(string state)
+    {
+        if (!JsonUtility.FromJson<SaveState>(state).isOpen || _isOpen)
+        {
+            return;
+        }
+
+        // Ohne Sound öffnen – das Tor war beim Speichern schon offen.
+        _isOpen = true;
+        Unsubscribe();
+
+        if (_gateObject != null)
+        {
+            Destroy(_gateObject);
+        }
+    }
+
+    #endregion
 
     private void Unsubscribe()
     {

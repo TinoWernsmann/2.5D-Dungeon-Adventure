@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+public class QuestManager : MonoBehaviour, ISaveable
 {
     public static QuestManager Instance { get; private set; }
 
@@ -132,6 +132,82 @@ public class QuestManager : MonoBehaviour
     {
         return _activeQuests.Exists(q => q.Data == data);
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SavedQuest
+    {
+        public string questId;
+        public int current;
+    }
+
+    [Serializable]
+    private struct SaveState
+    {
+        public List<SavedQuest> activeQuests;
+        public int trackedIndex;
+    }
+
+    public string CaptureState()
+    {
+        SaveState state = new()
+        {
+            activeQuests = new List<SavedQuest>(),
+            trackedIndex = _activeQuests.IndexOf(Tracked)
+        };
+
+        SaveRegistry registry = SaveRegistry.Instance;
+
+        foreach (QuestProgress quest in _activeQuests)
+        {
+            string questId = registry != null ? registry.GetQuestId(quest.Data) : null;
+
+            if (string.IsNullOrEmpty(questId))
+            {
+                Debug.LogWarning($"[Save] Quest '{quest.Data.name}' fehlt in der SaveRegistry.", this);
+                continue;
+            }
+
+            state.activeQuests.Add(new SavedQuest { questId = questId, current = quest.Current });
+        }
+
+        return JsonUtility.ToJson(state);
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+        SaveRegistry registry = SaveRegistry.Instance;
+
+        _activeQuests.Clear();
+
+        if (registry != null && saveState.activeQuests != null)
+        {
+            foreach (SavedQuest savedQuest in saveState.activeQuests)
+            {
+                QuestData data = registry.GetQuest(savedQuest.questId);
+
+                if (data == null)
+                {
+                    continue;
+                }
+
+                QuestProgress progress = new(data);
+                progress.SetProgress(savedQuest.current);
+                _activeQuests.Add(progress);
+            }
+        }
+
+        bool hasTrackedQuest =
+            saveState.trackedIndex >= 0 &&
+            saveState.trackedIndex < _activeQuests.Count;
+
+        Tracked = hasTrackedQuest ? _activeQuests[saveState.trackedIndex] : null;
+        OnTrackedQuestChanged?.Invoke(Tracked);
+    }
+
+    #endregion
 
     private void Log(string message)
     {

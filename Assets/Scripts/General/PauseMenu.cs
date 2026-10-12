@@ -9,6 +9,9 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject _confirmMenu;
     [SerializeField] private TextMeshProUGUI _confirmMenuText;
 
+    [Header("Save System")]
+    [SerializeField] private SaveSlotMenu _saveSlotMenu;
+
     private Option _chosenOption = Option.None;
 
     private const string EXIT_TEXT = "Are you sure you want to exit the game?";
@@ -25,6 +28,8 @@ public class PauseMenu : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_saveSlotMenu != null) _saveSlotMenu.Closed -= HandleSaveSlotMenuClosed;
+
         if (GameInput.Instance == null) return;
 
         GameInput.Instance.OnPause -= TryPauseGame;
@@ -32,11 +37,24 @@ public class PauseMenu : MonoBehaviour
 
     public void Start()
     {
-        GameInput.Instance.OnPause += TryPauseGame; 
+        // Falls das Menü zum Bearbeiten in der Szene aktiv gespeichert wurde.
+        _pauseMenu.SetActive(false);
+        _confirmMenu.SetActive(false);
+
+        GameInput.Instance.OnPause += TryPauseGame;
+
+        if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleSaveSlotMenuClosed;
     }
 
     public void TryPauseGame()
     {
+        // ESC im Speichern/Laden-Menü führt zurück ins Pause-Menü.
+        if (_saveSlotMenu != null && _saveSlotMenu.IsOpen)
+        {
+            _saveSlotMenu.Close();
+            return;
+        }
+
         if (isPause)
         {
             PresumeGame();
@@ -59,6 +77,40 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = false;
         _pauseMenu.SetActive(false);
         _confirmMenu.SetActive(false);    
+        _mainPauseMenu.SetActive(true);
+
+        if (_saveSlotMenu != null && _saveSlotMenu.IsOpen) _saveSlotMenu.Close();
+    }
+
+    public void OpenSaveMenu()
+    {
+        OpenSaveSlotMenu(SaveSlotMenu.Mode.Save);
+    }
+
+    public void OpenLoadMenu()
+    {
+        OpenSaveSlotMenu(SaveSlotMenu.Mode.Load);
+    }
+
+    private void OpenSaveSlotMenu(SaveSlotMenu.Mode mode)
+    {
+        if (_saveSlotMenu == null)
+        {
+            Debug.LogWarning("PauseMenu: Kein SaveSlotMenu zugewiesen.", this);
+            return;
+        }
+
+        // Das komplette Pause-Menü (Hintergrund, Buttons, Controls) ausblenden.
+        _pauseMenu.SetActive(false);
+        _saveSlotMenu.Open(mode);
+    }
+
+    private void HandleSaveSlotMenuClosed()
+    {
+        if (!isPause) return;
+
+        _pauseMenu.SetActive(true);
+        _mainPauseMenu.SetActive(true);
     }
 
     public void TryExitGame()
@@ -109,6 +161,6 @@ public class PauseMenu : MonoBehaviour
     private void GoToMainMenu()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(MAIN_MENU_SCENE);
+        SceneLoader.Load(MAIN_MENU_SCENE);
     }
 }

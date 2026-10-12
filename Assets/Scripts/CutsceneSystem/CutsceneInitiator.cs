@@ -36,6 +36,6 @@ public class CutsceneInitiator : MonoBehaviour
         }
 
         _cutsceneManager.OnCutsceneFinished -= OnFinished;
-        SceneManager.LoadSceneAsync(NEXT_SCENE_TO_LOAD);
+        SceneLoader.Load(NEXT_SCENE_TO_LOAD);
     }
 }

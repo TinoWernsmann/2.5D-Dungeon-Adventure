@@ -3,14 +3,6 @@ using UnityEngine;
 
 public class EnemyVisualController : MonoBehaviour
 {
-    private enum ViewDirection
-    {
-        Front,
-        Back,
-        Left,
-        Right
-    }
-
     [Header("References")]
     [SerializeField] private Transform enemyRoot;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -274,7 +266,7 @@ public class EnemyVisualController : MonoBehaviour
             return;
         }
 
-        ViewDirection direction =
+        SpriteViewDirection direction =
             GetViewDirection();
 
         if (movement.IsMoving)
@@ -316,7 +308,7 @@ public class EnemyVisualController : MonoBehaviour
     }
 
     private void UpdateMovementAnimation(
-        ViewDirection direction)
+        SpriteViewDirection direction)
     {
         Sprite[] frames =
             GetMovementFrames(direction);
@@ -355,7 +347,7 @@ public class EnemyVisualController : MonoBehaviour
     }
 
     private void UpdateIdleAnimation(
-        ViewDirection direction)
+        SpriteViewDirection direction)
     {
         Sprite[] frames =
             GetIdleFrames(direction);
@@ -405,61 +397,29 @@ public class EnemyVisualController : MonoBehaviour
         idleFrameTimer = 0f;
     }
 
-    private ViewDirection GetViewDirection()
+    private SpriteViewDirection GetViewDirection()
     {
-        Vector3 directionToCamera =
-            targetCamera.transform.position -
-            enemyRoot.position;
-
-        directionToCamera.y = 0f;
-
-        if (directionToCamera.sqrMagnitude <= 0.001f)
-        {
-            return ViewDirection.Front;
-        }
-
-        directionToCamera.Normalize();
-
-        float forwardDot =
-            Vector3.Dot(
-                enemyRoot.forward,
-                directionToCamera
-            );
-
-        float rightDot =
-            Vector3.Dot(
-                enemyRoot.right,
-                directionToCamera
-            );
-
-        if (Mathf.Abs(forwardDot) >=
-            Mathf.Abs(rightDot))
-        {
-            return forwardDot >= 0f
-                ? ViewDirection.Front
-                : ViewDirection.Back;
-        }
-
-        return rightDot >= 0f
-            ? ViewDirection.Right
-            : ViewDirection.Left;
+        return SpriteViewDirectionResolver.Resolve(
+            enemyRoot,
+            targetCamera.transform.position
+        );
     }
 
     private Sprite[] GetMovementFrames(
-        ViewDirection direction)
+        SpriteViewDirection direction)
     {
         return direction switch
         {
-            ViewDirection.Front =>
+            SpriteViewDirection.Front =>
                 frontFrames,
 
-            ViewDirection.Back =>
+            SpriteViewDirection.Back =>
                 backFrames,
 
-            ViewDirection.Left =>
+            SpriteViewDirection.Left =>
                 leftFrames,
 
-            ViewDirection.Right =>
+            SpriteViewDirection.Right =>
                 rightFrames,
 
             _ => frontFrames
@@ -467,20 +427,20 @@ public class EnemyVisualController : MonoBehaviour
     }
 
     private Sprite[] GetIdleFrames(
-        ViewDirection direction)
+        SpriteViewDirection direction)
     {
         return direction switch
         {
-            ViewDirection.Front =>
+            SpriteViewDirection.Front =>
                 idleFrontFrames,
 
-            ViewDirection.Back =>
+            SpriteViewDirection.Back =>
                 idleBackFrames,
 
-            ViewDirection.Left =>
+            SpriteViewDirection.Left =>
                 idleLeftFrames,
 
-            ViewDirection.Right =>
+            SpriteViewDirection.Right =>
                 idleRightFrames,
 
             _ => idleFrontFrames

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4083c5f5505c40e5b2ba9f67eb82c641, type: 3}
+  m_Name: Cobblestone_Footsteps
+  m_EditorClassIdentifier: Assembly-CSharp::FootstepSoundSet
+  walkClips:
+  - {fileID: 8300000, guid: f2701cfee8662194d8214079deba6b69, type: 3}
+  - {fileID: 8300000, guid: 8bbd6f08d8e46bd4db9054437f26cf99, type: 3}
+  - {fileID: 8300000, guid: bc24b237150afbb4f9a9424a048371ac, type: 3}
+  - {fileID: 8300000, guid: b8c45904d5fd3104aafe37bba1d5fcf3, type: 3}
+  - {fileID: 8300000, guid: 091f965193da1b94fb412fe3cd283ff1, type: 3}
+  - {fileID: 8300000, guid: 164ee09868447724d9edd59988b6c35a, type: 3}
+  - {fileID: 8300000, guid: d6a33ccec972bfa49978c802a71c51d7, type: 3}
+  - {fileID: 8300000, guid: e56e4bc69b1b4484e8ee58110ea7a28c, type: 3}
+  - {fileID: 8300000, guid: 70dc9128ff99f514cbde121ea348b385, type: 3}
+  - {fileID: 8300000, guid: a5e2bf4dda9761a46a650e47ffe6958c, type: 3}
+  stopClips:
+  - {fileID: 8300000, guid: 3e9d4499c043fc5448e7007bf744e7c1, type: 3}
+  - {fileID: 8300000, guid: fafb5579828c4fc4cb5d516c156929a1, type: 3}
+  - {fileID: 8300000, guid: 502cbff01cb16d74cb9658756303836f, type: 3}
+  - {fileID: 8300000, guid: 02f3921da61ba8948b10ac18a7c2b719, type: 3}
+  - {fileID: 8300000, guid: b477560c65bbdfa4b9b620be79e059b7, type: 3}
+  - {fileID: 8300000, guid: 894072b6cd989cf4aaf7b117471aa9a7, type: 3}
+  jumpClips:
+  - {fileID: 8300000, guid: 69e73c417be63e548bde713b87a0d7c1, type: 3}
+  - {fileID: 8300000, guid: 775c07861fa5dc54a9d633739dc2cc07, type: 3}
+  - {fileID: 8300000, guid: 937ecd22a9458ee4ea89475c9692f121, type: 3}
+  - {fileID: 8300000, guid: ac1dde79ee06d10409776a53acebf240, type: 3}
+  - {fileID: 8300000, guid: 6f836ef69fc1ef2409072512f5cc4483, type: 3}
+  - {fileID: 8300000, guid: b02dd77c8411e8843a70c165b4ee8559, type: 3}
+  landClips:
+  - {fileID: 8300000, guid: 523a3c30616ef504bb48c1c1bf4478ae, type: 3}
+  - {fileID: 8300000, guid: 0d7216f6a60696b4baf0a415e2af8956, type: 3}
+  - {fileID: 8300000, guid: 473a6ebf871efd14a9ce0c32927aaaef, type: 3}
+  - {fileID: 8300000, guid: b30c348df22d4c84db7ddd7715f6a4a8, type: 3}
+  - {fileID: 8300000, guid: 1207d84c676c1984e9612429315748b0, type: 3}
+  - {fileID: 8300000, guid: e2709be6a57447345a5dd68fffdac986, type: 3}
+  volume: 0.6
+  pitchVariation: 0.08
