@@ -17,14 +17,18 @@ public class GameInput : MonoBehaviour
 
     private void Awake()
     {
+        // Es gibt schon ein GameInput aus einer vorherigen Szene -> dieses Duplikat entfernen.
+        // Nur die Komponente, damit andere Komponenten auf demselben Objekt erhalten bleiben.
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            Destroy(this);
             return;
         }
 
         Instance = this;
         _input = new InputSystem_Actions();
+
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         ConnectInput();
     }
@@ -48,6 +52,12 @@ public class GameInput : MonoBehaviour
 
     private void OnDisable()
     {
+        // Duplikate werden in Awake entfernt, bevor sie ein Input-Objekt angelegt haben.
+        if (_input == null)
+        {
+            return;
+        }
+
         _input.Player.Disable();
 
         _input.Player.Drop.performed -= DropPerformed;

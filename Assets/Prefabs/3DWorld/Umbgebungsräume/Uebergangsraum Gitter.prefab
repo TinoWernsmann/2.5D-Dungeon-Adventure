@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1ecb19e9e2c33f543960a53567308501, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bf5a0cb9a78ed694da44ab0be29ba50d, type: 2}
     - target: {fileID: 919132149155446097, guid: 1ecb19e9e2c33f543960a53567308501, type: 3}
       propertyPath: m_Name
       value: Uebergangsraum Gitter
@@ -58,15 +62,15 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ecb19e9e2c33f543960a53567308501, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4471040113947283009}
+      addedObject: {fileID: 6233271349484175265}
   m_SourcePrefab: {fileID: 100100000, guid: 1ecb19e9e2c33f543960a53567308501, type: 3}
 --- !u!1 &4010282401075070827 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ecb19e9e2c33f543960a53567308501, type: 3}
   m_PrefabInstance: {fileID: 4280120905249176122}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &4471040113947283009
-MeshCollider:
+--- !u!65 &6233271349484175265
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -83,7 +87,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2577522551389975321, guid: 1ecb19e9e2c33f543960a53567308501, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.0068084025, y: 0.041796196, z: 0.02736341}
+  m_Center: {x: -0.00048020168, y: -0.0008964462, z: 0.0136817}

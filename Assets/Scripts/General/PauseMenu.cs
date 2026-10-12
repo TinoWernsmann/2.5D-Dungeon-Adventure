@@ -16,6 +16,7 @@ public class PauseMenu : MonoBehaviour
 
     private const string EXIT_TEXT = "Are you sure you want to exit the game?";
     private const string MENU_TEXT = "Are you sure you want to go to the main menu?";
+    private const string RESTART_TEXT = "Are you sure you want to restart the level?\nUnsaved progress will be lost.";
     private const string MAIN_MENU_SCENE = "MainMenu";
     private bool isPause = false;
 
@@ -23,6 +24,7 @@ public class PauseMenu : MonoBehaviour
     {
         Exit,
         MainMenu,
+        Restart,
         None
     }
 
@@ -115,18 +117,26 @@ public class PauseMenu : MonoBehaviour
 
     public void TryExitGame()
     {
-        _confirmMenuText.text = EXIT_TEXT;
-        _chosenOption = Option.Exit;
-        _mainPauseMenu.SetActive(false);
-        _confirmMenu.SetActive(true);
+        ShowConfirm(EXIT_TEXT, Option.Exit);
     }
 
     public void TryMainMenu()
     {
-        _confirmMenuText.text = MENU_TEXT;
-        _chosenOption = Option.MainMenu;
+        ShowConfirm(MENU_TEXT, Option.MainMenu);
+    }
+
+    public void TryRestartLevel()
+    {
+        ShowConfirm(RESTART_TEXT, Option.Restart);
+    }
+
+    /// <summary>Zeigt den gemeinsamen Bestätigungsdialog ("Sure") für die gewählte Aktion.</summary>
+    private void ShowConfirm(string question, Option option)
+    {
+        _confirmMenuText.text = question;
+        _chosenOption = option;
         _mainPauseMenu.SetActive(false);
-        _confirmMenu.SetActive(true);    
+        _confirmMenu.SetActive(true);
     }
 
     public void CancelDecision()
@@ -147,6 +157,9 @@ public class PauseMenu : MonoBehaviour
             case Option.MainMenu:
                 GoToMainMenu();
                 break;
+            case Option.Restart:
+                RestartLevel();
+                break;
             case Option.None: // This is just a fall back, it just cancels the menu on confirm.
                 CancelDecision();
                 break;
@@ -162,5 +175,12 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneLoader.Load(MAIN_MENU_SCENE);
+    }
+
+    /// <summary>Lädt das aktuelle Level komplett neu (ohne Spielstand).</summary>
+    private void RestartLevel()
+    {
+        Time.timeScale = 1;
+        SceneLoader.Load(SceneManager.GetActiveScene().name);
     }
 }
