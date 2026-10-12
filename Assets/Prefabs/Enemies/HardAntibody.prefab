@@ -253,7 +253,7 @@ Transform:
   m_GameObject: {fileID: 8334742394470388967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.02, y: 0.98, z: 4.79}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -296,6 +296,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   combatRotationSpeed: 12
+  footsteps: {fileID: 0}
+  doorOpener:
+    canOpenDoors: 1
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +333,7 @@ MonoBehaviour:
   viewDistance: 10
   viewAngle: 90
   proximityDetectionRange: 2
+  sightMemoryDuration: 0.75
   obstacleMask:
     serializedVersion: 2
     m_Bits: 8
@@ -347,7 +351,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   player: {fileID: 0}
   combatBehaviour: {fileID: 79553458408629010}
-  searchDuration: 3
+  search:
+    predictionTime: 1
+    searchRadius: 6
+    extraSearchPoints: 2
+    lookAroundDuration: 1.5
+    lookAroundSpeed: 120
+  allyAlertRadius: 8
+  damageAwarenessDuration: 2
 --- !u!114 &121343053122972427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,20 +385,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeavyAntibodyCombatBehaviour
   movement: {fileID: 4992716912674233300}
-  characterController: {fileID: 0}
   audioSource: {fileID: 1502234750099631998}
   attackSounds:
   - {fileID: 8300000, guid: 5187800be4e28184094c1065d562f6a5, type: 3}
   - {fileID: 8300000, guid: a0119e748cbbc34438b2fb26223c50b9, type: 3}
   - {fileID: 8300000, guid: d94e2b8a8279f004db29190a8ecef048, type: 3}
+  corneredEscape:
+    wallDistanceThreshold: 0.9
+    pressureDistance: 2.5
+    escapeDistance: 3
+    maxEscapeDuration: 1.2
+    cooldown: 2
   combatRange: 6
   preferredChargeDistance: 4
   telegraphDuration: 0.8
+  aimLockDuration: 0.25
   chargeSpeed: 10
   chargeDuration: 0.7
   hitRange: 6
   chargeDamage: 15
   recoveryDuration: 1.5
+  wallStunDuration: 2.5
 --- !u!136 &2700000000000001
 CapsuleCollider:
   m_ObjectHideFlags: 0
