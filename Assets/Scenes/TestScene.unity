@@ -15,11 +15,11 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.62352943, g: 0.40541664, b: 0.39215687, a: 1}
-  m_FogMode: 3
+  m_FogColor: {r: 0.3301887, g: 0, b: 0, a: 1}
+  m_FogMode: 1
   m_FogDensity: 0.07
-  m_LinearFogStart: 0
-  m_LinearFogEnd: 300
+  m_LinearFogStart: 12
+  m_LinearFogEnd: 37
   m_AmbientSkyColor: {r: 0.83137256, g: 0, b: 0.062274687, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
@@ -75854,6 +75854,10 @@ PrefabInstance:
       propertyPath: itemManager
       value: 
       objectReference: {fileID: 97898113}
+    - target: {fileID: 6059036076607321077, guid: 85c9c1288fd12a44cb067e6d3134f949, type: 3}
+      propertyPath: id
+      value: 12f8d80338ce4941b2209901d460a6a9
+      objectReference: {fileID: 0}
     - target: {fileID: 6699359120627354551, guid: 85c9c1288fd12a44cb067e6d3134f949, type: 3}
       propertyPath: weaponUI
       value: 
