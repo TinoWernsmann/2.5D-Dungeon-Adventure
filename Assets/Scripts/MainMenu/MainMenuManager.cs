@@ -35,8 +35,20 @@ public class MainMenuManager : MonoBehaviour
     {
         RefreshContinueButton();
 
+        DeleteGameAssets();
+
         if (SaveManager.Instance != null) SaveManager.Instance.SlotsChanged += RefreshContinueButton;
         if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleLoadMenuClosed;
+    }
+
+    private void DeleteGameAssets()
+    {
+        DontDestroyer[] gameAssets = FindObjectsByType<DontDestroyer>();
+
+        foreach (DontDestroyer asset in gameAssets)
+        {
+            Destroy(asset.gameObject);
+        }
     }
 
     private void OnDestroy()
