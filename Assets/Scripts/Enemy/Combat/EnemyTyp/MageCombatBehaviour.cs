@@ -1,5 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// Fernkämpfer: Hält Abstand, weicht zwischen den Zaubern seitlich aus
+/// und zielt mit dem Magic Bolt dorthin, wo der Player gleich sein wird.
+/// Wird er in eine Ecke gedrängt, zaubert er sofort statt sinnlos gegen die Wand zu laufen.
+/// Steht ein Verbündeter (oder eine Wand) in der Schusslinie, hält er den Zauber zurück
+/// und sucht sich seitlich eine freie Schussbahn.
+/// </summary>
 public class MageCombatBehaviour : EnemyCombatBehaviour
 {
     private enum CombatState
@@ -7,6 +14,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         None,
         Approach,
         Retreat,
+        Reposition,
         Cast,
         Recovery
     }
@@ -17,8 +25,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         Fireball
     }
 
-    [Header("References")]
-    [SerializeField] private EnemyMovement movement;
+    [Header("Projectile")]
     [SerializeField] private Transform projectileSpawnPoint;
 
     [Header("Combat Distance")]
@@ -46,6 +53,10 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Min(0f)]
     [SerializeField] private float magicBoltRecoveryDuration = 0.65f;
 
+    [Tooltip("Vorausberechnung der Player-Bewegung in Sekunden (0 = direkt auf den Player).")]
+    [Min(0f)]
+    [SerializeField] private float magicBoltAimLeadTime = 0.35f;
+
     [Header("Fireball")]
     [SerializeField] private EnemyProjectile fireballPrefab;
 
@@ -71,122 +82,87 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Min(0.1f)]
     [SerializeField] private float retreatDuration = 1f;
 
+    [Header("Strafe")]
+    [Tooltip("Seitlicher Schritt während der Erholung nach einem Zauber.")]
+    [Min(0f)]
+    [SerializeField] private float strafeStepDegrees = 25f;
+
+    [Header("Line of Fire")]
+    [Tooltip("Breite der Schussbahn, die frei sein muss (etwa so groß wie das Projektil).")]
+    [Min(0.01f)]
+    [SerializeField] private float lineOfFireRadius = 0.3f;
+
+    [Tooltip("So lange hält er einen fertigen Zauber zurück, wenn die Schussbahn blockiert ist.")]
+    [Min(0f)]
+    [SerializeField] private float maxSpellHoldDuration = 0.75f;
+
+    [Tooltip("Maximale Dauer, um eine freie Schussbahn zu suchen.")]
+    [Min(0.1f)]
+    [SerializeField] private float repositionDuration = 0.8f;
+
+    [Min(0f)]
+    [SerializeField] private float repositionStepDegrees = 40f;
+
     [Header("Debug")]
     [SerializeField] private bool debugCombat;
 
-    private CombatState currentState =
-        CombatState.None;
-
-    private SpellType currentSpell =
-        SpellType.MagicBolt;
-
-    private Transform currentTarget;
-    private Health currentTargetHealth;
+    private CombatState currentState = CombatState.None;
+    private SpellType currentSpell = SpellType.MagicBolt;
 
     private float stateTimer;
     private float castDuration;
     private float castElapsed;
     private float fireballCooldownTimer;
 
-    private bool spellReleased;
-
     public override bool IsPerformingAttack =>
         currentState == CombatState.Cast;
 
-    public override float AttackProgress
-    {
-        get
-        {
-            if (currentState != CombatState.Cast ||
-                castDuration <= 0f)
-            {
-                return 0f;
-            }
+    public override float AttackProgress =>
+        currentState == CombatState.Cast && castDuration > 0f
+            ? Mathf.Clamp01(castElapsed / castDuration)
+            : 0f;
 
-            return Mathf.Clamp01(
-                castElapsed / castDuration
-            );
-        }
-    }
+    public bool IsCasting => currentState == CombatState.Cast;
 
-    public bool IsCasting =>
-        currentState == CombatState.Cast;
-
-    public bool IsRetreating =>
-        currentState == CombatState.Retreat;
+    public bool IsRetreating => currentState == CombatState.Retreat;
 
     public bool IsCastingFireball =>
-        IsCasting &&
-        currentSpell == SpellType.Fireball;
+        IsCasting && currentSpell == SpellType.Fireball;
 
     public bool IsCastingMagicBolt =>
-        IsCasting &&
-        currentSpell == SpellType.MagicBolt;
-
-    private void Awake()
-    {
-        if (movement == null)
-        {
-            movement =
-                GetComponent<EnemyMovement>();
-        }
-    }
+        IsCasting && currentSpell == SpellType.MagicBolt;
 
     private void Update()
     {
-        UpdateFireballCooldown();
+        fireballCooldownTimer =
+            Mathf.Max(0f, fireballCooldownTimer - Time.deltaTime);
     }
 
-    public override bool IsInCombatRange(
-        Transform target)
+    public override bool IsInCombatRange(Transform target)
     {
-        if (target == null)
-        {
-            return false;
-        }
-
-        return GetHorizontalDistance(target)
-               <= combatRange;
+        return GetHorizontalDistance(target) <= combatRange;
     }
 
-    public override void EnterCombat(
-        Transform target,
-        Health targetHealth)
+    protected override void OnCombatEntered()
     {
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
-        ChangeState(
-            CombatState.Approach
-        );
+        ChangeState(CombatState.Approach);
     }
 
-    public override void UpdateCombat(
-        Transform target,
-        Health targetHealth)
+    protected override void OnCombatUpdate()
     {
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
-        if (!HasValidTarget())
-        {
-            return;
-        }
-
         switch (currentState)
         {
             case CombatState.None:
-                ChangeState(
-                    CombatState.Approach
-                );
-                break;
-
             case CombatState.Approach:
                 UpdateApproach();
                 break;
 
             case CombatState.Retreat:
                 UpdateRetreat();
+                break;
+
+            case CombatState.Reposition:
+                UpdateReposition();
                 break;
 
             case CombatState.Cast:
@@ -199,261 +175,200 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         }
     }
 
-    public override void ExitCombat()
+    protected override void OnCombatExited()
     {
-        if (movement != null)
-        {
-            movement.Stop();
-            movement.ResetRotationControl();
-        }
+        movement.Stop();
+        movement.ResetRotationControl();
 
-        currentTarget = null;
-        currentTargetHealth = null;
-
-        stateTimer = 0f;
-        castElapsed = 0f;
-        castDuration = 0f;
-
-        spellReleased = false;
-
-        currentState =
-            CombatState.None;
+        currentState = CombatState.None;
     }
 
     private void UpdateApproach()
     {
-        float distance =
-            GetHorizontalDistance(
-                currentTarget
-            );
+        float distance = DistanceToTarget();
 
         if (distance < minimumDistance)
         {
-            StartRetreat();
+            TryStartRetreat();
             return;
         }
 
         if (distance > maximumAttackDistance)
         {
-            movement.MoveTo(
-                currentTarget.position
-            );
-
+            movement.MoveTo(Target.position);
             return;
         }
 
-        movement.StopAndFace(
-            currentTarget
-        );
+        if (!HasClearShot())
+        {
+            StartReposition();
+            return;
+        }
 
-        SelectSpell();
+        StartCast();
+    }
 
-        ChangeState(
-            CombatState.Cast
+    private void StartReposition()
+    {
+        if (Random.value < 0.5f)
+        {
+            FlipStrafeDirection();
+        }
+
+        ChangeState(CombatState.Reposition);
+
+        LogCombat("Line of fire blocked -> Reposition.");
+    }
+
+    /// <summary>Seitlich bewegen, bis die Schussbahn frei ist.</summary>
+    private void UpdateReposition()
+    {
+        stateTimer -= Time.deltaTime;
+
+        StrafeAroundTarget(GetPreferredStrafeRadius(), repositionStepDegrees);
+
+        if (HasClearShot() || stateTimer <= 0f)
+        {
+            ChangeState(CombatState.Approach);
+        }
+    }
+
+    private bool HasClearShot()
+    {
+        if (projectileSpawnPoint == null)
+        {
+            return true;
+        }
+
+        return IsLineOfFireClear(
+            projectileSpawnPoint.position,
+            GetAimPosition(),
+            lineOfFireRadius
         );
+    }
+
+    private float GetPreferredStrafeRadius()
+    {
+        return Mathf.Clamp(DistanceToTarget(), minimumDistance, preferredDistance);
+    }
+
+    private void TryStartRetreat()
+    {
+        Vector3 retreatPoint =
+            GetRetreatPoint(retreatDistance, Random.Range(-40f, 40f));
+
+        bool isCornered =
+            Vector3.Distance(transform.position, retreatPoint) <
+            retreatDistance * 0.3f;
+
+        if (isCornered)
+        {
+            LogCombat("Cornered -> casting immediately.");
+            StartCast();
+            return;
+        }
+
+        movement.MoveToWhileFacing(retreatPoint, Target);
+        ChangeState(CombatState.Retreat);
+
+        LogCombat("Player too close -> Retreat.");
     }
 
     private void UpdateRetreat()
     {
-        if (!HasValidTarget())
-        {
-            return;
-        }
-
         stateTimer -= Time.deltaTime;
 
-        float distance =
-            GetHorizontalDistance(
-                currentTarget
-            );
+        bool isFarEnough = DistanceToTarget() >= preferredDistance;
 
-        if (distance >= preferredDistance)
-        {
-            FinishRetreat();
-            return;
-        }
-
-        if (stateTimer <= 0f ||
+        if (isFarEnough ||
+            stateTimer <= 0f ||
             movement.HasReachedDestination)
         {
-            FinishRetreat();
+            ChangeState(CombatState.Approach);
         }
     }
 
-    private void StartRetreat()
+    private void StartCast()
     {
-        if (!HasValidTarget())
-        {
-            return;
-        }
+        movement.StopAndFace(Target);
 
-        Vector3 directionAway =
-            transform.position -
-            currentTarget.position;
-
-        directionAway.y = 0f;
-
-        if (directionAway.sqrMagnitude <=
-            0.001f)
-        {
-            directionAway =
-                -transform.forward;
-        }
-
-        directionAway.Normalize();
-
-        Vector3 destination =
-            transform.position +
-            directionAway *
-            retreatDistance;
-
-        movement.MoveToWhileFacing(
-            destination,
-            currentTarget
-        );
-
-        ChangeState(
-            CombatState.Retreat
-        );
-
-        LogCombat(
-            "Player too close -> Retreat."
-        );
-    }
-
-    private void FinishRetreat()
-    {
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        ChangeState(
-            CombatState.Approach
-        );
+        SelectSpell();
+        ChangeState(CombatState.Cast);
     }
 
     private void SelectSpell()
     {
-        if (CanUseFireball())
-        {
-            currentSpell =
-                SpellType.Fireball;
+        bool useFireball =
+            fireballPrefab != null &&
+            fireballCooldownTimer <= 0f &&
+            Random.value <= fireballChance;
 
-            castDuration =
-                fireballCastDuration;
+        currentSpell = useFireball
+            ? SpellType.Fireball
+            : SpellType.MagicBolt;
 
-            LogCombat(
-                "Preparing FIREBALL."
-            );
+        castDuration = useFireball
+            ? fireballCastDuration
+            : magicBoltCastDuration;
 
-            return;
-        }
-
-        currentSpell =
-            SpellType.MagicBolt;
-
-        castDuration =
-            magicBoltCastDuration;
-
-        LogCombat(
-            "Preparing Magic Bolt."
-        );
-    }
-
-    private bool CanUseFireball()
-    {
-        if (fireballPrefab == null)
-        {
-            return false;
-        }
-
-        if (fireballCooldownTimer > 0f)
-        {
-            return false;
-        }
-
-        return Random.value <=
-               fireballChance;
+        LogCombat($"Preparing {currentSpell}.");
     }
 
     private void UpdateCast()
     {
-        if (!HasValidTarget())
+        castElapsed += Time.deltaTime;
+
+        if (castElapsed < castDuration)
         {
+            movement.StopAndFace(Target);
             return;
         }
 
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        castElapsed +=
-            Time.deltaTime;
-
-        if (!spellReleased &&
-            castElapsed >= castDuration)
+        if (HasClearShot())
         {
             ReleaseSpell();
+            ChangeState(CombatState.Recovery);
+            return;
         }
 
-        if (castElapsed >= castDuration)
+        // Verbündeter / Wand im Weg: Zauber halten und zur Seite gehen.
+        StrafeAroundTarget(GetPreferredStrafeRadius(), repositionStepDegrees);
+
+        if (castElapsed >= castDuration + maxSpellHoldDuration)
         {
-            ChangeState(
-                CombatState.Recovery
-            );
+            LogCombat("No clear shot -> spell cancelled.");
+            StartReposition();
         }
     }
 
     private void ReleaseSpell()
     {
-        spellReleased = true;
+        EnemyProjectile prefab = GetCurrentProjectilePrefab();
 
-        EnemyProjectile prefab =
-            GetCurrentProjectilePrefab();
-
-        if (prefab == null)
+        if (prefab == null || projectileSpawnPoint == null)
         {
             Debug.LogWarning(
-                $"{gameObject.name}: " +
-                $"No projectile prefab assigned " +
-                $"for {currentSpell}.",
+                $"{gameObject.name}: Projectile prefab or spawn point " +
+                $"missing for {currentSpell}.",
                 gameObject
             );
 
             return;
         }
-
-        if (projectileSpawnPoint == null)
-        {
-            Debug.LogWarning(
-                $"{gameObject.name}: " +
-                "Projectile Spawn Point is missing.",
-                gameObject
-            );
-
-            return;
-        }
-
-        Vector3 targetPosition =
-            GetTargetPosition();
 
         Vector3 direction =
-            targetPosition -
-            projectileSpawnPoint.position;
+            GetAimPosition() - projectileSpawnPoint.position;
 
-        if (direction.sqrMagnitude <=
-            0.001f)
+        if (direction.sqrMagnitude <= 0.001f)
         {
-            direction =
-                transform.forward;
+            direction = transform.forward;
         }
 
-        EnemyProjectile projectile =
-            Instantiate(
-                prefab,
-                projectileSpawnPoint.position,
-                Quaternion.identity
-            );
+        EnemyProjectile projectile = Instantiate(
+            prefab,
+            projectileSpawnPoint.position,
+            Quaternion.identity
+        );
 
         projectile.Initialize(
             direction,
@@ -461,215 +376,98 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
             gameObject
         );
 
-        if (currentSpell ==
-            SpellType.Fireball)
+        if (currentSpell == SpellType.Fireball)
         {
-            fireballCooldownTimer =
-                fireballCooldown;
+            fireballCooldownTimer = fireballCooldown;
         }
 
-        LogCombat(
-            $"Released {currentSpell}."
-        );
+        LogCombat($"Released {currentSpell}.");
     }
 
-    private EnemyProjectile
-        GetCurrentProjectilePrefab()
+    /// <summary>
+    /// Der schnelle Bolt zielt voraus, der langsame Feuerball direkt auf den Player
+    /// (der Feuerball soll ausweichbar bleiben).
+    /// </summary>
+    private Vector3 GetAimPosition()
     {
-        return currentSpell switch
-        {
-            SpellType.MagicBolt =>
-                magicBoltPrefab,
+        float leadTime = currentSpell == SpellType.MagicBolt
+            ? magicBoltAimLeadTime
+            : 0f;
 
-            SpellType.Fireball =>
-                fireballPrefab,
-
-            _ => null
-        };
-    }
-
-    private int GetCurrentSpellDamage()
-    {
-        return currentSpell switch
-        {
-            SpellType.MagicBolt =>
-                magicBoltDamage,
-
-            SpellType.Fireball =>
-                fireballDamage,
-
-            _ => 0
-        };
-    }
-
-    private float
-        GetCurrentRecoveryDuration()
-    {
-        return currentSpell switch
-        {
-            SpellType.MagicBolt =>
-                magicBoltRecoveryDuration,
-
-            SpellType.Fireball =>
-                fireballRecoveryDuration,
-
-            _ => magicBoltRecoveryDuration
-        };
-    }
-
-    private Vector3 GetTargetPosition()
-    {
-        if (currentTarget == null)
-        {
-            return transform.position +
-                   transform.forward;
-        }
-
-        Vector3 targetPosition =
-            currentTarget.position;
-
-        targetPosition.y += 1f;
-
-        return targetPosition;
+        return PredictTargetPosition(leadTime) + Vector3.up;
     }
 
     private void UpdateRecovery()
     {
-        if (!HasValidTarget())
-        {
-            return;
-        }
+        stateTimer -= Time.deltaTime;
 
-        movement.StopAndFace(
-            currentTarget
-        );
-
-        stateTimer -=
-            Time.deltaTime;
+        // Nicht still stehen: seitlich versetzen, damit der Player nicht einfach draufhält.
+        StrafeAroundTarget(GetPreferredStrafeRadius(), strafeStepDegrees);
 
         if (stateTimer > 0f)
         {
             return;
         }
 
-        float distance =
-            GetHorizontalDistance(
-                currentTarget
-            );
-
-        if (distance < minimumDistance)
+        if (DistanceToTarget() < minimumDistance)
         {
-            StartRetreat();
+            TryStartRetreat();
             return;
         }
 
-        ChangeState(
-            CombatState.Approach
-        );
+        ChangeState(CombatState.Approach);
     }
 
-    private void UpdateFireballCooldown()
+    private EnemyProjectile GetCurrentProjectilePrefab()
     {
-        if (fireballCooldownTimer <= 0f)
-        {
-            return;
-        }
-
-        fireballCooldownTimer -=
-            Time.deltaTime;
-
-        if (fireballCooldownTimer < 0f)
-        {
-            fireballCooldownTimer = 0f;
-        }
+        return currentSpell == SpellType.Fireball
+            ? fireballPrefab
+            : magicBoltPrefab;
     }
 
-    private float GetHorizontalDistance(
-        Transform target)
+    private int GetCurrentSpellDamage()
     {
-        if (target == null)
-        {
-            return float.MaxValue;
-        }
-
-        Vector3 enemyPosition =
-            transform.position;
-
-        Vector3 targetPosition =
-            target.position;
-
-        enemyPosition.y = 0f;
-        targetPosition.y = 0f;
-
-        return Vector3.Distance(
-            enemyPosition,
-            targetPosition
-        );
+        return currentSpell == SpellType.Fireball
+            ? fireballDamage
+            : magicBoltDamage;
     }
 
-    private bool HasValidTarget()
+    private float GetCurrentRecoveryDuration()
     {
-        return currentTarget != null &&
-               currentTargetHealth != null &&
-               !currentTargetHealth.IsDead;
+        return currentSpell == SpellType.Fireball
+            ? fireballRecoveryDuration
+            : magicBoltRecoveryDuration;
     }
 
-    private void ChangeState(
-        CombatState newState)
+    private void ChangeState(CombatState newState)
     {
-        if (currentState == newState)
-        {
-            return;
-        }
-
         currentState = newState;
 
         switch (currentState)
         {
-            case CombatState.None:
-                break;
-
-            case CombatState.Approach:
-                stateTimer = 0f;
-                break;
-
             case CombatState.Retreat:
-                stateTimer =
-                    retreatDuration;
+                stateTimer = retreatDuration;
+                break;
+
+            case CombatState.Reposition:
+                stateTimer = repositionDuration;
                 break;
 
             case CombatState.Cast:
-                movement.StopAndFace(
-                    currentTarget
-                );
-
                 castElapsed = 0f;
-                spellReleased = false;
                 break;
 
             case CombatState.Recovery:
-                stateTimer =
-                    GetCurrentRecoveryDuration();
-
-                LogCombat(
-                    $"{currentSpell} recovery: " +
-                    $"{stateTimer:F2}s."
-                );
+                stateTimer = GetCurrentRecoveryDuration();
                 break;
         }
     }
 
-    private void LogCombat(
-        string message)
+    private void LogCombat(string message)
     {
-        if (!debugCombat)
+        if (debugCombat)
         {
-            return;
+            Debug.Log($"[MAGE] {message}", gameObject);
         }
-
-        Debug.Log(
-            $"[MAGE] {message}",
-            gameObject
-        );
     }
 }

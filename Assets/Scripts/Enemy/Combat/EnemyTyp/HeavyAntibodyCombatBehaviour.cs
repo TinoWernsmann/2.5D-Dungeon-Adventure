@@ -1,5 +1,10 @@
 using UnityEngine;
 
+/// <summary>
+/// Schwerer Ansturm-Gegner: Kündigt den Ansturm deutlich an und rennt dann in einer
+/// FESTEN Richtung los – der Player kann seitlich ausweichen.
+/// Prallt er gegen eine Wand, ist er lange betäubt (Bestrafungsfenster für den Player).
+/// </summary>
 public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
 {
     private enum CombatState
@@ -11,14 +16,6 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
         Recovery
     }
 
-    [Header("References")]
-    [SerializeField] private EnemyMovement movement;
-    [SerializeField] private CharacterController characterController;
-    [SerializeField] private AudioSource audioSource;
-
-    [Header("Audio")]
-    [SerializeField] private AudioClip[] attackSounds;
-
     [Header("Combat Range")]
     [Min(0.1f)]
     [SerializeField] private float combatRange = 6f;
@@ -29,6 +26,11 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
     [Header("Telegraph")]
     [Min(0.1f)]
     [SerializeField] private float telegraphDuration = 0.8f;
+
+    [Tooltip("In den letzten Sekunden des Telegraphs dreht er sich nicht mehr – " +
+             "der Player kann die Richtung lesen und ausweichen.")]
+    [Min(0f)]
+    [SerializeField] private float aimLockDuration = 0.25f;
 
     [Header("Charge")]
     [Min(0.1f)]
@@ -47,97 +49,48 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
     [Min(0f)]
     [SerializeField] private float recoveryDuration = 1.5f;
 
-    private CombatState currentState;
+    [Tooltip("Betäubungsdauer, wenn der Ansturm gegen eine Wand prallt.")]
+    [Min(0f)]
+    [SerializeField] private float wallStunDuration = 2.5f;
 
-    private Transform currentTarget;
-    private Health currentTargetHealth;
+    private CombatState currentState = CombatState.None;
 
     private Vector3 chargeDirection;
 
     private float stateTimer;
     private float attackTimer;
-
     private bool damageApplied;
+
+    public bool IsStunned { get; private set; }
+
+    // Betäubt (nach Wandaufprall) bleibt er stehen – das ist das Angriffsfenster des Players.
+    protected override bool CanEscapeFromCorner =>
+        base.CanEscapeFromCorner && !IsStunned;
 
     public override bool IsPerformingAttack =>
         currentState == CombatState.Telegraph ||
         currentState == CombatState.Charge;
 
-    public override float AttackProgress
+    public override float AttackProgress =>
+        currentState == CombatState.Charge
+            ? Mathf.Clamp01(attackTimer / chargeDuration)
+            : 0f;
+
+    public override bool IsInCombatRange(Transform target)
     {
-        get
-        {
-            if (currentState == CombatState.Telegraph)
-            {
-                return 0f;
-            }
-
-            if (currentState != CombatState.Charge)
-            {
-                return 0f;
-            }
-
-            return Mathf.Clamp01(
-                attackTimer / chargeDuration
-            );
-        }
+        return GetHorizontalDistance(target) <= combatRange;
     }
 
-    private void Awake()
+    protected override void OnCombatEntered()
     {
-        if (movement == null)
-        {
-            movement = GetComponent<EnemyMovement>();
-        }
-
-        if (characterController == null)
-        {
-            characterController =
-                GetComponent<CharacterController>();
-        }
-
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
-    }
-
-    public override bool IsInCombatRange(
-        Transform target)
-    {
-        if (target == null)
-        {
-            return false;
-        }
-
-        return GetHorizontalDistance(target)
-               <= combatRange;
-    }
-
-    public override void EnterCombat(
-        Transform target,
-        Health targetHealth)
-    {
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
         ChangeState(CombatState.Approach);
     }
 
-    public override void UpdateCombat(
-        Transform target,
-        Health targetHealth)
+    protected override void OnCombatUpdate()
     {
-        currentTarget = target;
-        currentTargetHealth = targetHealth;
-
-        if (!HasValidTarget())
-        {
-            return;
-        }
-
         switch (currentState)
         {
+            case CombatState.None:
             case CombatState.Approach:
                 UpdateApproach();
                 break;
@@ -156,43 +109,97 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
         }
     }
 
-    public override void ExitCombat()
+    protected override void OnCombatExited()
     {
         movement.Stop();
+        movement.ResetRotationControl();
 
-        currentTarget = null;
-        currentTargetHealth = null;
-
-        stateTimer = 0f;
-        attackTimer = 0f;
-
-        damageApplied = false;
-
+        IsStunned = false;
         currentState = CombatState.None;
     }
 
     private void UpdateApproach()
     {
-        FaceTarget();
-
-        float distance =
-            GetHorizontalDistance(currentTarget);
-
-        if (distance <= preferredChargeDistance)
+        if (DistanceToTarget() > preferredChargeDistance)
         {
-            movement.Stop();
+            movement.MoveTo(Target.position);
+            return;
+        }
+
+        if (TryAcquireAttackSlot())
+        {
             ChangeState(CombatState.Telegraph);
             return;
         }
 
-        movement.MoveTo(currentTarget.position);
+        StrafeAroundTarget(preferredChargeDistance);
     }
 
     private void UpdateTelegraph()
     {
+        stateTimer -= Time.deltaTime;
+
+        bool isAimLocked = stateTimer <= aimLockDuration;
+
+        if (isAimLocked)
+        {
+            movement.Stop();
+            movement.ResetRotationControl();
+        }
+        else
+        {
+            movement.StopAndFace(Target);
+        }
+
+        if (stateTimer > 0f)
+        {
+            return;
+        }
+
+        chargeDirection = transform.forward;
+        ChangeState(CombatState.Charge);
+    }
+
+    private void UpdateCharge()
+    {
+        attackTimer += Time.deltaTime;
+
+        bool movedFreely =
+            movement.Dash(chargeDirection * chargeSpeed * Time.deltaTime);
+
+        if (!damageApplied)
+        {
+            damageApplied = TryHitTarget(hitRange, chargeDamage);
+        }
+
+        if (!movedFreely)
+        {
+            StartRecovery(hitWall: true);
+            return;
+        }
+
+        if (attackTimer >= chargeDuration)
+        {
+            StartRecovery(hitWall: false);
+        }
+    }
+
+    private void StartRecovery(bool hitWall)
+    {
+        ChangeState(CombatState.Recovery);
+
+        IsStunned = hitWall;
+        stateTimer = hitWall ? wallStunDuration : recoveryDuration;
+    }
+
+    private void UpdateRecovery()
+    {
         movement.Stop();
 
-        FaceTarget();
+        if (!IsStunned)
+        {
+            movement.FaceTarget(Target);
+        }
 
         stateTimer -= Time.deltaTime;
 
@@ -201,198 +208,33 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
             return;
         }
 
-        PrepareCharge();
+        IsStunned = false;
 
-        ChangeState(CombatState.Charge);
+        ReleaseAttackSlot();
+        ChangeState(CombatState.Approach);
     }
 
-    private void PrepareCharge()
+    private void ChangeState(CombatState newState)
     {
-        chargeDirection =
-            currentTarget.position -
-            transform.position;
-
-        chargeDirection.y = 0f;
-
-        if (chargeDirection.sqrMagnitude <= 0.001f)
-        {
-            chargeDirection = transform.forward;
-        }
-
-        chargeDirection.Normalize();
-
-        transform.rotation =
-            Quaternion.LookRotation(chargeDirection);
-    }
-
-    private void UpdateCharge()
-    {
-        attackTimer += Time.deltaTime;
-
-        MoveCharge();
-
-        TryApplyChargeDamage();
-
-        if (attackTimer >= chargeDuration)
-        {
-            ChangeState(CombatState.Recovery);
-        }
-    }
-
-    private void MoveCharge()
-    {
-        Vector3 movementDelta =
-            chargeDirection *
-            chargeSpeed *
-            Time.deltaTime;
-
-        if (characterController != null &&
-            characterController.enabled)
-        {
-            characterController.Move(movementDelta);
-            return;
-        }
-
-        transform.position += movementDelta;
-    }
-
-    private void TryApplyChargeDamage()
-    {
-        if (damageApplied)
-        {
-            return;
-        }
-
-        if (GetHorizontalDistance(currentTarget)
-            > hitRange)
-        {
-            return;
-        }
-
-        damageApplied = true;
-
-        currentTargetHealth.TakeDamage(
-            chargeDamage
-        );
-    }
-
-    private void UpdateRecovery()
-    {
-        movement.Stop();
-
-        FaceTarget();
-
-        stateTimer -= Time.deltaTime;
-
-        if (stateTimer <= 0f)
-        {
-            ChangeState(CombatState.Approach);
-        }
-    }
-
-    private void PlayRandomAttackSound()
-    {
-        if (audioSource == null ||
-            attackSounds == null ||
-            attackSounds.Length == 0)
-        {
-            return;
-        }
-
-        int randomIndex =
-            Random.Range(0, attackSounds.Length);
-
-        AudioClip randomClip =
-            attackSounds[randomIndex];
-
-        if (randomClip == null)
-        {
-            return;
-        }
-
-        audioSource.PlayOneShot(randomClip);
-    }
-
-    private void FaceTarget()
-    {
-        if (currentTarget == null)
-        {
-            return;
-        }
-
-        Vector3 direction =
-            currentTarget.position -
-            transform.position;
-
-        direction.y = 0f;
-
-        if (direction.sqrMagnitude <= 0.001f)
-        {
-            return;
-        }
-
-        transform.rotation =
-            Quaternion.LookRotation(
-                direction.normalized
-            );
-    }
-
-    private float GetHorizontalDistance(
-        Transform target)
-    {
-        Vector3 enemyPosition =
-            transform.position;
-
-        Vector3 targetPosition =
-            target.position;
-
-        enemyPosition.y = 0f;
-        targetPosition.y = 0f;
-
-        return Vector3.Distance(
-            enemyPosition,
-            targetPosition
-        );
-    }
-
-    private bool HasValidTarget()
-    {
-        return currentTarget != null &&
-               currentTargetHealth != null &&
-               !currentTargetHealth.IsDead;
-    }
-
-    private void ChangeState(
-        CombatState newState)
-    {
-        if (currentState == newState)
-        {
-            return;
-        }
-
         currentState = newState;
 
         switch (currentState)
         {
-            case CombatState.Approach:
-                stateTimer = 0f;
-                break;
-
             case CombatState.Telegraph:
                 stateTimer = telegraphDuration;
                 break;
 
             case CombatState.Charge:
+                movement.Stop();
+                movement.LookInDirection(chargeDirection);
+
                 attackTimer = 0f;
                 damageApplied = false;
-
-                movement.Stop();
 
                 PlayRandomAttackSound();
                 break;
 
             case CombatState.Recovery:
-                stateTimer = recoveryDuration;
                 movement.Stop();
                 break;
         }

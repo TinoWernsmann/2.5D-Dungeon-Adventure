@@ -15,29 +15,10 @@ public class ProjectileBillboard : MonoBehaviour
 
     private void LateUpdate()
     {
-        FaceCamera();
-    }
-
-    private void FaceCamera()
-    {
-        if (targetCamera == null)
-        {
-            return;
-        }
-
-        Vector3 directionToCamera =
-            targetCamera.transform.position -
-            transform.position;
-
-        if (directionToCamera.sqrMagnitude <= 0.001f)
-        {
-            return;
-        }
-
-        transform.rotation =
-            Quaternion.LookRotation(
-                directionToCamera.normalized,
-                Vector3.up
-            );
+        BillboardUtility.FaceCamera(
+            transform,
+            targetCamera,
+            keepUpright: false
+        );
     }
 }

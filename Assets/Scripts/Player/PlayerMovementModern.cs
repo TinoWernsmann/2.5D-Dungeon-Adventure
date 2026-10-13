@@ -1,11 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, ISaveable
 {
     [Header("References")]
     [SerializeField] private Transform playerCamera;
+    [SerializeField] private FootstepAudio footsteps;
 
     [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
@@ -20,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -20f;
     [SerializeField] private float groundedVelocity = -2f;
 
+    [Tooltip("Ab dieser Fallgeschwindigkeit wird ein Lande-Sound abgespielt " +
+             "(verhindert Sounds bei kleinen Stufen).")]
+    [Min(0f)]
+    [SerializeField] private float minLandingSpeed = 3f;
+
     [Header("Look")]
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float maxLookAngle = 85f;
@@ -28,35 +35,31 @@ public class PlayerMovement : MonoBehaviour
 
     private float verticalVelocity;
     private float cameraPitch;
-    private bool _isPaused = false;
+    private bool wasGrounded = true;
+
+    // Pausiert = Zeit angehalten. Kein eigener Pause-Zustand, der mit dem
+    // PauseMenu auseinanderlaufen kann (z.B. beim Fortsetzen über den Button).
+    private static bool IsGamePaused => Time.timeScale <= 0f;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-    }
 
-    private void OnDisable()
-    {
-        if (GameInput.Instance == null) return;
-
-        GameInput.Instance.OnPause -= HandlePause;
+        if (footsteps == null)
+        {
+            footsteps = GetComponent<FootstepAudio>();
+        }
     }
 
     private void Start()
     {
         LockCursor();
-        GameInput.Instance.OnPause += HandlePause;
     }
 
     private void Update()
     {
         HandleMovement();
         HandleLook();
-    }
-
-    private void HandlePause()
-    {
-        _isPaused = !_isPaused;
     }
 
     private void HandleMovement()
@@ -73,6 +76,35 @@ public class PlayerMovement : MonoBehaviour
         velocity.y = verticalVelocity;
 
         characterController.Move(velocity * Time.deltaTime);
+
+        UpdateFootsteps();
+    }
+
+    private void UpdateFootsteps()
+    {
+        if (footsteps == null)
+        {
+            return;
+        }
+
+        bool isGrounded = characterController.isGrounded;
+        float fallSpeed = -verticalVelocity;
+
+        if (isGrounded && !wasGrounded && fallSpeed >= minLandingSpeed)
+        {
+            footsteps.PlayLand();
+        }
+
+        Vector3 horizontalVelocity = characterController.velocity;
+        horizontalVelocity.y = 0f;
+
+        footsteps.UpdateMovement(
+            horizontalVelocity.magnitude,
+            isGrounded,
+            Time.deltaTime
+        );
+
+        wasGrounded = isGrounded;
     }
 
     private void HandleVerticalMovement()
@@ -104,6 +136,11 @@ public class PlayerMovement : MonoBehaviour
         verticalVelocity = Mathf.Sqrt(
             jumpHeight * -2f * gravity
         );
+
+        if (footsteps != null)
+        {
+            footsteps.PlayJump();
+        }
     }
 
     private void ApplyGravity()
@@ -113,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleLook()
     {
-        if (_isPaused) return;
+        if (IsGamePaused) return;
 
         Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
 
@@ -142,6 +179,48 @@ public class PlayerMovement : MonoBehaviour
         playerCamera.localRotation =
             Quaternion.Euler(cameraPitch, 0f, 0f);
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public Vector3 position;
+        public float yaw;
+        public float cameraPitch;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState
+        {
+            position = transform.position,
+            yaw = transform.eulerAngles.y,
+            cameraPitch = cameraPitch
+        });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        // Der CharacterController überschreibt sonst die neue Position.
+        characterController.enabled = false;
+
+        transform.SetPositionAndRotation(
+            saveState.position,
+            Quaternion.Euler(0f, saveState.yaw, 0f)
+        );
+
+        characterController.enabled = true;
+
+        cameraPitch = saveState.cameraPitch;
+        playerCamera.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+
+        verticalVelocity = 0f;
+    }
+
+    #endregion
 
     private static void LockCursor()
     {

@@ -41,15 +41,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.785739
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7266395
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.86392903
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b6e3c3f5fefa0b4c8f9f9ed388e59a9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -140,6 +140,9 @@ MonoBehaviour:
   upwardForce: 4
   horizontalForce: 1.5
   torqueForce: 3
+  hitVfx: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
+  hitVfxLifetime: 0.5
+  randomizeVfxRotation: 1
 --- !u!65 &8118322419775332280
 BoxCollider:
   m_ObjectHideFlags: 0

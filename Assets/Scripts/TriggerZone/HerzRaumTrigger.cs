@@ -1,3 +1,4 @@
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,9 +10,8 @@ public class HerzRaumTrigger : MonoBehaviour
     private const float WAIT_TIMER = 5.5f;
     private bool _hasBeenTriggered = false;
 
-    private void OnTriggerEnter(Collider other)
+    public void TriggerEnding()
     {
-        if (!other.CompareTag("Player")) return;
         if (_hasBeenTriggered) return;
 
         _hasBeenTriggered = true;
@@ -22,6 +22,6 @@ public class HerzRaumTrigger : MonoBehaviour
     {
         yield return new WaitForSeconds(WAIT_TIMER);
 
-        SceneManager.LoadScene(SCENE_TO_LOAD);
+        SceneLoader.Load(SCENE_TO_LOAD);
     }
 }

@@ -1494,9 +1494,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2113067120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2958f2d988717c644831aecc73255447, type: 3}
+  m_Script: {fileID: 11500000, guid: 47bbf8d862c44ee181d5ab4448001084, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DeathScreenManager
+  m_EditorClassIdentifier: Assembly-CSharp::AutoSceneLoader
   _sceneToLoad: MainMenu
   TIME_TO_WAIT: 10
 --- !u!4 &2113067122

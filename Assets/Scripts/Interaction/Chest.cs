@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class Chest : MonoBehaviour, IInteractable
+public class Chest : MonoBehaviour, IInteractable, ISaveable
 {
     [Header("References")]
     [SerializeField] private Transform lidPivot;
@@ -127,6 +128,37 @@ public class Chest : MonoBehaviour, IInteractable
             ForceMode.Impulse
         );
     }
+
+    #region Save System
+
+    // Herausgefallener Loot wird als "Dropped Item" vom SaveManager gespeichert.
+    [Serializable]
+    private struct SaveState
+    {
+        public bool isOpen;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState { isOpen = isOpen || isAnimating });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        if (!saveState.isOpen || lidPivot == null)
+        {
+            return;
+        }
+
+        StopAllCoroutines();
+        isAnimating = false;
+        isOpen = true;
+        lidPivot.localRotation = openRotation;
+    }
+
+    #endregion
 
     private void PlayOpenSound()
     {

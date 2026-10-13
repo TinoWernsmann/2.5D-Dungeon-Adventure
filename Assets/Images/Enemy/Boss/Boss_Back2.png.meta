@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 800
+  spritePixelsToUnits: 700
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,8 +100,8 @@ TextureImporter:
       name: Boss_Back2_0
       rect:
         serializedVersion: 2
-        x: 57
-        y: 22
+        x: 419
+        y: 56
         width: 891
         height: 1147
       alignment: 0
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7c8df0b60654d648b33f4c65ac887bf
-      internalID: -465218409
+      spriteID: bae15387ec200ac409364f8aa70a1a92
+      internalID: -1203286109
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0e741f24e9092a64ebe78e2974db4b8e
+    spriteID: 994b892f93aaa184084d4de89ea6853d
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +134,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Boss_Back2_0: -465218409
+      Boss_Back2_0: -1203286109
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

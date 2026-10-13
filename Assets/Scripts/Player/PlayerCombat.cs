@@ -56,6 +56,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void TryAttack()
     {
+        if (Time.timeScale <= 0f)
+        {
+            return;
+        }
+
         WeaponSO weapon =
             itemManager?.SelectedWeapon;
 
@@ -279,7 +284,9 @@ public class PlayerCombat : MonoBehaviour
         RaycastHit[] hits =
             Physics.RaycastAll(
                 ray,
-                weapon.WeaponRange
+                weapon.WeaponRange,
+                Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore
             );
 
         System.Array.Sort(
@@ -292,102 +299,35 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
+            if (IsOwnCollider(hit.collider))
+            {
+                continue;
+            }
+
+            // Der erste fremde Collider zählt: Wände blocken den Schlag.
             Health targetHealth =
                 hit.collider
                     .GetComponentInParent<
                         Health>();
 
-            if (!CanDamage(
-                    targetHealth))
+            if (CanDamage(targetHealth))
             {
-                continue;
+                targetHealth.TakeDamage(
+                    weapon.WeaponDamage,
+                    hit.point,
+                    transform
+                );
             }
 
-            ApplyMeleeDamage(
-                hit.collider,
-                targetHealth,
-                weapon.WeaponDamage
-            );
-
             return;
         }
     }
 
-    private void ApplyMeleeDamage(
-        Collider hitCollider,
-        Health targetHealth,
-        int damage)
+    private bool IsOwnCollider(
+        Collider hitCollider)
     {
-        BossDamageReceiver bossReceiver =
-            FindBossDamageReceiver(
-                hitCollider,
-                targetHealth
-            );
-
-        if (bossReceiver != null)
-        {
-            bossReceiver.ReceiveDamage(
-                damage,
-                transform
-            );
-
-            return;
-        }
-
-        targetHealth.TakeDamage(
-            damage
-        );
-    }
-
-    private BossDamageReceiver
-        FindBossDamageReceiver(
-            Collider hitCollider,
-            Health targetHealth)
-    {
-        BossDamageReceiver receiver =
-            hitCollider.GetComponent<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        receiver =
-            hitCollider.GetComponentInParent<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        if (targetHealth == null)
-        {
-            return null;
-        }
-
-        receiver =
-            targetHealth.GetComponent<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        receiver =
-            targetHealth.GetComponentInChildren<
-                BossDamageReceiver>();
-
-        if (receiver != null)
-        {
-            return receiver;
-        }
-
-        return targetHealth
-            .GetComponentInParent<
-                BossDamageReceiver>();
+        return hitCollider.transform
+            .IsChildOf(transform);
     }
 
     private bool CanDamage(

@@ -14,7 +14,8 @@ public class GlobalVars : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void SetPlayerName(string playerName)

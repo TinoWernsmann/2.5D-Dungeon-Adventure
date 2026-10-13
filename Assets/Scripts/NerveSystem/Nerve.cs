@@ -12,6 +12,10 @@ public class Nerve : MonoBehaviour
     [SerializeField] private AudioClip _cutClip;
     [SerializeField] private GameObject _visual;
 
+    [Header("Quest")]
+    [Tooltip("Muss der Target Id der Destroy-Quest entsprechen")]
+    [SerializeField] private string _questTargetId = "Nerve";
+
     private void OnEnable()
     {
         _health.Died += HandleNerveDeath;
@@ -25,6 +29,7 @@ public class Nerve : MonoBehaviour
     private void HandleNerveDeath()
     {
         StartCoroutine(PlayDieSoundThenDespawn());
+        Debug.Log($"Nerve zerstört: {name}, Quest-ID: {_questTargetId}");
     }
 
     private IEnumerator PlayDieSoundThenDespawn()
@@ -32,9 +37,10 @@ public class Nerve : MonoBehaviour
         _audioSource.PlayOneShot(_cutClip);
         _visual.SetActive(false);
         OnNerveCut?.Invoke();
+        QuestManager.Report(QuestType.Destroy, _questTargetId);
 
         yield return new WaitForSeconds(_cutClip.length);
 
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

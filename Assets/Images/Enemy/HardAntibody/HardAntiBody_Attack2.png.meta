@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 180
+  spritePixelsToUnits: 700
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HardAntiBody_Attack2_1
+      name: HardAntiBody_Attack2_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 6
-        width: 277
-        height: 295
+        x: 66
+        y: 90
+        width: 863
+        height: 900
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a41b7958d6697f04ebee6840f55f8b21
-      internalID: 622599654
+      spriteID: d7a67ebf76a63c6469bdc8e179d66be0
+      internalID: -1757304857
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d544d9df3a236ac49af101f928f185c6
+    spriteID: 108a0209c19f17d4790cb6e95068fbaa
     internalID: 0
     vertices: []
     indices: 
@@ -130,16 +130,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":1.0,"y":1.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":1,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      HardAntiBody_Attack2_0: -985702006
-      HardAntiBody_Attack2_1: 622599654
-      HardAntiBody_Attack2_2: -290869958
-      HardAntiBody_Attack2_3: -1343954674
-      HardAntiBody_Attack2_4: -790382802
-      HardAntiBody_Attack2_5: 742951663
+      HardAntiBody_Attack2_0: -1757304857
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

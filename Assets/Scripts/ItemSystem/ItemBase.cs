@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ItemBase : MonoBehaviour
+public class ItemBase : MonoBehaviour, ISaveable
 {
     private const float FloatSpeed = 3f;
     private const float FloatHeight = 0.1f;
+    private bool _questReported;
 
     [Header("Item")]
     [SerializeField] private ItemSO itemData;
@@ -15,6 +17,7 @@ public class ItemBase : MonoBehaviour
 
     private Rigidbody itemRigidbody;
     private Vector3 startPosition;
+    private bool hasStarted;
 
     public ItemSO ItemData => itemData;
 
@@ -33,6 +36,8 @@ public class ItemBase : MonoBehaviour
     {
         startPosition =
             transform.position;
+
+        hasStarted = true;
     }
 
     private void Update()
@@ -87,6 +92,47 @@ public class ItemBase : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
+    public void ReportPickupToQuest()
+    {
+        // Nur einmal pro Item, sonst zählt "Droppen und wieder aufheben" doppelt
+        if (_questReported || itemData == null) return;
+        if (QuestManager.Instance == null) return;
+
+        _questReported = true;
+        QuestManager.Instance.ReportProgress(
+            QuestType.Collect,
+            itemData.ItemName,
+            PickupAmount
+        );
+    }
+
+    #region Save System
+
+    // Ob das Item aufgehoben wurde (= inaktiv), speichert die SaveableEntity.
+    [Serializable]
+    private struct SaveState
+    {
+        public Vector3 position;
+    }
+
+    public string CaptureState()
+    {
+        // startPosition gibt es erst nach Start() – vorher (nie aktiv gewesen) die echte Position.
+        Vector3 position = hasStarted ? startPosition : transform.position;
+
+        return JsonUtility.ToJson(new SaveState { position = position });
+    }
+
+    public void RestoreState(string state)
+    {
+        SaveState saveState = JsonUtility.FromJson<SaveState>(state);
+
+        transform.position = saveState.position;
+        startPosition = saveState.position;
+    }
+
+    #endregion
 
     private void UpdateFloatingMovement()
     {

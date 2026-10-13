@@ -83,6 +83,8 @@ public class DialogueManager : MonoBehaviour
         _speakerSprites = null;
         _currentDialogue = null;
 
+        sprite.GetComponentInParent<QuestTalkTarget>()?.OnDialogueFinished();
+
         if (_isToDespawn) sprite.GetComponentInParent<DialogueInteractable>().gameObject?.SetActive(false);
     }
 
