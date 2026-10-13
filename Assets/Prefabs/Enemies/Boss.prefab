@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 5813402917764031234}
   - component: {fileID: 7247249887242897219}
   - component: {fileID: 1203880342902358544}
+  - component: {fileID: 523951559333239314}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -477,10 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829d91db38302b9498abee759b2a3903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  patrolPoints: []
   waitTimeAtPoint: 2
 --- !u!114 &6553040462468949477
 MonoBehaviour:
@@ -563,6 +561,8 @@ MonoBehaviour:
   attackRange: 3
   preferredDistance: 2.3
   lungeMaxRange: 7
+  lungeCooldown: 6
+  exhaustionSound: {fileID: 8300000, guid: 2844901e521415944ac59de178523389, type: 3}
   blockAngle: 100
   blockPressurePerHit: 0.12
   maxBlockPressure: 0.35
@@ -617,7 +617,7 @@ MonoBehaviour:
     maxLungeDuration: 0.45
     hitRange: 1.6
     damage: 8
-    aimLeadTime: 0.2
+    aimLeadTime: 0
   sidestep:
     distance: 2.5
     duration: 0.45
@@ -648,6 +648,12 @@ MonoBehaviour:
     stepDistance: 0.5
   recover:
     duration: 0.8
+    visual: 0
+    facesTarget: 0
+    blocksFrontalDamage: 0
+    isInvulnerable: 0
+  lungeExhaustion:
+    duration: 1.6
     visual: 0
     facesTarget: 0
     blocksFrontalDamage: 0
@@ -729,7 +735,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -878,6 +884,19 @@ MonoBehaviour:
   guards:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &523951559333239314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8de9ea4cea7a294682f9df34552a35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
+  id: bab932330a584abb9d6f14ce09f2a77c
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

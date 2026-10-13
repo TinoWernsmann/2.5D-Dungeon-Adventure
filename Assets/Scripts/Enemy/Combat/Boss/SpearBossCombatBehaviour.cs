@@ -45,6 +45,14 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     [Tooltip("Bis zu dieser Distanz kann der Boss einen Sprungangriff machen.")]
     [SerializeField] private float lungeMaxRange = 7f;
 
+    [Header("Lunge")]
+    [Tooltip("Mindestzeit zwischen zwei Sprungangriffen (wird in späteren Phasen kürzer).")]
+    [Min(0f)]
+    [SerializeField] private float lungeCooldown = 6f;
+
+    [Tooltip("Optional: Sound, wenn der Boss nach dem Sprung außer Puste ist (z.B. Keuchen).")]
+    [SerializeField] private AudioClip exhaustionSound;
+
     [Header("Block")]
     [Range(0f, 360f)]
     [SerializeField] private float blockAngle = 100f;
@@ -109,6 +117,10 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     [SerializeField] private BossPoseAction recover =
         new(duration: 0.8f, BossVisualState.Idle, facesTarget: false);
 
+    [Tooltip("Nach dem Sprungangriff ist der Boss außer Puste: steht still, dreht sich nicht, blockt nicht.")]
+    [SerializeField] private BossPoseAction lungeExhaustion =
+        new(duration: 1.6f, BossVisualState.Idle, facesTarget: false);
+
     [SerializeField] private BossPoseAction phaseTransition =
         new(duration: 1.2f, BossVisualState.PrepareCombat, isInvulnerable: true);
 
@@ -127,6 +139,9 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
 
     private float decisionTimer;
     private float blockPressure;
+    private float lungeCooldownTimer;
+
+    private bool IsLungeReady => lungeCooldownTimer <= 0f;
 
     /// <summary>Der Player wurde zum ersten Mal entdeckt (z.B. für einen Intro-Dialog).</summary>
     public event Action PlayerSpottedFirstTime;
@@ -216,6 +231,8 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
             0f,
             blockPressure - blockPressureDecayPerSecond * Time.deltaTime
         );
+
+        lungeCooldownTimer = Mathf.Max(0f, lungeCooldownTimer - Time.deltaTime);
     }
 
     #endregion
@@ -410,13 +427,13 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     {
         if (distance > attackRange)
         {
-            if (Random.value <= Phase.LungeChance)
+            if (IsLungeReady && Random.value <= Phase.LungeChance)
             {
-                StartAttack(lunge);
+                StartLunge();
                 return;
             }
 
-            // Kein Sprungangriff -> näher ran und kurz danach neu entscheiden.
+            // Kein Sprungangriff (oder noch Abklingzeit) -> näher ran und kurz danach neu entscheiden.
             decisionTimer = 0.3f;
             return;
         }
@@ -450,6 +467,10 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
         {
             StartAction(blockCounter);
         }
+        else if (finishedAction == lunge)
+        {
+            StartExhaustion();
+        }
         else if (finishedAction.IsAttacking)
         {
             FollowUpAfterAttack();
@@ -476,14 +497,32 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
     {
         bool canMixUp =
             currentPhase != BossPhase.PhaseOne &&
+            IsLungeReady &&
             HasValidTarget() &&
             DistanceToTarget() <= lungeMaxRange &&
             Random.value <= Phase.LungeChance;
 
         if (canMixUp)
         {
-            StartAction(lunge);
+            StartLunge();
         }
+    }
+
+    private void StartLunge()
+    {
+        lungeCooldownTimer = ScaleDuration(lungeCooldown);
+        StartAttack(lunge);
+    }
+
+    /// <summary>Bestrafungsfenster: Nach dem Sprung ist der Boss kurz außer Puste.</summary>
+    private void StartExhaustion()
+    {
+        if (audioSource != null && exhaustionSound != null)
+        {
+            audioSource.PlayOneShot(exhaustionSound);
+        }
+
+        StartAction(lungeExhaustion);
     }
 
     private void StartAttack(BossAction attack)
@@ -548,7 +587,7 @@ public class SpearBossCombatBehaviour : EnemyCombatBehaviour, IBossActionContext
         return new BossAction[]
         {
             prepareStance, comboStrike, lunge, sidestep, dodgeCounter,
-            backstep, block, blockCounter, recover, phaseTransition
+            backstep, block, blockCounter, recover, lungeExhaustion, phaseTransition
         };
     }
 
