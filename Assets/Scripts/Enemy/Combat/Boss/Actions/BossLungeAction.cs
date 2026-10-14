@@ -30,8 +30,9 @@ public class BossLungeAction : BossAction
     [SerializeField] private int damage = 8;
 
     [Min(0f)]
-    [Tooltip("Vorausberechnung der Player-Bewegung in Sekunden.")]
-    [SerializeField] private float aimLeadTime = 0.2f;
+    [Tooltip("Vorausberechnung der Player-Bewegung in Sekunden. " +
+             "0 = zielt auf die aktuelle Position, ein Seitschritt weicht aus.")]
+    [SerializeField] private float aimLeadTime;
 
     private Step step;
     private float timer;
@@ -96,6 +97,7 @@ public class BossLungeAction : BossAction
             hasHit = Boss.TryDealDamage(hitRange, damage);
         }
 
-        return !movedFreely || timer >= maxLungeDuration;
+        // Endet bei Treffer, Wand oder nach der maximalen Dauer – kein Durchrauschen.
+        return hasHit || !movedFreely || timer >= maxLungeDuration;
     }
 }

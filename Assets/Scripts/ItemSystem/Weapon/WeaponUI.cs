@@ -9,6 +9,10 @@ public class WeaponUI : MonoBehaviour
 
     private Coroutine attackAnimation;
 
+    // Ruhebild der AKTUELL ausgerüsteten Waffe. Eine laufende Angriffsanimation kehrt
+    // am Ende hierhin zurück – nicht zur Waffe, mit der angegriffen wurde.
+    private Sprite currentIdleSprite;
+
     private void Awake()
     {
         if (weaponImage == null)
@@ -16,18 +20,19 @@ public class WeaponUI : MonoBehaviour
             weaponImage = GetComponent<Image>();
         }
 
-        HideWeapon();
+        ShowWeapon(null);
     }
 
-    public void SetWeaponSprite(Sprite sprite)
+    /// <summary>
+    /// Zeigt eine (neu ausgerüstete) Waffe an. Bricht eine laufende Angriffsanimation ab,
+    /// damit z.B. nach einem schnellen Wechsel nicht das Bild der vorherigen Waffe erscheint.
+    /// </summary>
+    public void ShowWeapon(Sprite idleSprite)
     {
-        if (weaponImage == null)
-        {
-            return;
-        }
+        StopAttackAnimation();
 
-        weaponImage.sprite = sprite;
-        weaponImage.enabled = sprite != null;
+        currentIdleSprite = idleSprite;
+        SetWeaponSprite(idleSprite);
     }
 
     public void PlayAttackAnimation(
@@ -40,15 +45,13 @@ public class WeaponUI : MonoBehaviour
             return;
         }
 
-        if (attackAnimation != null)
-        {
-            StopCoroutine(attackAnimation);
-        }
+        StopAttackAnimation();
+
+        currentIdleSprite = idleSprite;
 
         attackAnimation = StartCoroutine(
             PlayAttackAnimationRoutine(
                 attackSprite,
-                idleSprite,
                 duration
             )
         );
@@ -56,20 +59,36 @@ public class WeaponUI : MonoBehaviour
 
     private IEnumerator PlayAttackAnimationRoutine(
         Sprite attackSprite,
-        Sprite idleSprite,
         float duration)
     {
         SetWeaponSprite(attackSprite);
 
         yield return new WaitForSeconds(duration);
 
-        SetWeaponSprite(idleSprite);
+        SetWeaponSprite(currentIdleSprite);
 
         attackAnimation = null;
     }
 
-    private void HideWeapon()
+    private void StopAttackAnimation()
     {
-        SetWeaponSprite(null);
+        if (attackAnimation == null)
+        {
+            return;
+        }
+
+        StopCoroutine(attackAnimation);
+        attackAnimation = null;
+    }
+
+    private void SetWeaponSprite(Sprite sprite)
+    {
+        if (weaponImage == null)
+        {
+            return;
+        }
+
+        weaponImage.sprite = sprite;
+        weaponImage.enabled = sprite != null;
     }
 }

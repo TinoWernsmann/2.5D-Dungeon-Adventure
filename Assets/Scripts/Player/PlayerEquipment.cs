@@ -41,13 +41,13 @@ public class PlayerEquipment : MonoBehaviour
 
     private void EquipWeapon(WeaponSO weapon)
     {
-        weaponUI?.SetWeaponSprite(weapon.IdleSprite);
+        weaponUI?.ShowWeapon(weapon.IdleSprite);
         weaponSoundManager?.SetAttackSounds(weapon.AttackSounds);
     }
 
     private void UnequipWeapon()
     {
-        weaponUI?.SetWeaponSprite(null);
+        weaponUI?.ShowWeapon(null);
         weaponSoundManager?.ClearAttackSounds();
     }
 

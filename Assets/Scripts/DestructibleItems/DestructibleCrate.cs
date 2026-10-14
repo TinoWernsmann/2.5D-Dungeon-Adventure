@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Zerstörbare Kiste/Fass: lässt beim Zerstören ein Item fallen.
+/// Treffer- und Zerstörungs-Effekte (VFX + Sound) liefert <see cref="HitFeedback"/>.
+/// </summary>
 [RequireComponent(typeof(Health))]
 public class DestructibleCrate : MonoBehaviour
 {
@@ -11,16 +15,6 @@ public class DestructibleCrate : MonoBehaviour
     [SerializeField] private float upwardForce = 4f;
     [SerializeField] private float horizontalForce = 1.5f;
     [SerializeField] private float torqueForce = 3f;
-
-    [Header("Hit VFX")]
-    [Tooltip("Particle effect played at the exact hit position.")]
-    [SerializeField] private GameObject hitVfx;
-
-    [Tooltip("Time before the hit VFX is destroyed.")]
-    [SerializeField] private float hitVfxLifetime = 2f;
-
-    [Tooltip("Randomizes the rotation of the hit VFX.")]
-    [SerializeField] private bool randomizeVfxRotation = true;
 
     private Health health;
     private bool destroyed;
@@ -34,28 +28,13 @@ public class DestructibleCrate : MonoBehaviour
 
     private void OnEnable()
     {
-        health.DamagedAtPosition += HandleDamaged;
         health.Died += HandleDestroyed;
     }
 
 
     private void OnDisable()
     {
-        health.DamagedAtPosition -= HandleDamaged;
         health.Died -= HandleDestroyed;
-    }
-
-
-    private void HandleDamaged(
-        int damage,
-        Vector3 hitPoint)
-    {
-        if (destroyed)
-        {
-            return;
-        }
-
-        SpawnHitVfx(hitPoint);
     }
 
 
@@ -71,41 +50,6 @@ public class DestructibleCrate : MonoBehaviour
         SpawnItem();
 
         Destroy(gameObject);
-    }
-
-
-    private void SpawnHitVfx(
-        Vector3 hitPoint)
-    {
-        if (hitVfx == null)
-        {
-            return;
-        }
-
-        Quaternion rotation =
-            GetVfxRotation();
-
-        GameObject vfx = Instantiate(
-            hitVfx,
-            hitPoint,
-            rotation
-        );
-
-        Destroy(
-            vfx,
-            hitVfxLifetime
-        );
-    }
-
-
-    private Quaternion GetVfxRotation()
-    {
-        if (!randomizeVfxRotation)
-        {
-            return Quaternion.identity;
-        }
-
-        return Random.rotation;
     }
 
 

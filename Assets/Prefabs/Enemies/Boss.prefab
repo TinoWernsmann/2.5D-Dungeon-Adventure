@@ -278,7 +278,7 @@ Transform:
   m_GameObject: {fileID: 7664568011315287388}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 0.22, z: 0}
+  m_LocalPosition: {x: -0.2, y: 0.111, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -401,6 +401,8 @@ GameObject:
   - component: {fileID: 5813402917764031234}
   - component: {fileID: 7247249887242897219}
   - component: {fileID: 1203880342902358544}
+  - component: {fileID: 523951559333239314}
+  - component: {fileID: 1639387409181581748}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -445,7 +447,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.71
+  m_Height: 1.35
   m_BaseOffset: 0.53
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -477,10 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829d91db38302b9498abee759b2a3903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  patrolPoints: []
   waitTimeAtPoint: 2
 --- !u!114 &6553040462468949477
 MonoBehaviour:
@@ -563,6 +562,8 @@ MonoBehaviour:
   attackRange: 3
   preferredDistance: 2.3
   lungeMaxRange: 7
+  lungeCooldown: 6
+  exhaustionSound: {fileID: 8300000, guid: 2844901e521415944ac59de178523389, type: 3}
   blockAngle: 100
   blockPressurePerHit: 0.12
   maxBlockPressure: 0.35
@@ -617,7 +618,7 @@ MonoBehaviour:
     maxLungeDuration: 0.45
     hitRange: 1.6
     damage: 8
-    aimLeadTime: 0.2
+    aimLeadTime: 0
   sidestep:
     distance: 2.5
     duration: 0.45
@@ -648,6 +649,12 @@ MonoBehaviour:
     stepDistance: 0.5
   recover:
     duration: 0.8
+    visual: 0
+    facesTarget: 0
+    blocksFrontalDamage: 0
+    isInvulnerable: 0
+  lungeExhaustion:
+    duration: 1.6
     visual: 0
     facesTarget: 0
     blocksFrontalDamage: 0
@@ -691,9 +698,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
-  m_Height: 1.81
+  m_Height: 1.35
   m_Direction: 1
-  m_Center: {x: 0, y: 0.17, z: 0}
+  m_Center: {x: 0, y: 0.14, z: 0}
 --- !u!114 &2435050788907585401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,7 +736,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -878,6 +885,50 @@ MonoBehaviour:
   guards:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &523951559333239314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8de9ea4cea7a294682f9df34552a35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
+  id: 
+--- !u!114 &1639387409181581748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57a2c58e08c44e1a20b0e6a3f905f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFeedback
+  hitEffect:
+    vfx: {fileID: 1758473627833946668, guid: e144f60e5e370aa4fb591c5604f666fa, type: 3}
+    vfxLifetime: 1
+    randomizeRotation: 0
+    sounds:
+    - {fileID: 8300000, guid: 32eaad373af50e544bb16c1afd559431, type: 3}
+    - {fileID: 8300000, guid: 82032a75a99602b42a09deebebdf2503, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffect:
+    vfx: {fileID: 0}
+    vfxLifetime: 1
+    randomizeRotation: 0
+    sounds: []
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffectPoint: {fileID: 0}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

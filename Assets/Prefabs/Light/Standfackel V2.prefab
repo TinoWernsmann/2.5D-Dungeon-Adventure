@@ -273,6 +273,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 18b6f7b436c21fb4d8306658f33f0862, type: 2}
     - target: {fileID: 919132149155446097, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
       propertyPath: m_Name
       value: Standfackel V2
@@ -283,8 +287,53 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8454130858341204775}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5535159612460806243}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8508078673234383324}
   m_SourcePrefab: {fileID: 100100000, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
+--- !u!1 &365325973666346974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
+  m_PrefabInstance: {fileID: 707223301312088719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &5535159612460806243
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365325973666346974}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0034542202, y: 0.0033888838, z: 0.015994787}
+  m_Center: {x: -0.000026082167, y: 0.000087340464, z: 0.007976292}
+--- !u!114 &8508078673234383324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365325973666346974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00dc9045fde843b1af3088e32e2fb0a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Surface
+  surfaceType: {fileID: 11400000, guid: 0000df24d389468dad9191b95fd4074e, type: 2}
 --- !u!4 &1034199146953403748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}

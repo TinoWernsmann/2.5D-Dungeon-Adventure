@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Objekt Atlas V1
     second: {fileID: 2100000, guid: f1db507113788fd47ac550c67a99ba5b, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Objekt Texture Atlas V1
+    second: {fileID: 2800000, guid: 49667ddf7be14be459e63f51445ccc3e, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -45,6 +45,8 @@ public class ItemManager : MonoBehaviour, ISaveable
     private readonly List<InventorySlot>
     inventorySlots = new(MaxItems);
 
+    private const string HealingItemName = "Healing";
+
     private Transform playerTransform;
     private int selectedSlot = -1;
 
@@ -62,6 +64,9 @@ public class ItemManager : MonoBehaviour, ISaveable
 
     public WeaponSO SelectedWeapon =>
         SelectedItem as WeaponSO;
+
+    public bool IsHealingSelected =>
+        SelectedItem != null && SelectedItem.ItemName == HealingItemName;
 
     public bool IsFull =>
         inventorySlots.Count >= MaxItems;
@@ -289,16 +294,30 @@ public class ItemManager : MonoBehaviour, ISaveable
         NotifySelectedItemChanged();
     }
 
+    /// <summary>Wählt den nächsten (+1) oder vorherigen (-1) belegten Slot – am Ende geht es von vorne los.</summary>
+    public void SelectRelativeSlot(int step)
+    {
+        if (inventorySlots.Count == 0 || step == 0)
+        {
+            return;
+        }
+
+        int current = Mathf.Max(0, selectedSlot);
+        int next = ((current + step) % inventorySlots.Count + inventorySlots.Count) % inventorySlots.Count;
+
+        SelectSlot(next);
+    }
+
     public void TryUseHealing()
     {
-        if (!HasItem("Healing")) return;
+        if (!HasItem(HealingItemName)) return;
         ItemSO item = null;
 
         OnHealingUsed?.Invoke();
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             item = GetItemAt(i);
-            if (item.ItemName == "Healing") break;
+            if (item.ItemName == HealingItemName) break;
         }
 
         if (item != null)

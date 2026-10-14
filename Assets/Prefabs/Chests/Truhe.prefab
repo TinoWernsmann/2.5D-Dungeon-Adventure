@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7582380200630923819}
   - component: {fileID: 8823110470381631011}
   - component: {fileID: 2685099001543185800}
+  - component: {fileID: 8792454045673402644}
   m_Layer: 0
   m_Name: Truhe
   m_TagString: Untagged
@@ -176,6 +177,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.64, y: 0.6, z: 1}
   m_Center: {x: 0, y: 0.27, z: 0}
+--- !u!114 &8792454045673402644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327109670800430731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00dc9045fde843b1af3088e32e2fb0a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Surface
+  surfaceType: {fileID: 11400000, guid: 0000df24d389468dad9191b95fd4074e, type: 2}
 --- !u!1 &2611313961288924337
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +301,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a0bfc1fc19f72304cbb8c1656f95e8cb, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 18b6f7b436c21fb4d8306658f33f0862, type: 2}
     - target: {fileID: 919132149155446097, guid: a0bfc1fc19f72304cbb8c1656f95e8cb, type: 3}
       propertyPath: m_Name
       value: Truhen Deckel
@@ -349,6 +367,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 951f7b3688fbb824288bcc172c82d3cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 18b6f7b436c21fb4d8306658f33f0862, type: 2}
     - target: {fileID: 919132149155446097, guid: 951f7b3688fbb824288bcc172c82d3cd, type: 3}
       propertyPath: m_Name
       value: Truhe offen

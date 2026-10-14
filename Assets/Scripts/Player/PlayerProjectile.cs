@@ -15,6 +15,7 @@ public class PlayerProjectile : MonoBehaviour
     private int damage;
 
     private GameObject owner;
+    private SurfaceType defaultSurface;
     private bool initialized;
     private bool hasHit;
 
@@ -22,7 +23,8 @@ public class PlayerProjectile : MonoBehaviour
         Vector3 shootDirection,
         float projectileSpeed,
         int projectileDamage,
-        GameObject projectileOwner)
+        GameObject projectileOwner,
+        SurfaceType fallbackSurface)
     {
         direction =
             shootDirection.normalized;
@@ -35,6 +37,9 @@ public class PlayerProjectile : MonoBehaviour
 
         owner =
             projectileOwner;
+
+        defaultSurface =
+            fallbackSurface;
 
         initialized = true;
 
@@ -69,12 +74,15 @@ public class PlayerProjectile : MonoBehaviour
             startPosition +
             direction * distance;
 
+        // Trigger (Bereiche, Tür-Sensoren …) sollen Pfeile nicht aufhalten.
         if (Physics.Linecast(
                 startPosition,
                 endPosition,
-                out RaycastHit hit))
+                out RaycastHit hit,
+                Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore))
         {
-            HandleHit(hit.collider);
+            HandleHit(hit);
             return;
         }
 
@@ -83,8 +91,11 @@ public class PlayerProjectile : MonoBehaviour
     }
 
     private void HandleHit(
-        Collider hitCollider)
+        RaycastHit hit)
     {
+        Collider hitCollider =
+            hit.collider;
+
         if (hasHit ||
             hitCollider == null)
         {
@@ -98,18 +109,12 @@ public class PlayerProjectile : MonoBehaviour
 
         hasHit = true;
 
-        Health targetHealth =
-            hitCollider
-                .GetComponentInParent<Health>();
-
-        if (targetHealth != null)
-        {
-            targetHealth.TakeDamage(
-                damage,
-                transform.position,
-                owner != null ? owner.transform : null
-            );
-        }
+        WeaponHit.Resolve(
+            hit,
+            damage,
+            owner != null ? owner.transform : null,
+            defaultSurface
+        );
 
         if (destroyOnImpact)
         {

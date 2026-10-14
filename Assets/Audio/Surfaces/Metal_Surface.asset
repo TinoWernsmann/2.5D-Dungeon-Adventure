@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ef6ec91a584ff59a65d6e657efccb3, type: 3}
+  m_Name: Metal_Surface
+  m_EditorClassIdentifier: Assembly-CSharp::SurfaceType
+  impactEffect:
+    vfx: {fileID: 358637981425055526, guid: 5dbadad910eaff94094647dc8137cecc, type: 3}
+    vfxLifetime: 1
+    randomizeRotation: 1
+    sounds:
+    - {fileID: 8300000, guid: bdc5eb364af7a844abc54a98f0929345, type: 3}
+    - {fileID: 8300000, guid: 2805123ba05feab499b27875681a18c8, type: 3}
+    - {fileID: 8300000, guid: 7796f7a05a99e0b4eb7a479f64014ded, type: 3}
+    - {fileID: 8300000, guid: 08d70b9be0c39ac43a08ed9240b2c887, type: 3}
+    - {fileID: 8300000, guid: 3ac2ee11d01b0e041979aa05bbf2b165, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20

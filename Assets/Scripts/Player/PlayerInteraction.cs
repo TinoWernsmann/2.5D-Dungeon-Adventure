@@ -37,6 +37,7 @@ public class PlayerInteraction : MonoBehaviour
         GameInput.Instance.OnInteract += HandleInteractionInput;
         GameInput.Instance.OnAttack += HandleCombatInput;
         GameInput.Instance.OnItemSelect += HandleInventoryInput;
+        GameInput.Instance.OnItemScroll += HandleItemScroll;
         GameInput.Instance.OnDropPressed += HandleDropInput;
         GameInput.Instance.OnDialogue += HandleDialogue;
     }
@@ -50,6 +51,7 @@ public class PlayerInteraction : MonoBehaviour
         GameInput.Instance.OnInteract -= HandleInteractionInput;
         GameInput.Instance.OnAttack -= HandleCombatInput;
         GameInput.Instance.OnItemSelect -= HandleInventoryInput;
+        GameInput.Instance.OnItemScroll -= HandleItemScroll;
         GameInput.Instance.OnDropPressed -= HandleDropInput;
     }
 
@@ -75,12 +77,30 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleCombatInput()
     {
+        // Heiltrank in der Hand: Linksklick trinkt ihn (wie H), statt anzugreifen.
+        if (itemManager != null && itemManager.IsHealingSelected)
+        {
+            if (Time.timeScale > 0f) TryHeal();
+            return;
+        }
+
         playerCombat?.TryAttack();
     }
 
     private void HandleInventoryInput(int slot)
     {
         itemManager?.SelectSlot(slot);
+    }
+
+    private void HandleItemScroll(int step)
+    {
+        // Im Pause-Menü soll das Mausrad nicht die Waffe wechseln.
+        if (Time.timeScale <= 0f)
+        {
+            return;
+        }
+
+        itemManager?.SelectRelativeSlot(step);
     }
 
     private void HandleDropInput()

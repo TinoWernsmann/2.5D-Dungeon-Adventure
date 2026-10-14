@@ -6,9 +6,18 @@ public class GameInput : MonoBehaviour
 {
     public static GameInput Instance { get; private set; }
 
+    // Mindestabstand zwischen zwei Mausrad-Schritten (Touchpads senden sehr viele kleine Werte).
+    private const float ItemScrollCooldown = 0.08f;
+
     private InputSystem_Actions _input;
+    private InputAction _itemScrollAction;
+    private float _nextItemScrollTime;
+
     public event Action OnDropPressed;
     public event Action<int> OnItemSelect;
+
+    /// <summary>Mausrad: +1 = nächster Slot (runter scrollen), -1 = vorheriger Slot (hoch scrollen).</summary>
+    public event Action<int> OnItemScroll;
     public event Action OnInteract;
     public event Action OnAttack;
     public event Action OnHeal;
@@ -48,6 +57,10 @@ public class GameInput : MonoBehaviour
         _input.Player.Healing.performed += HealPerformed;
         _input.Player.Dialogue.performed += DialoguePerformed;
         _input.Player.Pause.performed += PausePerformed;
+
+        _itemScrollAction = new InputAction("ItemScroll", InputActionType.Value, "<Mouse>/scroll/y");
+        _itemScrollAction.performed += ItemScrollPerformed;
+        _itemScrollAction.Enable();
     }
 
     private void OnDisable()
@@ -70,18 +83,38 @@ public class GameInput : MonoBehaviour
         _input.Player.Healing.performed -= HealPerformed;
         _input.Player.Dialogue.performed -= DialoguePerformed;
         _input.Player.Pause.performed -= PausePerformed;
+
+        _itemScrollAction.performed -= ItemScrollPerformed;
+        _itemScrollAction.Disable();
     }
 
     public void EnableDialogue()
     {
         _input.Player.Disable();
         _input.Player.Dialogue.Enable();
+        _itemScrollAction.Disable();
     }
 
     public void DisableDialogue()
     {
         _input.Player.Enable();
         _input.Player.Dialogue.Disable();
+        _itemScrollAction.Enable();
+    }
+
+    private void ItemScrollPerformed(InputAction.CallbackContext context)
+    {
+        float scroll = context.ReadValue<float>();
+
+        if (Mathf.Abs(scroll) < 0.01f || Time.unscaledTime < _nextItemScrollTime)
+        {
+            return;
+        }
+
+        _nextItemScrollTime = Time.unscaledTime + ItemScrollCooldown;
+
+        // Hoch scrollen = vorheriger Slot, runter scrollen = nächster Slot.
+        OnItemScroll?.Invoke(scroll > 0f ? -1 : 1);
     }
 
     private void PausePerformed(InputAction.CallbackContext context)

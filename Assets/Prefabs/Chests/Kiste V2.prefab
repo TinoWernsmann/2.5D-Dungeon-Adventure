@@ -79,6 +79,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e04fe1858d44aa34197d7e79c9034948, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 18b6f7b436c21fb4d8306658f33f0862, type: 2}
     - target: {fileID: 919132149155446097, guid: e04fe1858d44aa34197d7e79c9034948, type: 3}
       propertyPath: m_Name
       value: Kiste V2
@@ -90,6 +94,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6430703964447865598}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e04fe1858d44aa34197d7e79c9034948, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6603055183664843952}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e04fe1858d44aa34197d7e79c9034948, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9102810239766704765}
@@ -110,6 +117,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e04fe1858d44aa34197d7e79c9034948, type: 3}
   m_PrefabInstance: {fileID: 1453717187992549942}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6603055183664843952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796318074364872551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57a2c58e08c44e1a20b0e6a3f905f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFeedback
+  hitEffect:
+    vfx: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
+    vfxLifetime: 0.5
+    randomizeRotation: 1
+    sounds:
+    - {fileID: 8300000, guid: 44e94e35a230fd24caa8e5909ebc34c5, type: 3}
+    - {fileID: 8300000, guid: fa447edad6034b7469dadbba13a4fc74, type: 3}
+    - {fileID: 8300000, guid: aad4a14e160e1074e9ea1c81ee1d13ad, type: 3}
+    - {fileID: 8300000, guid: c8840edb2b065ae4399f337f181c81db, type: 3}
+    - {fileID: 8300000, guid: a380122ef5bcdc642ac6ab2f103b3cbd, type: 3}
+    - {fileID: 8300000, guid: 2626e7f258e53d84ba5a8ad0dc8adccf, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffect:
+    vfx: {fileID: 0}
+    vfxLifetime: 1
+    randomizeRotation: 1
+    sounds:
+    - {fileID: 8300000, guid: 39cf0dceb359791428234302e709f150, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffectPoint: {fileID: 6430703964447865598}
 --- !u!114 &9102810239766704765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,9 +183,6 @@ MonoBehaviour:
   upwardForce: 4
   horizontalForce: 1.5
   torqueForce: 3
-  hitVfx: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
-  hitVfxLifetime: 0.5
-  randomizeVfxRotation: 1
 --- !u!65 &4329071278583458406
 BoxCollider:
   m_ObjectHideFlags: 0

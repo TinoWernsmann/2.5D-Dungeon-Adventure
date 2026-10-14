@@ -21,6 +21,12 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private Transform projectileSpawnPoint;
 
+    [Header("Impact")]
+    [Tooltip("Oberfläche für Objekte ohne Surface-Komponente – " +
+             "gilt für Nahkampf und Projektile.")]
+    [SerializeField]
+    private SurfaceType defaultSurface;
+
     private Health playerHealth;
     private float nextAttackTime;
     private const string DEATH_SCENE = "DeathScene";
@@ -226,7 +232,8 @@ public class PlayerCombat : MonoBehaviour
             direction,
             weapon.ProjectileSpeed,
             weapon.WeaponDamage,
-            gameObject
+            gameObject,
+            defaultSurface
         );
     }
 
@@ -305,19 +312,12 @@ public class PlayerCombat : MonoBehaviour
             }
 
             // Der erste fremde Collider zählt: Wände blocken den Schlag.
-            Health targetHealth =
-                hit.collider
-                    .GetComponentInParent<
-                        Health>();
-
-            if (CanDamage(targetHealth))
-            {
-                targetHealth.TakeDamage(
-                    weapon.WeaponDamage,
-                    hit.point,
-                    transform
-                );
-            }
+            WeaponHit.Resolve(
+                hit,
+                weapon.WeaponDamage,
+                transform,
+                defaultSurface
+            );
 
             return;
         }
@@ -328,13 +328,5 @@ public class PlayerCombat : MonoBehaviour
     {
         return hitCollider.transform
             .IsChildOf(transform);
-    }
-
-    private bool CanDamage(
-        Health target)
-    {
-        return target != null &&
-               target != playerHealth &&
-               !target.IsDead;
     }
 }
