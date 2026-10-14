@@ -46,7 +46,7 @@ public class WeaponSO : ItemSO
     private int ammoPerShot = 1;
 
     [Header("Visuals")]
-    public Sprite IdleSprite;
+    [Tooltip("Wird während des Angriffs gezeigt, danach wieder das Held Sprite.")]
     public Sprite AttackSprite;
 
     [Header("Audio")]

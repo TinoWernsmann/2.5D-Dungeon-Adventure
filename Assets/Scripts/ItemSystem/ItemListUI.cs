@@ -196,9 +196,10 @@ public class ItemListUI : MonoBehaviour
                 icon != null
             );
 
-        if (_crosshair != null && item != null)
+        if (_crosshair != null)
         {
-            _crosshair.gameObject.SetActive(item.ItemName == "Crossbow");    
+            // Fadenkreuz nur für Fernkampfwaffen (z.B. Armbrust).
+            _crosshair.gameObject.SetActive(item is WeaponSO weapon && weapon.UsesProjectile);
         }
     }
 }

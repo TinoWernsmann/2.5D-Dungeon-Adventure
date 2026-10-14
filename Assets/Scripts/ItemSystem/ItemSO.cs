@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(
     fileName = "Item",
@@ -14,6 +15,11 @@ public class ItemSO : ScriptableObject
 
     public Sprite InventoryIcon;
 
+    [Header("Held")]
+    [Tooltip("Sprite, das der Player in der Hand hält, wenn das Item ausgewählt ist. Leer = nichts in der Hand.")]
+    [FormerlySerializedAs("IdleSprite")]
+    public Sprite HeldSprite;
+
     [Header("Stack")]
     [SerializeField] private bool stackable;
 
@@ -26,7 +32,12 @@ public class ItemSO : ScriptableObject
         stackable
             ? Mathf.Max(1, maxStackSize)
             : 1;
+
+    [Header("Use")]
+    [Tooltip("Heiltrank: wird mit H oder Linksklick (wenn ausgewählt) getrunken.")]
     public bool IsHealing;
+
+    [Header("Audio")]
     public AudioClip PickUpSound;
     public AudioClip DropSound;
 }

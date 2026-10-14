@@ -1,53 +1,59 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class WeaponUI : MonoBehaviour
+/// <summary>
+/// Zeigt das Item in der Hand des Players (Waffe, Schlüssel, Trank …)
+/// und spielt bei Waffen die Angriffsanimation.
+/// </summary>
+public class HeldItemUI : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Image weaponImage;
+    [FormerlySerializedAs("weaponImage")]
+    [SerializeField] private Image heldItemImage;
 
     private Coroutine attackAnimation;
 
-    // Ruhebild der AKTUELL ausgerüsteten Waffe. Eine laufende Angriffsanimation kehrt
+    // Bild des AKTUELL gehaltenen Items. Eine laufende Angriffsanimation kehrt
     // am Ende hierhin zurück – nicht zur Waffe, mit der angegriffen wurde.
-    private Sprite currentIdleSprite;
+    private Sprite currentHeldSprite;
 
     private void Awake()
     {
-        if (weaponImage == null)
+        if (heldItemImage == null)
         {
-            weaponImage = GetComponent<Image>();
+            heldItemImage = GetComponent<Image>();
         }
 
-        ShowWeapon(null);
+        ShowHeldItem(null);
     }
 
     /// <summary>
-    /// Zeigt eine (neu ausgerüstete) Waffe an. Bricht eine laufende Angriffsanimation ab,
+    /// Zeigt das (neu ausgewählte) Item in der Hand. Bricht eine laufende Angriffsanimation ab,
     /// damit z.B. nach einem schnellen Wechsel nicht das Bild der vorherigen Waffe erscheint.
     /// </summary>
-    public void ShowWeapon(Sprite idleSprite)
+    public void ShowHeldItem(Sprite heldSprite)
     {
         StopAttackAnimation();
 
-        currentIdleSprite = idleSprite;
-        SetWeaponSprite(idleSprite);
+        currentHeldSprite = heldSprite;
+        SetSprite(heldSprite);
     }
 
     public void PlayAttackAnimation(
         Sprite attackSprite,
-        Sprite idleSprite,
+        Sprite heldSprite,
         float duration)
     {
-        if (weaponImage == null)
+        if (heldItemImage == null)
         {
             return;
         }
 
         StopAttackAnimation();
 
-        currentIdleSprite = idleSprite;
+        currentHeldSprite = heldSprite;
 
         attackAnimation = StartCoroutine(
             PlayAttackAnimationRoutine(
@@ -61,11 +67,11 @@ public class WeaponUI : MonoBehaviour
         Sprite attackSprite,
         float duration)
     {
-        SetWeaponSprite(attackSprite);
+        SetSprite(attackSprite);
 
         yield return new WaitForSeconds(duration);
 
-        SetWeaponSprite(currentIdleSprite);
+        SetSprite(currentHeldSprite);
 
         attackAnimation = null;
     }
@@ -81,14 +87,14 @@ public class WeaponUI : MonoBehaviour
         attackAnimation = null;
     }
 
-    private void SetWeaponSprite(Sprite sprite)
+    private void SetSprite(Sprite sprite)
     {
-        if (weaponImage == null)
+        if (heldItemImage == null)
         {
             return;
         }
 
-        weaponImage.sprite = sprite;
-        weaponImage.enabled = sprite != null;
+        heldItemImage.sprite = sprite;
+        heldItemImage.enabled = sprite != null;
     }
 }
