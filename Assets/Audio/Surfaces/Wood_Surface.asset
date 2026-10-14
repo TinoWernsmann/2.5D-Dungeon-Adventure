@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ef6ec91a584ff59a65d6e657efccb3, type: 3}
+  m_Name: Wood_Surface
+  m_EditorClassIdentifier: Assembly-CSharp::SurfaceType
+  impactEffect:
+    vfx: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
+    vfxLifetime: 1
+    randomizeRotation: 1
+    sounds:
+    - {fileID: 8300000, guid: 44e94e35a230fd24caa8e5909ebc34c5, type: 3}
+    - {fileID: 8300000, guid: fa447edad6034b7469dadbba13a4fc74, type: 3}
+    - {fileID: 8300000, guid: aad4a14e160e1074e9ea1c81ee1d13ad, type: 3}
+    - {fileID: 8300000, guid: c8840edb2b065ae4399f337f181c81db, type: 3}
+    - {fileID: 8300000, guid: a380122ef5bcdc642ac6ab2f103b3cbd, type: 3}
+    - {fileID: 8300000, guid: 2626e7f258e53d84ba5a8ad0dc8adccf, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20

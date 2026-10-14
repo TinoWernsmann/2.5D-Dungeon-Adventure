@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 7247249887242897219}
   - component: {fileID: 1203880342902358544}
   - component: {fileID: 523951559333239314}
+  - component: {fileID: 1639387409181581748}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -896,7 +897,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8de9ea4cea7a294682f9df34552a35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
-  id: bab932330a584abb9d6f14ce09f2a77c
+  id: 
+--- !u!114 &1639387409181581748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57a2c58e08c44e1a20b0e6a3f905f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFeedback
+  hitEffect:
+    vfx: {fileID: 1758473627833946668, guid: e144f60e5e370aa4fb591c5604f666fa, type: 3}
+    vfxLifetime: 1
+    randomizeRotation: 0
+    sounds:
+    - {fileID: 8300000, guid: 32eaad373af50e544bb16c1afd559431, type: 3}
+    - {fileID: 8300000, guid: 82032a75a99602b42a09deebebdf2503, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffect:
+    vfx: {fileID: 0}
+    vfxLifetime: 1
+    randomizeRotation: 0
+    sounds: []
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffectPoint: {fileID: 0}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

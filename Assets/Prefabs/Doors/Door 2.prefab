@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8985152117435592219}
+  - component: {fileID: 5071435592484037893}
   m_Layer: 0
   m_Name: Door 2
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 7399186560981745161}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5071435592484037893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4029406071991388318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00dc9045fde843b1af3088e32e2fb0a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Surface
+  surfaceType: {fileID: 11400000, guid: 0000df24d389468dad9191b95fd4074e, type: 2}
 --- !u!1 &5134599258856958448
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a39cbaaf79b2245b19add71e6dc4a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
+  itemManager: {fileID: 0}
   doorPivot: {fileID: 7399186560981745161}
   audioSource: {fileID: 0}
   visionBlocker: {fileID: 1887228224711745307}
@@ -223,6 +238,8 @@ MonoBehaviour:
   animationDuration: 0.5
   isLocked: 0
   neededUnlockItem: Key
+  enemiesCanOpen: 1
+  enemyOpenRadius: 2.2
   openSound: {fileID: 8300000, guid: c1bfea1a2ff45804093785aebdc1bf07, type: 3}
   closeSound: {fileID: 8300000, guid: 1550be269391df54bbeb92ccd7595f95, type: 3}
   lockedSound: {fileID: 8300000, guid: 1c19d6b932210574298e3495b5a0222c, type: 3}

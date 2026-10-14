@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 511861278861975631}
   - component: {fileID: 372523354132971995}
   - component: {fileID: 5032175139011081091}
+  - component: {fileID: 3116377273330054915}
   m_Layer: 0
   m_Name: HardOpp
   m_TagString: Untagged
@@ -731,6 +732,37 @@ MonoBehaviour:
   stepDistance: 1.8
   minMoveSpeed: 0.5
   minWalkDistanceForStop: 1
+--- !u!114 &3116377273330054915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57a2c58e08c44e1a20b0e6a3f905f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFeedback
+  hitEffect:
+    vfx: {fileID: 1758473627833946668, guid: e144f60e5e370aa4fb591c5604f666fa, type: 3}
+    vfxLifetime: 1
+    randomizeRotation: 0
+    sounds:
+    - {fileID: 8300000, guid: 32eaad373af50e544bb16c1afd559431, type: 3}
+    - {fileID: 8300000, guid: 82032a75a99602b42a09deebebdf2503, type: 3}
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffect:
+    vfx: {fileID: 0}
+    vfxLifetime: 1
+    randomizeRotation: 0
+    sounds: []
+    volume: 1
+    pitchVariation: 0.1
+    maxHearingDistance: 20
+  deathEffectPoint: {fileID: 0}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0
