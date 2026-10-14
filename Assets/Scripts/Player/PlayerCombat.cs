@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -10,8 +11,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private ItemManager itemManager;
 
+    [FormerlySerializedAs("weaponUI")]
     [SerializeField]
-    private WeaponUI weaponUI;
+    private HeldItemUI heldItemUI;
 
     [SerializeField]
     private WeaponSoundManager
@@ -199,11 +201,9 @@ public class PlayerCombat : MonoBehaviour
     private void PlayAttackFeedback(
         WeaponSO weapon)
     {
-        if (weapon.ItemName == "Key") return;
-
-        weaponUI?.PlayAttackAnimation(
+        heldItemUI?.PlayAttackAnimation(
             weapon.AttackSprite,
-            weapon.IdleSprite,
+            weapon.HeldSprite,
             weapon.AttackDuration
         );
 

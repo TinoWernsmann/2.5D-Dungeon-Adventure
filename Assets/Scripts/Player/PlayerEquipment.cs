@@ -1,10 +1,16 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
+/// <summary>
+/// Zeigt das ausgewählte Item in der Hand und rüstet Waffen-Sounds aus.
+/// Jedes Item kann gehalten werden; nur Waffen (<see cref="WeaponSO"/>) können angreifen.
+/// </summary>
 public class PlayerEquipment : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private ItemManager itemManager;
-    [SerializeField] private WeaponUI weaponUI;
+    [FormerlySerializedAs("weaponUI")]
+    [SerializeField] private HeldItemUI heldItemUI;
     [SerializeField] private WeaponSoundManager weaponSoundManager;
 
     private void OnEnable()
@@ -30,24 +36,14 @@ public class PlayerEquipment : MonoBehaviour
 
     private void HandleSelectedItemChanged(ItemSO selectedItem)
     {
+        heldItemUI?.ShowHeldItem(selectedItem != null ? selectedItem.HeldSprite : null);
+
         if (selectedItem is WeaponSO weapon)
         {
-            EquipWeapon(weapon);
+            weaponSoundManager?.SetAttackSounds(weapon.AttackSounds);
             return;
         }
 
-        UnequipWeapon();
-    }
-
-    private void EquipWeapon(WeaponSO weapon)
-    {
-        weaponUI?.ShowWeapon(weapon.IdleSprite);
-        weaponSoundManager?.SetAttackSounds(weapon.AttackSounds);
-    }
-
-    private void UnequipWeapon()
-    {
-        weaponUI?.ShowWeapon(null);
         weaponSoundManager?.ClearAttackSounds();
     }
 

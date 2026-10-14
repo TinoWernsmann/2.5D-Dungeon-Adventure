@@ -37,6 +37,9 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private float cameraPitch;
     private bool wasGrounded = true;
 
+    // Gesperrt z.B. während Cutscenes: kein Laufen, Springen oder Umschauen – Schwerkraft läuft weiter.
+    private bool areControlsLocked;
+
     // Pausiert = Zeit angehalten. Kein eigener Pause-Zustand, der mit dem
     // PauseMenu auseinanderlaufen kann (z.B. beim Fortsetzen über den Button).
     private static bool IsGamePaused => Time.timeScale <= 0f;
@@ -56,6 +59,11 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         LockCursor();
     }
 
+    public void SetControlsLocked(bool locked)
+    {
+        areControlsLocked = locked;
+    }
+
     private void Update()
     {
         HandleMovement();
@@ -64,7 +72,9 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     private void HandleMovement()
     {
-        Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
+        Vector2 moveInput = areControlsLocked
+            ? Vector2.zero
+            : moveAction.action.ReadValue<Vector2>();
 
         Vector3 moveDirection =
             transform.right * moveInput.x +
@@ -128,7 +138,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     private void TryJump()
     {
-        if (!jumpAction.action.WasPressedThisFrame())
+        if (areControlsLocked || !jumpAction.action.WasPressedThisFrame())
         {
             return;
         }
@@ -150,7 +160,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     private void HandleLook()
     {
-        if (IsGamePaused) return;
+        if (IsGamePaused || areControlsLocked) return;
 
         Vector2 lookInput = lookAction.action.ReadValue<Vector2>();
 

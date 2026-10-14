@@ -28,6 +28,9 @@ public class CutscenePatrol : MonoBehaviour
     [Tooltip("Deaktiviert die normale EnemyBrain-Logik, damit sie die Cutscene-Patrol nicht überschreibt.")]
     [SerializeField] private bool disableEnemyBrain = true;
 
+    /// <summary>Route beendet bzw. despawnt (z.B. für Cutscene-Abläufe).</summary>
+    public bool IsFinished { get; private set; }
+
     private EnemyMovement movement;
     private Coroutine patrolCoroutine;
     private Coroutine despawnCoroutine;
@@ -111,20 +114,37 @@ public class CutscenePatrol : MonoBehaviour
             if (waypointIndex == lastWaypointIndex &&
                 despawnMode == DespawnMode.AtLastWaypoint)
             {
-                Destroy(gameObject);
+                Despawn();
                 yield break;
             }
         }
 
         isRunning = false;
         patrolCoroutine = null;
+
+        // Bei "AfterSeconds" meldet erst der Despawn das Ende.
+        if (despawnMode != DespawnMode.AfterSeconds)
+        {
+            MarkFinished();
+        }
     }
 
     private IEnumerator DespawnAfterSeconds()
     {
         yield return new WaitForSeconds(despawnAfterSeconds);
         despawnCoroutine = null;
+        Despawn();
+    }
+
+    private void Despawn()
+    {
+        MarkFinished();
         Destroy(gameObject);
+    }
+
+    private void MarkFinished()
+    {
+        IsFinished = true;
     }
 
     private int GetLastWaypointIndex()

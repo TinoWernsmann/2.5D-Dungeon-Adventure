@@ -12,15 +12,24 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 
     public event Action<DialogueContext, SpriteRenderer> OnDialogueInteract;
 
+    /// <summary>Wird ausgelöst, sobald der Spieler das Gespräch komplett durchgeklickt hat.</summary>
+    public event Action DialogueFinished;
+
     public void Interact()
     {
         DialogueContext context = new DialogueContext(_dialogueData.SpeakerName, _dialogueData.SpokenText, _dialogueData.SpeakerSprites, _sprite.sprite, _dialogueData.DespawnAfter, _talkAudio);
         OnDialogueInteract?.Invoke(context, _sprite);
     }
 
+    public void NotifyDialogueFinished()
+    {
+        DialogueFinished?.Invoke();
+    }
+
     private void OnDestroy()
     {
         OnDialogueInteract = null;
+        DialogueFinished = null;
     }
 }
 

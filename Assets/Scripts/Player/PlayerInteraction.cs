@@ -39,25 +39,18 @@ public class PlayerInteraction : MonoBehaviour
         GameInput.Instance.OnItemSelect += HandleInventoryInput;
         GameInput.Instance.OnItemScroll += HandleItemScroll;
         GameInput.Instance.OnDropPressed += HandleDropInput;
-        GameInput.Instance.OnDialogue += HandleDialogue;
     }
 
     private void OnDisable()
     {
         if (GameInput.Instance == null) return;
 
-        GameInput.Instance.OnDialogue -= HandleDialogue;
         GameInput.Instance.OnHeal -= HandleHealInput;
         GameInput.Instance.OnInteract -= HandleInteractionInput;
         GameInput.Instance.OnAttack -= HandleCombatInput;
         GameInput.Instance.OnItemSelect -= HandleInventoryInput;
         GameInput.Instance.OnItemScroll -= HandleItemScroll;
         GameInput.Instance.OnDropPressed -= HandleDropInput;
-    }
-
-    private void HandleDialogue()
-    {
-        TryInteract();
     }
 
     private void HandleHealInput()

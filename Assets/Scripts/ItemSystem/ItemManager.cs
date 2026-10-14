@@ -45,8 +45,6 @@ public class ItemManager : MonoBehaviour, ISaveable
     private readonly List<InventorySlot>
     inventorySlots = new(MaxItems);
 
-    private const string HealingItemName = "Healing";
-
     private Transform playerTransform;
     private int selectedSlot = -1;
 
@@ -66,7 +64,7 @@ public class ItemManager : MonoBehaviour, ISaveable
         SelectedItem as WeaponSO;
 
     public bool IsHealingSelected =>
-        SelectedItem != null && SelectedItem.ItemName == HealingItemName;
+        SelectedItem != null && SelectedItem.IsHealing;
 
     public bool IsFull =>
         inventorySlots.Count >= MaxItems;
@@ -310,20 +308,20 @@ public class ItemManager : MonoBehaviour, ISaveable
 
     public void TryUseHealing()
     {
-        if (!HasItem(HealingItemName)) return;
-        ItemSO item = null;
+        InventorySlot healingSlot = inventorySlots.Find(
+            slot =>
+                slot.ItemData != null &&
+                slot.ItemData.IsHealing &&
+                slot.Amount > 0
+        );
+
+        if (healingSlot == null)
+        {
+            return;
+        }
 
         OnHealingUsed?.Invoke();
-        for (int i = 0; i < inventorySlots.Count; i++)
-        {
-            item = GetItemAt(i);
-            if (item.ItemName == HealingItemName) break;
-        }
-
-        if (item != null)
-        {
-            TryConsumeItem(item);
-        }
+        TryConsumeItem(healingSlot.ItemData);
     }
 
     public void DropSelectedItem()
