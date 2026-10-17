@@ -467,6 +467,7 @@ MonoBehaviour:
   footsteps: {fileID: 7247249887242897219}
   doorOpener:
     canOpenDoors: 1
+  canBeKnockedBack: 0
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0

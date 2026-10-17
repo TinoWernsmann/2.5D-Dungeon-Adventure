@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 7807990040898196964}
   - component: {fileID: 2518278607771309739}
   - component: {fileID: 6059036076607321077}
+  - component: {fileID: 7300000000000000017}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -327,9 +328,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   playerCamera: {fileID: 2867891199821086857}
   itemManager: {fileID: 0}
-  weaponUI: {fileID: 0}
+  equipment: {fileID: 0}
+  heldItemUI: {fileID: 0}
   weaponSoundManager: {fileID: 0}
   projectileSpawnPoint: {fileID: 6943997804585028645}
+  defaultSurface: {fileID: 11400000, guid: e5d08fb75c194d9fb1447ed2ec13befa, type: 2}
 --- !u!114 &6699359120627354551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,8 +346,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
   itemManager: {fileID: 0}
-  weaponUI: {fileID: 0}
+  heldItemUI: {fileID: 0}
   weaponSoundManager: {fileID: 0}
+  fists: {fileID: 11400000, guid: a3080df8da2a4b699b00e302fa442e87, type: 2}
 --- !u!114 &3654593812399395128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,6 +473,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FootstepAudio
   soundSet: {fileID: 11400000, guid: d34efb45ac8448b7a016c6dc41dab4ac, type: 2}
   audioSource: {fileID: 7807990040898196964}
+  fullVolumeDistance: 2
+  maxHearingDistance: 15
   stepDistance: 1.8
   minMoveSpeed: 0.5
   minWalkDistanceForStop: 1
@@ -484,7 +490,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8de9ea4cea7a294682f9df34552a35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
-  id: 
+  id: 12f8d80338ce4941b2209901d460a6a9
+--- !u!114 &7300000000000000017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020891357735276217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300052c6f0e9423d889a75cf95c1a1d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitFeedback
+  flashColor: {r: 0.85, g: 0, b: 0, a: 0.55}
+  flashDuration: 0.4
+  indicatorColor: {r: 1, g: 0.1, b: 0.1, a: 0.9}
+  indicatorDuration: 1.2
+  shakeDuration: 0.2
+  shakeStrength: 0.4
+  hitSounds: []
+  hitVolume: 0.8
 --- !u!1 &8400896203194356152
 GameObject:
   m_ObjectHideFlags: 0

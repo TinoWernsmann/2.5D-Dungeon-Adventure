@@ -38,8 +38,9 @@ public class WeaponSO : ItemSO
     [SerializeField]
     private bool usesAmmo;
 
+    [Tooltip("Mögliche Munitionssorten – die erste ist die Standardmunition.")]
     [SerializeField]
-    private ItemSO ammoItem;
+    private AmmoSO[] ammoTypes;
 
     [Min(1)]
     [SerializeField]
@@ -68,8 +69,8 @@ public class WeaponSO : ItemSO
     public bool UsesAmmo =>
         usesAmmo;
 
-    public ItemSO AmmoItem =>
-        ammoItem;
+    public AmmoSO[] AmmoTypes =>
+        ammoTypes ?? System.Array.Empty<AmmoSO>();
 
     public int AmmoPerShot =>
         Mathf.Max(1, ammoPerShot);

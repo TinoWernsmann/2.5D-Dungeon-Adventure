@@ -13,6 +13,7 @@ public class SaveGameData
     // Info für das Slot-Menü
     public string sceneName;
     public string playerName;
+    public Difficulty difficulty = Difficulty.Normal; // fehlt in alten Spielständen -> Normal
     public string questTitle;
     public string savedAtIso;
     public float playTimeSeconds;

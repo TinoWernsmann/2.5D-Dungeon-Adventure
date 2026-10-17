@@ -16,6 +16,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private GameObject owner;
     private SurfaceType defaultSurface;
+    private float knockbackDistance;
     private bool initialized;
     private bool hasHit;
 
@@ -24,7 +25,8 @@ public class PlayerProjectile : MonoBehaviour
         float projectileSpeed,
         int projectileDamage,
         GameObject projectileOwner,
-        SurfaceType fallbackSurface)
+        SurfaceType fallbackSurface,
+        float knockback)
     {
         direction =
             shootDirection.normalized;
@@ -40,6 +42,9 @@ public class PlayerProjectile : MonoBehaviour
 
         defaultSurface =
             fallbackSurface;
+
+        knockbackDistance =
+            knockback;
 
         initialized = true;
 
@@ -113,7 +118,8 @@ public class PlayerProjectile : MonoBehaviour
             hit,
             damage,
             owner != null ? owner.transform : null,
-            defaultSurface
+            defaultSurface,
+            knockbackDistance
         );
 
         if (destroyOnImpact)

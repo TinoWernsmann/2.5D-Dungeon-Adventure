@@ -20,6 +20,10 @@ public class MainMenuManager : MonoBehaviour
     [FormerlySerializedAs("_mainMenuObjects")]
     [SerializeField] private GameObject[] _hideWhileLoadMenuOpen;
 
+    [Header("Difficulty")]
+    [Tooltip("Wird wie das Lade-Menü geöffnet; blendet dieselben Objekte aus.")]
+    [SerializeField] private DifficultyMenu _difficultyMenu;
+
     private const string BEGIN_SCENE = "BeginCutscene";
 
     private void Awake()
@@ -37,12 +41,14 @@ public class MainMenuManager : MonoBehaviour
 
         if (SaveManager.Instance != null) SaveManager.Instance.SlotsChanged += RefreshContinueButton;
         if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleLoadMenuClosed;
+        if (_difficultyMenu != null) _difficultyMenu.Closed += HandleLoadMenuClosed;
     }
 
     private void OnDestroy()
     {
         if (SaveManager.Instance != null) SaveManager.Instance.SlotsChanged -= RefreshContinueButton;
         if (_saveSlotMenu != null) _saveSlotMenu.Closed -= HandleLoadMenuClosed;
+        if (_difficultyMenu != null) _difficultyMenu.Closed -= HandleLoadMenuClosed;
     }
 
     public void ContinueGame()
@@ -57,6 +63,15 @@ public class MainMenuManager : MonoBehaviour
 
         SetMainMenuVisible(false);
         _saveSlotMenu.Open(SaveSlotMenu.Mode.Load);
+    }
+
+    /// <summary>Button "Difficulty" im Hauptmenü.</summary>
+    public void OpenDifficultyMenu()
+    {
+        if (_difficultyMenu == null) return;
+
+        SetMainMenuVisible(false);
+        _difficultyMenu.Open();
     }
 
     private void HandleLoadMenuClosed()
@@ -86,7 +101,20 @@ public class MainMenuManager : MonoBehaviour
         SceneLoader.Load(BEGIN_SCENE);
     }
 
+    /// <summary>Start: erst Schwierigkeit wählen, dann Namen eingeben, dann Cutscene.</summary>
     public void StartGame()
+    {
+        if (_difficultyMenu == null)
+        {
+            ShowNameEntry();
+            return;
+        }
+
+        SetMainMenuVisible(false);
+        _difficultyMenu.Open(ShowNameEntry);
+    }
+
+    private void ShowNameEntry()
     {
         _nameEntryObject.SetActive(true);
     }

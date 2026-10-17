@@ -13,22 +13,27 @@ MonoBehaviour:
   m_Name: SaveRegistry
   m_EditorClassIdentifier: Assembly-CSharp::SaveRegistry
   items:
+  - id: a9a79891748e6a4469be2a8d45d85d4a
+    item: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 16121a253592a674a8a32b982d1616bc, type: 3}
+  - id: 645a10cbcff648d0abb31cfa5b3dad28
+    item: {fileID: 11400000, guid: 645a10cbcff648d0abb31cfa5b3dad28, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 3cac56694a7440f08fd3befce9e63d34, type: 3}
   - id: f4c356b8cf8c05b44983c47b60dc7198
     item: {fileID: 11400000, guid: f4c356b8cf8c05b44983c47b60dc7198, type: 2}
     prefab: {fileID: 5397329226068617096, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
-    prefab: {fileID: 0}
+  - id: 319f7ad8deca82740bb14512aecb82be
+    item: {fileID: 11400000, guid: 319f7ad8deca82740bb14512aecb82be, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 62d3e79cb7fa5dd4999aef0b7f3bf092, type: 3}
   - id: 5ca1e33bc39febe4ca949e4295585ca6
     item: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
     prefab: {fileID: 2216420366719847928, guid: 33b3881090d03e842b74e41751d51dcd, type: 3}
   - id: 33de8fdab3a2b31409ec434affd42c81
     item: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}
     prefab: {fileID: 3429332506891082912, guid: 88e5bf80d937e1945a46cc9f059bb4b1, type: 3}
-  - id: a9a79891748e6a4469be2a8d45d85d4a
-    item: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
-    prefab: {fileID: 5397329226068617096, guid: 16121a253592a674a8a32b982d1616bc, type: 3}
-  - id: 319f7ad8deca82740bb14512aecb82be
-    item: {fileID: 11400000, guid: 319f7ad8deca82740bb14512aecb82be, type: 2}
-    prefab: {fileID: 5397329226068617096, guid: 62d3e79cb7fa5dd4999aef0b7f3bf092, type: 3}
+  - id: a3080df8da2a4b699b00e302fa442e87
+    item: {fileID: 11400000, guid: a3080df8da2a4b699b00e302fa442e87, type: 2}
+    prefab: {fileID: 0}
   - id: f83f888a874281141a787f8b2dc459b7
     item: {fileID: 11400000, guid: f83f888a874281141a787f8b2dc459b7, type: 2}
     prefab: {fileID: 0}

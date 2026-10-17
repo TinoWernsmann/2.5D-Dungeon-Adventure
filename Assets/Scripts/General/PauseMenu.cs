@@ -12,6 +12,9 @@ public class PauseMenu : MonoBehaviour
     [Header("Save System")]
     [SerializeField] private SaveSlotMenu _saveSlotMenu;
 
+    [Header("Difficulty")]
+    [SerializeField] private DifficultyMenu _difficultyMenu;
+
     private Option _chosenOption = Option.None;
 
     private const string EXIT_TEXT = "Are you sure you want to exit the game?";
@@ -31,6 +34,7 @@ public class PauseMenu : MonoBehaviour
     private void OnDisable()
     {
         if (_saveSlotMenu != null) _saveSlotMenu.Closed -= HandleSaveSlotMenuClosed;
+        if (_difficultyMenu != null) _difficultyMenu.Closed -= HandleSaveSlotMenuClosed;
 
         if (GameInput.Instance == null) return;
 
@@ -46,6 +50,7 @@ public class PauseMenu : MonoBehaviour
         GameInput.Instance.OnPause += TryPauseGame;
 
         if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleSaveSlotMenuClosed;
+        if (_difficultyMenu != null) _difficultyMenu.Closed += HandleSaveSlotMenuClosed;
     }
 
     public void TryPauseGame()
@@ -54,6 +59,12 @@ public class PauseMenu : MonoBehaviour
         if (_saveSlotMenu != null && _saveSlotMenu.IsOpen)
         {
             _saveSlotMenu.Close();
+            return;
+        }
+
+        if (_difficultyMenu != null && _difficultyMenu.IsOpen)
+        {
+            _difficultyMenu.Close();
             return;
         }
 
@@ -82,6 +93,7 @@ public class PauseMenu : MonoBehaviour
         _mainPauseMenu.SetActive(true);
 
         if (_saveSlotMenu != null && _saveSlotMenu.IsOpen) _saveSlotMenu.Close();
+        if (_difficultyMenu != null && _difficultyMenu.IsOpen) _difficultyMenu.Close();
     }
 
     public void OpenSaveMenu()
@@ -107,6 +119,20 @@ public class PauseMenu : MonoBehaviour
         _saveSlotMenu.Open(mode);
     }
 
+    /// <summary>Button "Change Difficulty" im Pause-Menü.</summary>
+    public void OpenDifficultyMenu()
+    {
+        if (_difficultyMenu == null)
+        {
+            Debug.LogWarning("PauseMenu: Kein DifficultyMenu zugewiesen.", this);
+            return;
+        }
+
+        _pauseMenu.SetActive(false);
+        _difficultyMenu.Open();
+    }
+
+    // Gilt für Save- und Schwierigkeits-Menü: zurück ins Pause-Menü.
     private void HandleSaveSlotMenuClosed()
     {
         if (!isPause) return;

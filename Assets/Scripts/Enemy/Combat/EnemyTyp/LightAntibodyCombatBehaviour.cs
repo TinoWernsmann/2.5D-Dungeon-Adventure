@@ -178,7 +178,8 @@ public class LightAntibodyCombatBehaviour : EnemyCombatBehaviour
             damageApplied = TryHitTarget(hitRange, damage);
         }
 
-        if (attackTimer >= lungeDuration)
+        // Nach dem Treffer stoppen – sonst schiebt der Sprung den Player vor sich her.
+        if (damageApplied || attackTimer >= lungeDuration)
         {
             ChangeState(CombatState.Retreat);
         }

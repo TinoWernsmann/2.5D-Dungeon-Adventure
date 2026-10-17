@@ -542,7 +542,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -639,7 +639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneInitiator
   _cutsceneToBegin: {fileID: 11400000, guid: 30f060c758f577c43a08549813484fbb, type: 2}
   _cutsceneManager: {fileID: 396631509}
-  NEXT_SCENE_TO_LOAD: MainScene
+  NEXT_SCENE_TO_LOAD: Level 1
   waitAtEnd: 1
   TIME_TO_WAIT: 3
 --- !u!1 &1291611009

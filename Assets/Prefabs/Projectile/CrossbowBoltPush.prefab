@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8648729045072058952}
   - component: {fileID: 7032267243731821679}
   m_Layer: 0
-  m_Name: CrossbowBolt
+  m_Name: CrossbowBoltPush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -189,6 +189,7 @@ public class SaveManager : MonoBehaviour
         {
             sceneName = SceneManager.GetActiveScene().name,
             playerName = GlobalVars.Instance != null ? GlobalVars.Instance.PlayerName : string.Empty,
+            difficulty = DifficultySettings.Current,
             questTitle = GetTrackedQuestTitle(),
             savedAtIso = DateTime.Now.ToString("o"),
             playTimeSeconds = playTimeSeconds,
@@ -315,6 +316,8 @@ public class SaveManager : MonoBehaviour
         {
             GlobalVars.Instance.SetPlayerName(data.playerName);
         }
+
+        DifficultySettings.Current = data.difficulty;
 
         Dictionary<string, SaveableEntity> entitiesById = MapEntitiesById();
 

@@ -11,7 +11,8 @@ public static class WeaponHit
         RaycastHit hit,
         int damage,
         Transform attacker,
-        SurfaceType defaultSurface)
+        SurfaceType defaultSurface,
+        float knockbackDistance = 0f)
     {
         Health target =
             hit.collider.GetComponentInParent<Health>();
@@ -22,6 +23,13 @@ public static class WeaponHit
             return;
         }
 
-        target.TakeDamage(damage, hit.point, attacker);
+        target.TakeDamage(DifficultySettings.DamageByPlayer(damage), hit.point, attacker);
+
+        if (knockbackDistance > 0f && !target.IsDead &&
+            target.TryGetComponent(out EnemyMovement movement))
+        {
+            Vector3 origin = attacker != null ? attacker.position : hit.point;
+            movement.Knockback(target.transform.position - origin, knockbackDistance);
+        }
     }
 }

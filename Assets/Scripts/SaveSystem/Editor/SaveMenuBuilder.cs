@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// Baut das Speichern/Laden-Menü als normale UI-Objekte in der Szene – im Stil des Pause-Menüs:
 /// schwarzes, leicht transparentes Fenster, weiße abgerundete Buttons mit dunkler Schrift,
 /// Titel in PixelFraktur. Danach kann alles im Editor frei angepasst werden.
+/// Die Bausteine (internal) nutzt auch <see cref="DifficultyMenuBuilder"/>, damit alle Menüs gleich aussehen.
 /// </summary>
 public static class SaveMenuBuilder
 {
@@ -15,14 +16,14 @@ public static class SaveMenuBuilder
     private const string ButtonSpritePath = "UI/Skin/UISprite.psd";
 
     // Farben wie im Pause-Menü.
-    private static readonly Color OverlayColor = new(0f, 0f, 0f, 0.5f);
+    internal static readonly Color OverlayColor = new(0f, 0f, 0f, 0.5f);
     private static readonly Color WindowColor = new(0f, 0f, 0f, 0.88f);
     private static readonly Color RowColor = new(1f, 1f, 1f, 0.06f);
     private static readonly Color ButtonColor = Color.white;
-    private static readonly Color ButtonTextColor = new(0.196f, 0.196f, 0.196f, 1f);
+    internal static readonly Color ButtonTextColor = new(0.196f, 0.196f, 0.196f, 1f);
     private static readonly Color DeleteTextColor = new(0.6f, 0.1f, 0.12f, 1f);
     private static readonly Color TextColor = Color.white;
-    private static readonly Color InfoTextColor = new(0.78f, 0.78f, 0.78f, 1f);
+    internal static readonly Color InfoTextColor = new(0.78f, 0.78f, 0.78f, 1f);
 
     private static TMP_FontAsset textFont;
     private static TMP_FontAsset titleFont;
@@ -30,22 +31,15 @@ public static class SaveMenuBuilder
 
     public static SaveSlotMenu Build()
     {
-        textFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TextFontPath);
-        titleFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TitleFontPath);
-        buttonSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(ButtonSpritePath);
+        LoadStyle();
 
-        GameObject root = CreateCanvasRoot();
+        GameObject root = CreateCanvasRoot("SaveSlotMenu");
         SaveSlotMenu menu = root.AddComponent<SaveSlotMenu>();
 
         GameObject panel = CreateStretched("Panel", root.transform, OverlayColor);
         GameObject window = CreateWindow(panel.transform, new Vector2(1250f, 820f));
 
-        TMP_Text title = CreateText("Title", window.transform, "Save Game", 64, TextAlignmentOptions.Center, 90f);
-
-        if (titleFont != null)
-        {
-            title.font = titleFont;
-        }
+        TMP_Text title = CreateTitle(window.transform, "Save Game");
 
         SaveSlotView[] slotViews = new SaveSlotView[SaveManager.SlotCount];
 
@@ -89,9 +83,28 @@ public static class SaveMenuBuilder
         return menu;
     }
 
-    private static GameObject CreateCanvasRoot()
+    internal static void LoadStyle()
     {
-        GameObject root = new("SaveSlotMenu", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        textFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TextFontPath);
+        titleFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TitleFontPath);
+        buttonSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(ButtonSpritePath);
+    }
+
+    internal static TMP_Text CreateTitle(Transform parent, string text)
+    {
+        TMP_Text title = CreateText("Title", parent, text, 64, TextAlignmentOptions.Center, 90f);
+
+        if (titleFont != null)
+        {
+            title.font = titleFont;
+        }
+
+        return title;
+    }
+
+    internal static GameObject CreateCanvasRoot(string name)
+    {
+        GameObject root = new(name, typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
 
         Canvas canvas = root.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -100,7 +113,7 @@ public static class SaveMenuBuilder
         CanvasScaler scaler = root.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920f, 1080f);
-        scaler.matchWidthOrHeight = 0.5f;
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand; // passt auf jedes Seitenverhältnis
 
         return root;
     }
@@ -179,7 +192,7 @@ public static class SaveMenuBuilder
 
     #region UI Helpers
 
-    private static GameObject CreateWindow(Transform parent, Vector2 size)
+    internal static GameObject CreateWindow(Transform parent, Vector2 size)
     {
         GameObject window = CreateImage("Window", parent, WindowColor);
 
@@ -198,7 +211,7 @@ public static class SaveMenuBuilder
         return window;
     }
 
-    private static GameObject CreateStretched(string name, Transform parent, Color color)
+    internal static GameObject CreateStretched(string name, Transform parent, Color color)
     {
         GameObject gameObject = CreateImage(name, parent, color);
 
@@ -220,7 +233,7 @@ public static class SaveMenuBuilder
         return gameObject;
     }
 
-    private static TMP_Text CreateText(
+    internal static TMP_Text CreateText(
         string name,
         Transform parent,
         string text,
@@ -252,7 +265,7 @@ public static class SaveMenuBuilder
     }
 
     /// <summary>Weißer, abgerundeter Button wie im Pause-Menü.</summary>
-    private static Button CreateButton(
+    internal static Button CreateButton(
         string name,
         Transform parent,
         string label,

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,6 +18,21 @@ public class EnemyMovement : MonoBehaviour, ISaveable
     [Header("Doors")]
     [SerializeField] private EnemyDoorOpener doorOpener = new();
 
+    [Header("Knockback")]
+    [Tooltip("Aus z.B. beim Boss – sonst könnte man ihn in die Säure schubsen.")]
+    [SerializeField] private bool canBeKnockedBack = true;
+
+    [Min(0.05f)]
+    [Tooltip("So lange rutscht der Gegner beim Rückstoß.")]
+    [SerializeField] private float knockbackDuration = 0.25f;
+
+    [Min(0f)]
+    [Tooltip("Kurze Benommenheit nach dem Rückstoß.")]
+    [SerializeField] private float staggerAfterKnockback = 0.3f;
+
+    private const float FallDuration = 0.6f;
+    private const float FallSpeed = 6f;
+
     private NavMeshAgent agent;
 
     private Transform lookTarget;
@@ -26,6 +42,13 @@ public class EnemyMovement : MonoBehaviour, ISaveable
     private float speedMultiplier = 1f;
 
     private Vector3 lastPosition;
+
+    // Während Rückstoß/Benommenheit ignoriert der Gegner alle Bewegungsbefehle.
+    private bool isStaggered;
+    private Coroutine knockbackRoutine;
+
+    /// <summary>Rückstoß läuft – Gehirn und Kampfverhalten pausieren solange.</summary>
+    public bool IsStaggered => isStaggered;
 
     public bool HasReachedDestination
     {
@@ -268,6 +291,96 @@ public class EnemyMovement : MonoBehaviour, ISaveable
         return foundEdge ? hit.distance : float.MaxValue;
     }
 
+    /// <summary>
+    /// Stößt den Gegner zurück. Wände bremsen ihn wie gewohnt (er bleibt auf dem NavMesh);
+    /// liegt hinter der Kante aber eine <see cref="DeathZone"/> (Säure), fällt er hinein.
+    /// </summary>
+    public void Knockback(Vector3 direction, float distance)
+    {
+        direction.y = 0f;
+
+        if (!canBeKnockedBack || !CanUseAgent() || distance <= 0f || direction.sqrMagnitude < 0.0001f)
+        {
+            return;
+        }
+
+        if (knockbackRoutine != null)
+        {
+            StopCoroutine(knockbackRoutine);
+        }
+
+        knockbackRoutine = StartCoroutine(KnockbackRoutine(direction.normalized, distance));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector3 direction, float distance)
+    {
+        isStaggered = true;
+        agent.ResetPath();
+
+        float speed = distance / knockbackDuration;
+
+        for (float elapsed = 0f; elapsed < knockbackDuration; elapsed += Time.deltaTime)
+        {
+            Vector3 step = direction * (speed * Time.deltaTime);
+            Vector3 before = transform.position;
+
+            agent.Move(step);
+
+            Vector3 moved = transform.position - before;
+            moved.y = 0f;
+
+            // An der NavMesh-Kante hängen geblieben: Säure dahinter -> hineinfallen, sonst Wand.
+            if (moved.magnitude < step.magnitude * 0.5f)
+            {
+                if (IsDeathZoneBehindEdge(direction))
+                {
+                    yield return FallIntoDeathZone(direction);
+                    yield break;
+                }
+
+                break;
+            }
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(staggerAfterKnockback);
+
+        isStaggered = false;
+        knockbackRoutine = null;
+    }
+
+    private bool IsDeathZoneBehindEdge(Vector3 direction)
+    {
+        Vector3 probe = transform.position + direction * (agent.radius + 0.75f) + Vector3.up;
+
+        foreach (RaycastHit hit in Physics.RaycastAll(probe, Vector3.down, 15f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+        {
+            if (hit.collider.GetComponentInParent<DeathZone>() != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private IEnumerator FallIntoDeathZone(Vector3 direction)
+    {
+        agent.enabled = false;
+
+        for (float elapsed = 0f; elapsed < FallDuration; elapsed += Time.deltaTime)
+        {
+            transform.position += (direction * 2f + Vector3.down * FallSpeed * (elapsed / FallDuration)) * Time.deltaTime;
+            yield return null;
+        }
+
+        if (TryGetComponent(out Health health) && !health.IsDead)
+        {
+            health.TakeDamage(health.CurrentHealth);
+        }
+    }
+
     /// <summary>Skaliert Lauf- und Drehgeschwindigkeit (z.B. Boss-Phasen).</summary>
     public void SetSpeedMultiplier(float multiplier)
     {
@@ -398,6 +511,7 @@ public class EnemyMovement : MonoBehaviour, ISaveable
     {
         return agent != null &&
                agent.enabled &&
-               agent.isOnNavMesh;
+               agent.isOnNavMesh &&
+               !isStaggered;
     }
 }

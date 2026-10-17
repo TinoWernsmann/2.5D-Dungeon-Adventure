@@ -230,7 +230,7 @@ public static class SaveSystemSetupTool
         AssignField<DeathScreenManager>("_saveSlotMenu", menu);
     }
 
-    private static void AssignField<TOwner>(string fieldName, Object value) where TOwner : Object
+    internal static void AssignField<TOwner>(string fieldName, Object value) where TOwner : Object
     {
         TOwner owner = Object.FindAnyObjectByType<TOwner>(FindObjectsInactive.Include);
 

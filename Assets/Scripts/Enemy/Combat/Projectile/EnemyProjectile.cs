@@ -120,7 +120,11 @@ public class EnemyProjectile : MonoBehaviour
         if (targetHealth != null &&
             !targetHealth.IsDead)
         {
-            targetHealth.TakeDamage(damage);
+            // Schütze mitgeben, damit der Spieler sieht, woher der Treffer kam.
+            targetHealth.TakeDamage(
+                DifficultySettings.DamageByEnemy(damage, targetHealth),
+                hit.point,
+                owner != null ? owner.transform : null);
         }
 
         Destroy(gameObject);

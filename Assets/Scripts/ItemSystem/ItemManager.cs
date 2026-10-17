@@ -295,15 +295,36 @@ public class ItemManager : MonoBehaviour, ISaveable
     /// <summary>Wählt den nächsten (+1) oder vorherigen (-1) belegten Slot – am Ende geht es von vorne los.</summary>
     public void SelectRelativeSlot(int step)
     {
-        if (inventorySlots.Count == 0 || step == 0)
+        if (step == 0)
         {
             return;
         }
 
-        int current = Mathf.Max(0, selectedSlot);
-        int next = ((current + step) % inventorySlots.Count + inventorySlots.Count) % inventorySlots.Count;
+        // Position 0 = Fäuste, 1..n = Slots – das Rad läuft Fäuste -> Slot 1 -> ... -> Fäuste.
+        int positions = inventorySlots.Count + 1;
+        int next = ((selectedSlot + 1 + step) % positions + positions) % positions;
 
-        SelectSlot(next);
+        if (next == 0)
+        {
+            SelectFists();
+            return;
+        }
+
+        SelectSlot(next - 1);
+    }
+
+    /// <summary>Kein Item in der Hand – der Spieler kämpft mit den Fäusten.</summary>
+    public void SelectFists()
+    {
+        if (selectedSlot == -1)
+        {
+            return;
+        }
+
+        selectedSlot = -1;
+
+        NotifyInventoryChanged();
+        NotifySelectedItemChanged();
     }
 
     public void TryUseHealing()
@@ -646,9 +667,10 @@ public class ItemManager : MonoBehaviour, ISaveable
             }
         }
 
+        // -1 = Fäuste
         selectedSlot = IsValidSlot(saveState.selectedSlot)
             ? saveState.selectedSlot
-            : (inventorySlots.Count > 0 ? 0 : -1);
+            : -1;
 
         NotifyInventoryChanged();
         NotifySelectedItemChanged();

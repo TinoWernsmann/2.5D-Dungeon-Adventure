@@ -119,6 +119,12 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
+        // Rückstoß: kurz benommen, keine Entscheidungen und keine Angriffe.
+        if (movement.IsStaggered)
+        {
+            return;
+        }
+
         switch (currentState)
         {
             case EnemyState.Patrol:

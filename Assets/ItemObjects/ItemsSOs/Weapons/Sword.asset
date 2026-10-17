@@ -21,7 +21,7 @@ MonoBehaviour:
   PickUpSound: {fileID: 8300000, guid: 42512aa37e3e9594f9c77e3c4d714399, type: 3}
   DropSound: {fileID: 8300000, guid: 3f05e8fc0d51849448b3a1bbca11ff13, type: 3}
   attackType: 0
-  WeaponDamage: 12
+  WeaponDamage: 20
   WeaponRange: 5
   AttackDuration: 0.5
   projectilePrefab: {fileID: 0}

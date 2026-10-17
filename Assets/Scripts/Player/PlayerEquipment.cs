@@ -13,6 +13,15 @@ public class PlayerEquipment : MonoBehaviour
     [SerializeField] private HeldItemUI heldItemUI;
     [SerializeField] private WeaponSoundManager weaponSoundManager;
 
+    [Tooltip("Waffe, wenn kein Item ausgewählt ist (Taste 1).")]
+    [SerializeField] private WeaponSO fists;
+
+    /// <summary>Waffe in der Hand: ausgewählte Waffe, Fäuste bei leerer Hand, null bei Nicht-Waffen (Schlüssel, Trank …).</summary>
+    public WeaponSO CurrentWeapon =>
+        itemManager == null || itemManager.SelectedItem == null
+            ? fists
+            : itemManager.SelectedWeapon;
+
     private void OnEnable()
     {
         if (itemManager != null)
@@ -36,9 +45,11 @@ public class PlayerEquipment : MonoBehaviour
 
     private void HandleSelectedItemChanged(ItemSO selectedItem)
     {
-        heldItemUI?.ShowHeldItem(selectedItem != null ? selectedItem.HeldSprite : null);
+        ItemSO held = selectedItem != null ? selectedItem : fists;
 
-        if (selectedItem is WeaponSO weapon)
+        heldItemUI?.ShowHeldItem(held != null ? held.HeldSprite : null);
+
+        if (held is WeaponSO weapon)
         {
             weaponSoundManager?.SetAttackSounds(weapon.AttackSounds);
             return;
