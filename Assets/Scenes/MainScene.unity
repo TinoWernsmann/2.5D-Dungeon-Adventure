@@ -3482,6 +3482,8 @@ MonoBehaviour:
   - {fileID: 707690769}
   - {fileID: 500001001}
   selectedItemIcon: {fileID: 1331819746}
+  playerCombat: {fileID: 0}
+  equippedAmmoGlow: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!114 &97898113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6491,7 +6493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 167763718}
   m_Layer: 0
-  m_Name: Light
+  m_Name: Section3Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6544,7 +6546,6 @@ Transform:
   - {fileID: 875879021}
   - {fileID: 1855786930}
   - {fileID: 1909823715}
-  - {fileID: 832575519}
   - {fileID: 1796892209}
   - {fileID: 1725438290}
   - {fileID: 857537724}
@@ -29326,7 +29327,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 167763718}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &832849481
 PrefabInstance:
@@ -36158,6 +36159,7 @@ MonoBehaviour:
   _confirmMenu: {fileID: 2070234386}
   _confirmMenuText: {fileID: 336960682}
   _saveSlotMenu: {fileID: 640286754}
+  _difficultyMenu: {fileID: 0}
 --- !u!1 &1019284480
 GameObject:
   m_ObjectHideFlags: 0
@@ -82077,6 +82079,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 832575519}
   - {fileID: 167763718}
   - {fileID: 449211895}
   - {fileID: 3308920791369755760}
