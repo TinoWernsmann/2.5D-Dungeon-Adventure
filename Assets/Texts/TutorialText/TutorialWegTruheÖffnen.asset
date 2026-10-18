@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSO
   _title: Tutorial
   _pages:
-  - "Dr\xFCcke (E), um mit deiner Umgebung zu interagieren \u2013 zum Beispiel, um
-    Truhen und T\xFCren zu \xF6ffnen oder mit anderen Figuren zu sprechen."
+  - "Dr\xFCcke (E), um mit deiner Umgebung zu interagieren, zum Beispiel, um Truhen
+    und T\xFCren zu \xF6ffnen oder mit anderen Figuren zu sprechen."
   - "Du hast vier Item-Slots. W\xE4hle mit den Tasten (2) bis (5) den gew\xFCnschten
     Slot aus, mit (1) k\xE4mpfst du mit den F\xE4usten. Mit dem Mausrad wechselst
     du zwischen allem."
   - "Dr\xFCcke (Q), um dein ausgew\xE4hltes Item fallen zu lassen."
-  - "Dr\xFCcke (E), um die Truhe zu \xF6ffnen."

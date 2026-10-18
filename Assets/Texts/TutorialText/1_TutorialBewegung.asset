@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27f2560fde23e3d4c92c05aa34e2d230, type: 3}
-  m_Name: TutorialBewegung
+  m_Name: 1_TutorialBewegung
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSO
   _title: Tutorial
   _pages:
@@ -19,3 +19,6 @@ MonoBehaviour:
   - "Pass auf, dass du nicht in die Magens\xE4ure f\xE4llst!"
   - "Sonst endet deine Geschichte hier \u2026"
   - "Versuche, aus dem Gef\xE4ngnis zu entkommen!"
+  - "Dr\xFCcke ESC, um das Pausenmen\xFC zu \xF6ffnen und dein Spiel jederzeit zu
+    speichern."
+  - "Im Pausenmen\xFC findest du au\xDFerdem eine \xDCbersicht \xFCber die Spielsteuerung."
