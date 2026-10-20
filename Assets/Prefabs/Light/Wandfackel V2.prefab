@@ -125,8 +125,13 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f1db507113788fd47ac550c67a99ba5b, type: 2}
+    - target: {fileID: 5921977993253988880, guid: d1ebdd7891a246e46a8018ba755bc18c, type: 3}
+      propertyPath: MaxDistance
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9110041684657986592, guid: d1ebdd7891a246e46a8018ba755bc18c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1ebdd7891a246e46a8018ba755bc18c, type: 3}
