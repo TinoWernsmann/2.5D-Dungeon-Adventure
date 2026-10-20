@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6896998962702452350}
   - component: {fileID: 7685043111179651230}
   - component: {fileID: 4283706915026992983}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: NerveObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,9 +263,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5709455653620286364, guid: c195d208320f1af4d8f6d709a7c3dc9b, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6519220387485906639, guid: c195d208320f1af4d8f6d709a7c3dc9b, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573183785494098300, guid: c195d208320f1af4d8f6d709a7c3dc9b, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 9028060077033324888, guid: c195d208320f1af4d8f6d709a7c3dc9b, type: 3}
       propertyPath: m_Name
       value: Nerven
+      objectReference: {fileID: 0}
+    - target: {fileID: 9028060077033324888, guid: c195d208320f1af4d8f6d709a7c3dc9b, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

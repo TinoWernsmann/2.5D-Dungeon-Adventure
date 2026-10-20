@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6879145313118847045}
   - component: {fileID: 7447081284965559951}
   - component: {fileID: 193794509537783043}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LightPoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,6 +280,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
       propertyPath: m_Name
       value: Standfackel V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4fb0debd2e61f5d4bb34907b9421334e, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

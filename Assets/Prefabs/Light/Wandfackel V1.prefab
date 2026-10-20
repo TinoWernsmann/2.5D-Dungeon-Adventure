@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8209618517767526941}
   - component: {fileID: 1482724675322754457}
   - component: {fileID: 5921977993253988880}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LightPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,6 +292,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 133b1d188dc6dc24e85afbff97b52567, type: 3}
       propertyPath: m_Name
       value: Wandfackel V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 133b1d188dc6dc24e85afbff97b52567, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

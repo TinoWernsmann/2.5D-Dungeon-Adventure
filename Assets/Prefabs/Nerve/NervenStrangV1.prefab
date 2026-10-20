@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3395920165959073749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640716335348461986}
+  m_Layer: 0
+  m_Name: NervenStrangV1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &640716335348461986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3395920165959073749}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8834604235977471419}
+  - {fileID: 6240629940506075740}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5841611410323621303
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 640716335348461986}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 61.092617
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.43925726
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.43925726
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5541237
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5541237
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+      propertyPath: m_Name
+      value: Nervenstrang V2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+--- !u!4 &6240629940506075740 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bff5e083f26ff5b4d8145d84225e75ba, type: 3}
+  m_PrefabInstance: {fileID: 5841611410323621303}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9011818044554760784
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 640716335348461986}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 61.092617
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 61.09263
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 61.09262
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.003228747
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.693525
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7203837
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0077422196
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+      propertyPath: m_Name
+      value: Nervenstrang V1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+--- !u!4 &8834604235977471419 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: eacbfe7379bdc2141b786a1a7bcb7285, type: 3}
+  m_PrefabInstance: {fileID: 9011818044554760784}
+  m_PrefabAsset: {fileID: 0}

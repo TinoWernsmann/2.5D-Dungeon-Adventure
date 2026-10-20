@@ -117,7 +117,7 @@ public class SaveSlotMenu : MonoBehaviour
         }
     }
 
-    /// <summary>Erst die manuellen Slots, dann die Autosaves – neuester oben, leere unten.</summary>
+    /// <summary>Erst die Autosaves (neuester oben, leere unten), dann die manuellen Slots.</summary>
     private static int[] GetDisplayOrder()
     {
         IEnumerable<int> autoSaves = Enumerable
@@ -125,7 +125,7 @@ public class SaveSlotMenu : MonoBehaviour
             .OrderByDescending(slot =>
                 SaveManager.Instance.TryGetSlotInfo(slot, out SaveGameData info) ? info.SavedAt : DateTime.MinValue);
 
-        return Enumerable.Range(0, SaveManager.SlotCount).Concat(autoSaves).ToArray();
+        return autoSaves.Concat(Enumerable.Range(0, SaveManager.SlotCount)).ToArray();
     }
 
     #region Slot Actions
