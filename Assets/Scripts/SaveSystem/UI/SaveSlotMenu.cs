@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -98,11 +100,32 @@ public class SaveSlotMenu : MonoBehaviour
 
     private void Refresh()
     {
-        for (int slot = 0; slot < slotViews.Length; slot++)
+        int[] slots = GetDisplayOrder();
+
+        for (int i = 0; i < slotViews.Length; i++)
         {
-            SaveManager.Instance.TryGetSlotInfo(slot, out SaveGameData info);
-            slotViews[slot].Show(slot, info, mode);
+            bool hasSlot = i < slots.Length;
+            slotViews[i].gameObject.SetActive(hasSlot);
+
+            if (!hasSlot)
+            {
+                continue;
+            }
+
+            SaveManager.Instance.TryGetSlotInfo(slots[i], out SaveGameData info);
+            slotViews[i].Show(slots[i], info, mode);
         }
+    }
+
+    /// <summary>Erst die manuellen Slots, dann die Autosaves – neuester oben, leere unten.</summary>
+    private static int[] GetDisplayOrder()
+    {
+        IEnumerable<int> autoSaves = Enumerable
+            .Range(SaveManager.SlotCount, SaveManager.AutoSaveSlotCount)
+            .OrderByDescending(slot =>
+                SaveManager.Instance.TryGetSlotInfo(slot, out SaveGameData info) ? info.SavedAt : DateTime.MinValue);
+
+        return Enumerable.Range(0, SaveManager.SlotCount).Concat(autoSaves).ToArray();
     }
 
     #region Slot Actions
@@ -121,6 +144,11 @@ public class SaveSlotMenu : MonoBehaviour
 
     private void RequestSave(int slot)
     {
+        if (SaveManager.IsAutoSaveSlot(slot))
+        {
+            return;
+        }
+
         if (!SaveManager.Instance.HasSave(slot))
         {
             Save(slot);
@@ -149,7 +177,7 @@ public class SaveSlotMenu : MonoBehaviour
         // Im laufenden Spiel geht ungespeicherter Fortschritt verloren -> nachfragen.
         if (SaveManager.Instance.CanSave)
         {
-            ShowConfirm($"Load slot {slot + 1}?\nUnsaved progress will be lost.", () => Load(slot));
+            ShowConfirm($"Load {SlotName(slot)}?\nUnsaved progress will be lost.", () => Load(slot));
             return;
         }
 
@@ -166,11 +194,16 @@ public class SaveSlotMenu : MonoBehaviour
 
     private void HandleDeleteClicked(int slot)
     {
-        ShowConfirm($"Delete slot {slot + 1}?", () =>
+        ShowConfirm($"Delete {SlotName(slot)}?", () =>
         {
             SaveManager.Instance.Delete(slot);
-            feedbackText.text = $"Slot {slot + 1} deleted.";
+            feedbackText.text = $"{SlotName(slot)} deleted.";
         });
+    }
+
+    private static string SlotName(int slot)
+    {
+        return SaveManager.IsAutoSaveSlot(slot) ? "auto save" : $"slot {slot + 1}";
     }
 
     #endregion

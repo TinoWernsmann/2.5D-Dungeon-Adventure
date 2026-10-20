@@ -20,6 +20,10 @@ public class QuestData : ScriptableObject
     [Tooltip("Zeigt den Zähler (z.B. 2/5) bei Quests mit Menge > 1")]
     [SerializeField] private bool _showCounter = true;
 
+    [Header("Tutorial")]
+    [Tooltip("Wird beim Start der Quest angezeigt. Leer = kein Tutorial.")]
+    [SerializeField] private TutorialSO _startTutorial;
+
     [Header("Objective")]
     [SerializeField] private QuestType _type;
     [Tooltip("Muss exakt der ID des meldenden Objekts entsprechen")]
@@ -37,6 +41,7 @@ public class QuestData : ScriptableObject
     public string TargetId => _targetId;
     public int RequiredAmount => _requiredAmount;
     public QuestData NextQuest => _nextQuest;
+    public TutorialSO StartTutorial => _startTutorial;
     public bool HasCounter => _showCounter && _requiredAmount > 1;
 
     public bool Matches(QuestType type, string targetId)

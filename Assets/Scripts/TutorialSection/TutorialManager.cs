@@ -1,9 +1,10 @@
+using System;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class TutorialManager : MonoBehaviour, ISaveLoadListener
+public class TutorialManager : MonoBehaviour, ISaveable, ISaveLoadListener
 {
     public static TutorialManager Instance { get; private set; }
     public bool IsShowing { get; private set; }
@@ -13,11 +14,15 @@ public class TutorialManager : MonoBehaviour, ISaveLoadListener
     [SerializeField] private TextMeshProUGUI _pageText;
     [SerializeField] private TextMeshProUGUI _continueText;
     [SerializeField] private AudioClip[] _tutorialSounds;
+    [Tooltip("Wird nach dem ersten getöteten Gegner angezeigt (z.B. Health/Heiltränke).")]
+    [SerializeField] private TutorialSO _enemyKilledTutorial;
 
     private AudioSource _audioSource;
     private TutorialSO _currentTutorial;
     private int _pageIndex;
     private AudioClip _previousTutorialSound;
+    private readonly HashSet<string> _shownTutorials = new();
+    private readonly Queue<TutorialSO> _pendingTutorials = new();
 
     private void Awake()
     {
@@ -85,6 +90,31 @@ public class TutorialManager : MonoBehaviour, ISaveLoadListener
         GameInput.Instance.EnableDialogue();
     }
 
+    /// <summary>
+    /// Zeigt das Tutorial nur beim ersten Mal (z.B. Item-Pickup, Quest-Start).
+    /// Läuft gerade ein anderes, wird es danach angezeigt.
+    /// </summary>
+    public void StartTutorialOnce(TutorialSO tutorial)
+    {
+        if (tutorial == null || !_shownTutorials.Add(tutorial.name))
+        {
+            return;
+        }
+
+        if (IsShowing)
+        {
+            _pendingTutorials.Enqueue(tutorial);
+            return;
+        }
+
+        StartTutorial(tutorial);
+    }
+
+    public void ShowEnemyKilledTutorial()
+    {
+        StartTutorialOnce(_enemyKilledTutorial);
+    }
+
     public void HideTutorial()
     {
         if (!IsShowing)
@@ -106,6 +136,11 @@ public class TutorialManager : MonoBehaviour, ISaveLoadListener
         {
             GameInput.Instance.DisableDialogue();
         }
+
+        if (_pendingTutorials.Count > 0)
+        {
+            StartTutorial(_pendingTutorials.Dequeue());
+        }
     }
 
     /// <summary>
@@ -114,8 +149,31 @@ public class TutorialManager : MonoBehaviour, ISaveLoadListener
     /// </summary>
     public void OnGameLoaded()
     {
+        _pendingTutorials.Clear();
         HideTutorial();
     }
+
+    #region Save System
+
+    [Serializable]
+    private struct SaveState
+    {
+        public List<string> shownTutorials;
+    }
+
+    public string CaptureState()
+    {
+        return JsonUtility.ToJson(new SaveState { shownTutorials = new List<string>(_shownTutorials) });
+    }
+
+    public void RestoreState(string state)
+    {
+        _shownTutorials.Clear();
+        List<string> shown = JsonUtility.FromJson<SaveState>(state).shownTutorials;
+        if (shown != null) _shownTutorials.UnionWith(shown);
+    }
+
+    #endregion
 
     private void HandleDialogueInput()
     {
@@ -188,7 +246,7 @@ public class TutorialManager : MonoBehaviour, ISaveLoadListener
             return;
         }
 
-        AudioClip selectedSound = availableSounds[Random.Range(0, availableSounds.Count)];
+        AudioClip selectedSound = availableSounds[UnityEngine.Random.Range(0, availableSounds.Count)];
         _previousTutorialSound = selectedSound;
         _audioSource.PlayOneShot(selectedSound);
     }

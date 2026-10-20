@@ -87,6 +87,7 @@ public class EnemyBrain : MonoBehaviour
         if (ownHealth != null)
         {
             ownHealth.DamagedBy += HandleDamagedBy;
+            ownHealth.Died += HandleDied;
         }
     }
 
@@ -97,6 +98,7 @@ public class EnemyBrain : MonoBehaviour
         if (ownHealth != null)
         {
             ownHealth.DamagedBy -= HandleDamagedBy;
+            ownHealth.Died -= HandleDied;
         }
     }
 
@@ -275,6 +277,14 @@ public class EnemyBrain : MonoBehaviour
         {
             AlertNearbyAllies();
             ChangeState(EnemyState.Chase);
+        }
+    }
+
+    private void HandleDied()
+    {
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.ShowEnemyKilledTutorial();
         }
     }
 

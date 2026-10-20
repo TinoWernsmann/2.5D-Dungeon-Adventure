@@ -96,6 +96,11 @@ public class ItemManager : MonoBehaviour, ISaveable
             itemSound.PlayOneShot(itemData.PickUpSound);
         }
 
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.StartTutorialOnce(itemData.PickupTutorial);
+        }
+
         item.ReportPickupToQuest();
         return true;
     }

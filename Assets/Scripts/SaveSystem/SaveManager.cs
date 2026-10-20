@@ -17,12 +17,18 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
-    public const int SlotCount = 3;
+    /// <summary>Manuelle Slots (0 bis SlotCount-1). Danach folgen die Autosave-Slots.</summary>
+    public const int SlotCount = 10;
+    public const int AutoSaveSlotCount = 4;
+    public const int TotalSlotCount = SlotCount + AutoSaveSlotCount;
+
+    private const float AutoSaveIntervalSeconds = 180f;
 
     private readonly HashSet<string> destroyedEntityIds = new();
 
     private SaveGameData pendingLoad;
     private float playTimeSeconds;
+    private float secondsSinceAutoSave;
     private bool isGameplayScene;
 
     public static SaveManager Instance { get; private set; }
@@ -106,12 +112,33 @@ public class SaveManager : MonoBehaviour
         if (isGameplayScene)
         {
             playTimeSeconds += Time.deltaTime;
+            UpdateAutoSave();
         }
+    }
+
+    /// <summary>Zählt mit Time.deltaTime – im Pause-Menü (timeScale 0) läuft die Zeit nicht weiter.</summary>
+    private void UpdateAutoSave()
+    {
+        secondsSinceAutoSave += Time.deltaTime;
+
+        // Geht gerade nicht (z.B. tot) -> im nächsten Frame erneut versuchen.
+        if (secondsSinceAutoSave < AutoSaveIntervalSeconds || !CanSave)
+        {
+            return;
+        }
+
+        secondsSinceAutoSave = 0f;
+        Save(GetNextAutoSaveSlot());
     }
 
     #endregion
 
     #region Slots
+
+    public static bool IsAutoSaveSlot(int slot)
+    {
+        return slot >= SlotCount;
+    }
 
     public bool HasSave(int slot)
     {
@@ -135,7 +162,7 @@ public class SaveManager : MonoBehaviour
         int mostRecentSlot = -1;
         DateTime mostRecentDate = DateTime.MinValue;
 
-        for (int slot = 0; slot < SlotCount; slot++)
+        for (int slot = 0; slot < TotalSlotCount; slot++)
         {
             if (TryGetSlotInfo(slot, out SaveGameData info) && info.SavedAt > mostRecentDate)
             {
@@ -145,6 +172,29 @@ public class SaveManager : MonoBehaviour
         }
 
         return mostRecentSlot;
+    }
+
+    /// <summary>Erster leerer Autosave-Slot, sonst der älteste (wird überschrieben).</summary>
+    private int GetNextAutoSaveSlot()
+    {
+        int oldestSlot = SlotCount;
+        DateTime oldestDate = DateTime.MaxValue;
+
+        for (int slot = SlotCount; slot < TotalSlotCount; slot++)
+        {
+            if (!TryGetSlotInfo(slot, out SaveGameData info))
+            {
+                return slot;
+            }
+
+            if (info.SavedAt < oldestDate)
+            {
+                oldestDate = info.SavedAt;
+                oldestSlot = slot;
+            }
+        }
+
+        return oldestSlot;
     }
 
     public void Delete(int slot)
@@ -280,6 +330,7 @@ public class SaveManager : MonoBehaviour
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         isGameplayScene = FindAnyObjectByType<PlayerMovement>() != null;
+        secondsSinceAutoSave = 0f;
 
         if (isGameplayScene)
         {

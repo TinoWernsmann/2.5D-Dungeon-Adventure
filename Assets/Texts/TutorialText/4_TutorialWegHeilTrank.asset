@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27f2560fde23e3d4c92c05aa34e2d230, type: 3}
-  m_Name: TutorialWegHeilTrank
+  m_Name: 4_TutorialWegHeilTrank
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSO
   _title: Tutorial
   _pages:

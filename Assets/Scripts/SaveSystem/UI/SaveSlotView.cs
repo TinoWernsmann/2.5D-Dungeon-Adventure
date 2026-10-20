@@ -9,6 +9,7 @@ public class SaveSlotView : MonoBehaviour
     private const string EmptySlotText = "- Empty -";
     private const string SaveLabel = "Save";
     private const string LoadLabel = "Load";
+    private const string AutoSaveTitle = "Auto Save";
 
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text infoText;
@@ -31,14 +32,15 @@ public class SaveSlotView : MonoBehaviour
     {
         slot = slotIndex;
         bool hasSave = info != null;
+        bool isAutoSave = SaveManager.IsAutoSaveSlot(slotIndex);
 
-        titleText.text = $"Slot {slotIndex + 1}";
+        titleText.text = isAutoSave ? AutoSaveTitle : $"Slot {slotIndex + 1}";
         infoText.text = hasSave ? FormatInfo(info) : EmptySlotText;
 
         actionLabel.text = mode == SaveSlotMenu.Mode.Save ? SaveLabel : LoadLabel;
 
-        // Laden geht nur, wenn es etwas zu laden gibt. Speichern geht immer.
-        actionButton.interactable = mode == SaveSlotMenu.Mode.Save || hasSave;
+        // Laden geht nur, wenn es etwas zu laden gibt. Speichern geht immer – außer in Autosave-Slots.
+        actionButton.interactable = mode == SaveSlotMenu.Mode.Save ? !isAutoSave : hasSave;
         deleteButton.interactable = hasSave;
     }
 

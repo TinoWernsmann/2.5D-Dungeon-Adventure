@@ -88,9 +88,8 @@ public class NerveManager : MonoBehaviour, ISaveable
     private void AllNervesFound()
     {
         Debug.Log("Nerves Destroyed!");
-        if (_bossObject == null) return;
-        _bossObject.SetActive(true);
-        _bossDoorObject.SetActive(false);
+        if (_bossObject != null) _bossObject.SetActive(true);
+        if (_bossDoorObject != null) _bossDoorObject.SetActive(false);
     }
 
     #region Save System

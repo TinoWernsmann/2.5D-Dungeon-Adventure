@@ -223,6 +223,50 @@ public static class SaveSystemSetupTool
             "OK");
     }
 
+    /// <summary>Baut das Save-Menü in jeder Szene neu, die schon eins hat (z.B. nach Layout-Änderungen).</summary>
+    [MenuItem(MenuRoot + "Rebuild Save Menu In All Scenes", priority = 4)]
+    public static void RebuildSaveMenuInAllScenes()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            return;
+        }
+
+        string originalScene = SceneManager.GetActiveScene().path;
+        List<string> rebuiltScenes = new();
+
+        foreach (string guid in AssetDatabase.FindAssets("t:Scene", new[] { "Assets/Scenes" }))
+        {
+            string scenePath = AssetDatabase.GUIDToAssetPath(guid);
+            Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+
+            SaveSlotMenu existingMenu = Object.FindAnyObjectByType<SaveSlotMenu>(FindObjectsInactive.Include);
+
+            if (existingMenu == null)
+            {
+                continue;
+            }
+
+            Object.DestroyImmediate(existingMenu.gameObject);
+            ConnectMenuToSceneManagers(SaveMenuBuilder.Build());
+
+            EditorSceneManager.SaveScene(scene);
+            rebuiltScenes.Add(scene.name);
+        }
+
+        if (!string.IsNullOrEmpty(originalScene))
+        {
+            EditorSceneManager.OpenScene(originalScene, OpenSceneMode.Single);
+        }
+
+        EditorUtility.DisplayDialog(
+            "Save System",
+            rebuiltScenes.Count > 0
+                ? "Save-Menü neu gebaut in:\n" + string.Join("\n", rebuiltScenes)
+                : "Keine Szene mit Save-Menü gefunden.",
+            "OK");
+    }
+
     private static void ConnectMenuToSceneManagers(SaveSlotMenu menu)
     {
         AssignField<PauseMenu>("_saveSlotMenu", menu);
@@ -346,7 +390,7 @@ public static class SaveSystemSetupTool
             return;
         }
 
-        for (int slot = 0; slot < SaveManager.SlotCount; slot++)
+        for (int slot = 0; slot < SaveManager.TotalSlotCount; slot++)
         {
             SaveFileStorage.Delete(slot);
         }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5397329226068617096}
   - component: {fileID: 3677674488091397640}
   m_Layer: 0
-  m_Name: Key
+  m_Name: Key 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd453fd3cae994649ac34a5ca27a9f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
-  itemData: {fileID: 11400000, guid: 319f7ad8deca82740bb14512aecb82be, type: 2}
+  itemData: {fileID: 11400000, guid: 3be83dd6c64b8bf48b82556e25e4743c, type: 2}
   pickupAmount: 1
 --- !u!114 &3677674488091397640
 MonoBehaviour:

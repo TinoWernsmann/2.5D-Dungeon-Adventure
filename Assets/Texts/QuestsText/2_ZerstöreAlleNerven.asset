@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58797e4b9cf40e345b170c1242bef4f9, type: 3}
-  m_Name: 2_WaffeSuchen
+  m_Name: "2_Zerst\xF6reAlleNerven"
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
-  _title: Waffe suchen
-  _goalText: Suche eine Waffe!
-  _showCounter: 0
-  _type: 2
-  _targetId: Quest2_Stick
-  _requiredAmount: 1
-  _nextQuest: {fileID: 11400000, guid: 430f4cd9e860e7d48a104d1a7e486d48, type: 2}
+  _title: "Nerv zerst\xF6ren"
+  _goalText: "Zerst\xF6re alle Nervenknoten"
+  _showCounter: 1
+  _type: 1
+  _targetId: Nerve
+  _requiredAmount: 7
+  _nextQuest: {fileID: 11400000, guid: ac6fd4e3cbb7465488ef7fc2d8fea3eb, type: 2}
   _canBeSkipped: 0

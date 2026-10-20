@@ -37,6 +37,10 @@ public class ItemSO : ScriptableObject
     [Tooltip("Heiltrank: wird mit H oder Linksklick (wenn ausgewählt) getrunken.")]
     public bool IsHealing;
 
+    [Header("Tutorial")]
+    [Tooltip("Wird beim ersten Aufheben dieses Items angezeigt. Leer = kein Tutorial.")]
+    public TutorialSO PickupTutorial;
+
     [Header("Audio")]
     public AudioClip PickUpSound;
     public AudioClip DropSound;

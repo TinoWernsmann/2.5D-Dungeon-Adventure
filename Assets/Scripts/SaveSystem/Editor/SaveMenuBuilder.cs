@@ -41,11 +41,12 @@ public static class SaveMenuBuilder
 
         TMP_Text title = CreateTitle(window.transform, "Save Game");
 
-        SaveSlotView[] slotViews = new SaveSlotView[SaveManager.SlotCount];
+        Transform slotList = CreateScrollList(window.transform);
+        SaveSlotView[] slotViews = new SaveSlotView[SaveManager.TotalSlotCount];
 
-        for (int slot = 0; slot < SaveManager.SlotCount; slot++)
+        for (int slot = 0; slot < SaveManager.TotalSlotCount; slot++)
         {
-            slotViews[slot] = CreateSlotRow(window.transform, slot);
+            slotViews[slot] = CreateSlotRow(slotList, slot);
         }
 
         TMP_Text feedback = CreateText("Feedback", window.transform, string.Empty, 20, TextAlignmentOptions.Center, 40f);
@@ -160,6 +161,88 @@ public static class SaveMenuBuilder
         serialized.ApplyModifiedPropertiesWithoutUndo();
 
         return view;
+    }
+
+    /// <summary>Scrollbare Liste (Viewport + Content + Scrollbar rechts). Gibt den Content zurück.</summary>
+    private static Transform CreateScrollList(Transform parent)
+    {
+        const float ScrollbarWidth = 20f;
+
+        GameObject scrollView = CreateImage("SlotList", parent, Color.clear);
+        LayoutElement scrollElement = scrollView.AddComponent<LayoutElement>();
+        scrollElement.flexibleHeight = 1f;
+
+        // Transparentes Image, damit das Mausrad auch zwischen den Zeilen scrollt.
+        GameObject viewport = CreateStretched("Viewport", scrollView.transform, Color.clear);
+        viewport.AddComponent<RectMask2D>();
+
+        GameObject content = new("Content", typeof(RectTransform));
+        content.transform.SetParent(viewport.transform, false);
+
+        RectTransform contentRect = content.GetComponent<RectTransform>();
+        contentRect.anchorMin = new Vector2(0f, 1f);
+        contentRect.anchorMax = new Vector2(1f, 1f);
+        contentRect.pivot = new Vector2(0.5f, 1f);
+        contentRect.sizeDelta = Vector2.zero;
+
+        VerticalLayoutGroup layout = content.AddComponent<VerticalLayoutGroup>();
+        layout.spacing = 20f;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = false;
+
+        content.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        Scrollbar scrollbar = CreateScrollbar(scrollView.transform, ScrollbarWidth);
+
+        ScrollRect scrollRect = scrollView.AddComponent<ScrollRect>();
+        scrollRect.content = contentRect;
+        scrollRect.viewport = viewport.GetComponent<RectTransform>();
+        scrollRect.horizontal = false;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.scrollSensitivity = 40f;
+        scrollRect.verticalScrollbar = scrollbar;
+        scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
+        scrollRect.verticalScrollbarSpacing = 10f;
+
+        return content.transform;
+    }
+
+    private static Scrollbar CreateScrollbar(Transform parent, float width)
+    {
+        GameObject track = CreateImage("Scrollbar", parent, RowColor);
+
+        RectTransform trackRect = track.GetComponent<RectTransform>();
+        trackRect.anchorMin = new Vector2(1f, 0f);
+        trackRect.anchorMax = Vector2.one;
+        trackRect.pivot = new Vector2(1f, 0.5f);
+        trackRect.sizeDelta = new Vector2(width, 0f);
+
+        GameObject slidingArea = new("SlidingArea", typeof(RectTransform));
+        slidingArea.transform.SetParent(track.transform, false);
+
+        RectTransform areaRect = slidingArea.GetComponent<RectTransform>();
+        areaRect.anchorMin = Vector2.zero;
+        areaRect.anchorMax = Vector2.one;
+        areaRect.offsetMin = Vector2.zero;
+        areaRect.offsetMax = Vector2.zero;
+
+        GameObject handle = CreateImage("Handle", slidingArea.transform, ButtonColor);
+        Image handleImage = handle.GetComponent<Image>();
+        handleImage.sprite = buttonSprite;
+        handleImage.type = Image.Type.Sliced;
+
+        RectTransform handleRect = handle.GetComponent<RectTransform>();
+        handleRect.offsetMin = Vector2.zero;
+        handleRect.offsetMax = Vector2.zero;
+
+        Scrollbar scrollbar = track.AddComponent<Scrollbar>();
+        scrollbar.direction = Scrollbar.Direction.BottomToTop;
+        scrollbar.handleRect = handleRect;
+        scrollbar.targetGraphic = handleImage;
+
+        return scrollbar;
     }
 
     private static GameObject CreateConfirmDialog(
