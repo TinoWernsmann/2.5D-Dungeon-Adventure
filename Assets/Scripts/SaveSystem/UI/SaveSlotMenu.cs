@@ -149,6 +149,12 @@ public class SaveSlotMenu : MonoBehaviour
             return;
         }
 
+        if (EnemyBrain.IsAnyEnemyFighting)
+        {
+            feedbackText.text = "You can't save during combat.";
+            return;
+        }
+
         if (!SaveManager.Instance.HasSave(slot))
         {
             Save(slot);

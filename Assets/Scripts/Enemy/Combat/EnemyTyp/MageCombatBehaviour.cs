@@ -6,6 +6,8 @@ using UnityEngine;
 /// Wird er in eine Ecke gedrängt, zaubert er sofort statt sinnlos gegen die Wand zu laufen.
 /// Steht ein Verbündeter (oder eine Wand) in der Schusslinie, hält er den Zauber zurück
 /// und sucht sich seitlich eine freie Schussbahn.
+/// Läuft ihm der Player hinterher, schießt er auch im Rückwärtsgehen (nur der schnelle Bolt).
+/// Optional (Boss): beschwört Diener und wird bei wenig Leben wütend.
 /// </summary>
 public class MageCombatBehaviour : EnemyCombatBehaviour
 {
@@ -22,7 +24,8 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     private enum SpellType
     {
         MagicBolt,
-        Fireball
+        Fireball,
+        Summon
     }
 
     [Header("Projectile")]
@@ -82,6 +85,10 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Min(0.1f)]
     [SerializeField] private float retreatDuration = 1f;
 
+    [Tooltip("Chance, schon beim Start eines Rückzugs im Rückwärtsgehen zu schießen.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float retreatCastChance = 0.35f;
+
     [Header("Strafe")]
     [Tooltip("Seitlicher Schritt während der Erholung nach einem Zauber.")]
     [Min(0f)]
@@ -103,6 +110,17 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Min(0f)]
     [SerializeField] private float repositionStepDegrees = 40f;
 
+    [Header("Summon (optional)")]
+    [SerializeField] private MinionSummoner summoner = new();
+
+    [Header("Enrage (optional)")]
+    [Tooltip("Unter diesem Lebensanteil wird er wütend: häufigere Feuerbälle und Beschwörungen. 0 = aus.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float enrageHealthPercent;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float enragedFireballChance = 0.6f;
+
     [Header("Debug")]
     [SerializeField] private bool debugCombat;
 
@@ -113,6 +131,15 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     private float castDuration;
     private float castElapsed;
     private float fireballCooldownTimer;
+
+    private Health health;
+    private Vector3 retreatPoint;
+    private bool isRetreatCast;
+
+    private bool IsEnraged =>
+        health != null &&
+        enrageHealthPercent > 0f &&
+        health.CurrentHealth <= health.MaxHealth * enrageHealthPercent;
 
     public override bool IsPerformingAttack =>
         currentState == CombatState.Cast;
@@ -132,10 +159,38 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     public bool IsCastingMagicBolt =>
         IsCasting && currentSpell == SpellType.MagicBolt;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        health = GetComponent<Health>();
+        summoner.Initialize(transform);
+    }
+
+    private void OnEnable()
+    {
+        if (health != null)
+        {
+            health.Died += summoner.KillAllMinions;
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (health != null)
+        {
+            health.Died -= summoner.KillAllMinions;
+        }
+    }
+
     private void Update()
     {
         fireballCooldownTimer =
             Mathf.Max(0f, fireballCooldownTimer - Time.deltaTime);
+
+        summoner.Tick(Time.deltaTime);
     }
 
     public override bool IsInCombatRange(Transform target)
@@ -145,6 +200,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     protected override void OnCombatEntered()
     {
+        summoner.StartCombat();
         ChangeState(CombatState.Approach);
     }
 
@@ -199,7 +255,8 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
             return;
         }
 
-        if (!HasClearShot())
+        // Beschwören braucht keine freie Schussbahn.
+        if (!summoner.CanSummon && !HasClearShot())
         {
             StartReposition();
             return;
@@ -254,7 +311,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     private void TryStartRetreat()
     {
-        Vector3 retreatPoint =
+        retreatPoint =
             GetRetreatPoint(retreatDistance, Random.Range(-40f, 40f));
 
         bool isCornered =
@@ -264,7 +321,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         if (isCornered)
         {
             LogCombat("Cornered -> casting immediately.");
-            StartCast();
+            StartCast(isCloseRange: true);
             return;
         }
 
@@ -272,6 +329,20 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         ChangeState(CombatState.Retreat);
 
         LogCombat("Player too close -> Retreat.");
+
+        if (Random.value <= retreatCastChance)
+        {
+            StartRetreatCast();
+        }
+    }
+
+    /// <summary>Schießt im Rückwärtsgehen, damit Hinterherlaufen nicht ungestraft bleibt.</summary>
+    private void StartRetreatCast()
+    {
+        StartCast(isCloseRange: true);
+        isRetreatCast = true;
+
+        LogCombat("Casting while retreating.");
     }
 
     private void UpdateRetreat()
@@ -280,36 +351,57 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
         bool isFarEnough = DistanceToTarget() >= preferredDistance;
 
-        if (isFarEnough ||
-            stateTimer <= 0f ||
-            movement.HasReachedDestination)
+        if (!isFarEnough &&
+            stateTimer > 0f &&
+            !movement.HasReachedDestination)
         {
-            ChangeState(CombatState.Approach);
+            return;
         }
+
+        // Player läuft hinterher -> nicht nur zurückweichen, sondern zurückschießen.
+        if (DistanceToTarget() < minimumDistance)
+        {
+            StartRetreatCast();
+            return;
+        }
+
+        ChangeState(CombatState.Approach);
     }
 
-    private void StartCast()
+    private void StartCast(bool isCloseRange = false)
     {
         movement.StopAndFace(Target);
 
-        SelectSpell();
+        isRetreatCast = false;
+
+        SelectSpell(isCloseRange);
         ChangeState(CombatState.Cast);
     }
 
-    private void SelectSpell()
+    /// <summary>Aus nächster Nähe nur der schnelle Bolt – ein Feuerball wäre dort kaum ausweichbar.</summary>
+    private void SelectSpell(bool isCloseRange)
     {
+        float currentFireballChance = IsEnraged
+            ? enragedFireballChance
+            : fireballChance;
+
         bool useFireball =
+            !isCloseRange &&
             fireballPrefab != null &&
             fireballCooldownTimer <= 0f &&
-            Random.value <= fireballChance;
+            Random.value <= currentFireballChance;
 
-        currentSpell = useFireball
-            ? SpellType.Fireball
-            : SpellType.MagicBolt;
+        currentSpell =
+            summoner.CanSummon ? SpellType.Summon :
+            useFireball ? SpellType.Fireball :
+            SpellType.MagicBolt;
 
-        castDuration = useFireball
-            ? fireballCastDuration
-            : magicBoltCastDuration;
+        castDuration = currentSpell switch
+        {
+            SpellType.Summon => summoner.CastDuration,
+            SpellType.Fireball => fireballCastDuration,
+            _ => magicBoltCastDuration
+        };
 
         LogCombat($"Preparing {currentSpell}.");
     }
@@ -320,11 +412,20 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
         if (castElapsed < castDuration)
         {
-            movement.StopAndFace(Target);
+            // Bolt im Rückzug: weiterlaufen. Beschwörung und Feuerball: stillstehen.
+            if (isRetreatCast && currentSpell == SpellType.MagicBolt)
+            {
+                movement.MoveToWhileFacing(retreatPoint, Target);
+            }
+            else
+            {
+                movement.StopAndFace(Target);
+            }
+
             return;
         }
 
-        if (HasClearShot())
+        if (currentSpell == SpellType.Summon || HasClearShot())
         {
             ReleaseSpell();
             ChangeState(CombatState.Recovery);
@@ -343,6 +444,12 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     private void ReleaseSpell()
     {
+        if (currentSpell == SpellType.Summon)
+        {
+            ReleaseSummon();
+            return;
+        }
+
         EnemyProjectile prefab = GetCurrentProjectilePrefab();
 
         if (prefab == null || projectileSpawnPoint == null)
@@ -382,6 +489,18 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         }
 
         LogCombat($"Released {currentSpell}.");
+    }
+
+    private void ReleaseSummon()
+    {
+        summoner.Summon(IsEnraged);
+
+        if (audioSource != null && summoner.SummonSound != null)
+        {
+            audioSource.PlayOneShot(summoner.SummonSound);
+        }
+
+        LogCombat("Summoned minions.");
     }
 
     /// <summary>
@@ -434,9 +553,10 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     private float GetCurrentRecoveryDuration()
     {
-        return currentSpell == SpellType.Fireball
-            ? fireballRecoveryDuration
-            : magicBoltRecoveryDuration;
+        // Nach der Beschwörung so lange verwundbar wie nach dem Feuerball.
+        return currentSpell == SpellType.MagicBolt
+            ? magicBoltRecoveryDuration
+            : fireballRecoveryDuration;
     }
 
     private void ChangeState(CombatState newState)

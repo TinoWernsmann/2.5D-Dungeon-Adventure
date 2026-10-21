@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 523951559333239314}
   - component: {fileID: 1639387409181581748}
   m_Layer: 0
-  m_Name: Boss
+  m_Name: BossSpear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

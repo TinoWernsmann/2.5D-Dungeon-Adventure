@@ -19,6 +19,7 @@ MonoBehaviour:
   stackable: 1
   maxStackSize: 12
   IsHealing: 0
+  PickupTutorial: {fileID: 11400000, guid: ece8f7064b9015b4cbb3a6c7e195b153, type: 2}
   PickUpSound: {fileID: 8300000, guid: 3c88b45084ee0254aa64e0b28b277c61, type: 3}
   DropSound: {fileID: 8300000, guid: 03ee6ced028d2414babfc96ae72b6fe8, type: 3}
   knockbackDistance: 2.5

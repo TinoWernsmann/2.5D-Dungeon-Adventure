@@ -121,8 +121,8 @@ public class SaveManager : MonoBehaviour
     {
         secondsSinceAutoSave += Time.deltaTime;
 
-        // Geht gerade nicht (z.B. tot) -> im nächsten Frame erneut versuchen.
-        if (secondsSinceAutoSave < AutoSaveIntervalSeconds || !CanSave)
+        // Geht gerade nicht (z.B. tot oder im Kampf) -> im nächsten Frame erneut versuchen.
+        if (secondsSinceAutoSave < AutoSaveIntervalSeconds || !CanSave || EnemyBrain.IsAnyEnemyFighting)
         {
             return;
         }
@@ -212,6 +212,12 @@ public class SaveManager : MonoBehaviour
         if (!CanSave)
         {
             Debug.LogWarning("[Save] Speichern ist gerade nicht möglich.");
+            return false;
+        }
+
+        if (EnemyBrain.IsAnyEnemyFighting)
+        {
+            Debug.LogWarning("[Save] Während eines Kampfes kann nicht gespeichert werden.");
             return false;
         }
 

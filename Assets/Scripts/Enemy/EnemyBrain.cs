@@ -65,12 +65,23 @@ public class EnemyBrain : MonoBehaviour
 
     private bool KnowsWherePlayerIs => IsAlwaysAware || perception.IsAwareOfPlayer;
 
+    private bool IsFighting => currentState is EnemyState.Chase or EnemyState.Combat;
+
+    /// <summary>Verfolgt oder bekämpft gerade irgendein Gegner den Player? (z.B. kein Speichern im Kampf)</summary>
+    public static bool IsAnyEnemyFighting => activeBrains.Exists(brain => brain.IsFighting);
+
     private void Awake()
     {
         movement = GetComponent<EnemyMovement>();
         patrol = GetComponent<EnemyPatrol>();
         perception = GetComponent<EnemyPerception>();
         ownHealth = GetComponent<Health>();
+
+        // Zur Laufzeit gespawnte Gegner (z.B. beschworene Diener) haben keine Inspector-Referenz.
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
 
         if (combatBehaviour == null)
         {
