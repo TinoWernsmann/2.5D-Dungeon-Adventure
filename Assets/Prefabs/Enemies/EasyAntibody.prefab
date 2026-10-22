@@ -576,7 +576,7 @@ MonoBehaviour:
     volume: 1
     pitchVariation: 0.1
     maxHearingDistance: 20
-  deathEffectPoint: {fileID: 0}
+  deathEffectPoint: {fileID: 764994764364833506}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

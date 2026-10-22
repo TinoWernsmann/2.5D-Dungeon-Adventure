@@ -46,6 +46,9 @@ MonoBehaviour:
   - id: 1abf89c085820144cb5064b7124dad72
     item: {fileID: 11400000, guid: 1abf89c085820144cb5064b7124dad72, type: 2}
     prefab: {fileID: 5397329226068617096, guid: f3dadd3fb429fe849937f402d0d4c093, type: 3}
+  - id: af762721219e466409dba932b6206e13
+    item: {fileID: 11400000, guid: af762721219e466409dba932b6206e13, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 09d40cce7c404b143b9cfbf197144fcc, type: 3}
   - id: 5ca1e33bc39febe4ca949e4295585ca6
     item: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
     prefab: {fileID: 2216420366719847928, guid: 33b3881090d03e842b74e41751d51dcd, type: 3}
@@ -83,3 +86,7 @@ MonoBehaviour:
     quest: {fileID: 11400000, guid: f5d7139e3d64c2a49997ac4e5537a962, type: 2}
   - id: 7e38972076580eb499c9d8f7ea8e8f0d
     quest: {fileID: 11400000, guid: 7e38972076580eb499c9d8f7ea8e8f0d, type: 2}
+  - id: 9da1178de53c8c746b6803208ca0bc9f
+    quest: {fileID: 11400000, guid: 9da1178de53c8c746b6803208ca0bc9f, type: 2}
+  - id: fd2c40f6ad522954fbd36eb0a4c3076e
+    quest: {fileID: 11400000, guid: fd2c40f6ad522954fbd36eb0a4c3076e, type: 2}

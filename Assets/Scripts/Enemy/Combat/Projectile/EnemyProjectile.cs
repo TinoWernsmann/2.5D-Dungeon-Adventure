@@ -23,17 +23,20 @@ public class EnemyProjectile : MonoBehaviour
     private GameObject owner;
 
     private int damage;
+    private float knockbackDistance;
     private float lifetimeTimer;
     private bool initialized;
 
     public void Initialize(
         Vector3 travelDirection,
         int projectileDamage,
-        GameObject projectileOwner)
+        GameObject projectileOwner,
+        float projectileKnockbackDistance = 0f)
     {
         direction = travelDirection.normalized;
         damage = projectileDamage;
         owner = projectileOwner;
+        knockbackDistance = projectileKnockbackDistance;
 
         lifetimeTimer = lifetime;
         initialized = true;
@@ -125,6 +128,12 @@ public class EnemyProjectile : MonoBehaviour
                 DifficultySettings.DamageByEnemy(damage, targetHealth),
                 hit.point,
                 owner != null ? owner.transform : null);
+
+            if (knockbackDistance > 0f &&
+                targetHealth.TryGetComponent(out PlayerMovement player))
+            {
+                player.Knockback(direction, knockbackDistance);
+            }
         }
 
         Destroy(gameObject);

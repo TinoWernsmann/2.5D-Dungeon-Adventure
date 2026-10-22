@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 6_BossFight
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
   _title: Boss Kampf
-  _goalText: Besiege die Kultistin!
+  _goalText: Besiege den Kultist!
   _showCounter: 0
   _startTutorial: {fileID: 0}
   _type: 4

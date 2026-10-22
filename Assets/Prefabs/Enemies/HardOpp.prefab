@@ -574,11 +574,24 @@ MonoBehaviour:
   fireballCooldown: 4
   retreatDistance: 3
   retreatDuration: 1
+  retreatCastChance: 0.35
   strafeStepDegrees: 25
   lineOfFireRadius: 0.3
   maxSpellHoldDuration: 0.75
   repositionDuration: 0.8
   repositionStepDegrees: 40
+  summoner:
+    minionPrefab: {fileID: 0}
+    castDuration: 1.6
+    firstSummonDelay: 6
+    cooldown: 18
+    enragedCooldown: 12
+    minionsPerSummon: 2
+    maxAliveMinions: 3
+    spawnRadius: 2.5
+    summonSound: {fileID: 0}
+  enrageHealthPercent: 0
+  enragedFireballChance: 0.6
   debugCombat: 0
 --- !u!136 &2700000000000001
 CapsuleCollider:
@@ -765,7 +778,7 @@ MonoBehaviour:
     volume: 1
     pitchVariation: 0.1
     maxHearingDistance: 20
-  deathEffectPoint: {fileID: 0}
+  deathEffectPoint: {fileID: 764994764364833506}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

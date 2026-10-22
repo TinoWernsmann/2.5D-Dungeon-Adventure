@@ -60,6 +60,10 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Min(0f)]
     [SerializeField] private float magicBoltAimLeadTime = 0.35f;
 
+    [Tooltip("So viele Meter wird der Player bei einem Treffer zurückgestoßen. 0 = kein Rückstoß.")]
+    [Min(0f)]
+    [SerializeField] private float magicBoltKnockback;
+
     [Header("Fireball")]
     [SerializeField] private EnemyProjectile fireballPrefab;
 
@@ -77,6 +81,10 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     [Min(0f)]
     [SerializeField] private float fireballCooldown = 4f;
+
+    [Tooltip("So viele Meter wird der Player bei einem Treffer zurückgestoßen. 0 = kein Rückstoß.")]
+    [Min(0f)]
+    [SerializeField] private float fireballKnockback;
 
     [Header("Retreat")]
     [Min(0.1f)]
@@ -121,6 +129,17 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float enragedFireballChance = 0.6f;
 
+    [Tooltip("Wütend wirft er so viele Feuerbälle gleichzeitig im Fächer.")]
+    [Min(1)]
+    [SerializeField] private int enragedFireballCount = 1;
+
+    [Tooltip("Winkel zwischen zwei Feuerbällen im Fächer.")]
+    [Range(0f, 45f)]
+    [SerializeField] private float fanSpreadAngle = 20f;
+
+    [Header("Rapid Fire (optional)")]
+    [SerializeField] private RapidFireMode rapidFire = new();
+
     [Header("Debug")]
     [SerializeField] private bool debugCombat;
 
@@ -136,10 +155,14 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     private Vector3 retreatPoint;
     private bool isRetreatCast;
 
+    private float HealthPercent =>
+        health != null && health.MaxHealth > 0
+            ? (float)health.CurrentHealth / health.MaxHealth
+            : 1f;
+
     private bool IsEnraged =>
-        health != null &&
         enrageHealthPercent > 0f &&
-        health.CurrentHealth <= health.MaxHealth * enrageHealthPercent;
+        HealthPercent <= enrageHealthPercent;
 
     public override bool IsPerformingAttack =>
         currentState == CombatState.Cast;
@@ -206,6 +229,12 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     protected override void OnCombatUpdate()
     {
+        if (rapidFire.Tick(Time.deltaTime, HealthPercent))
+        {
+            rapidFire.PlayStartSound(audioSource);
+            LogCombat("Rapid fire started.");
+        }
+
         switch (currentState)
         {
             case CombatState.None:
@@ -385,14 +414,18 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
             ? enragedFireballChance
             : fireballChance;
 
+        // Im Dauerfeuer nur schnelle Bolts.
+        bool isRapidFire = rapidFire.IsActive;
+
         bool useFireball =
             !isCloseRange &&
+            !isRapidFire &&
             fireballPrefab != null &&
             fireballCooldownTimer <= 0f &&
             Random.value <= currentFireballChance;
 
         currentSpell =
-            summoner.CanSummon ? SpellType.Summon :
+            !isRapidFire && summoner.CanSummon ? SpellType.Summon :
             useFireball ? SpellType.Fireball :
             SpellType.MagicBolt;
 
@@ -400,7 +433,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         {
             SpellType.Summon => summoner.CastDuration,
             SpellType.Fireball => fireballCastDuration,
-            _ => magicBoltCastDuration
+            _ => magicBoltCastDuration / rapidFire.SpeedMultiplier
         };
 
         LogCombat($"Preparing {currentSpell}.");
@@ -471,19 +504,36 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
             direction = transform.forward;
         }
 
-        EnemyProjectile projectile = Instantiate(
-            prefab,
-            projectileSpawnPoint.position,
-            Quaternion.identity
-        );
+        bool isFireball = currentSpell == SpellType.Fireball;
 
-        projectile.Initialize(
-            direction,
-            GetCurrentSpellDamage(),
-            gameObject
-        );
+        int projectileCount = isFireball && IsEnraged
+            ? enragedFireballCount
+            : 1;
 
-        if (currentSpell == SpellType.Fireball)
+        float knockback = isFireball
+            ? fireballKnockback
+            : magicBoltKnockback;
+
+        for (int i = 0; i < projectileCount; i++)
+        {
+            // Fächer symmetrisch um die Zielrichtung, der mittlere fliegt direkt aufs Ziel.
+            float angle = (i - (projectileCount - 1) * 0.5f) * fanSpreadAngle;
+
+            EnemyProjectile projectile = Instantiate(
+                prefab,
+                projectileSpawnPoint.position,
+                Quaternion.identity
+            );
+
+            projectile.Initialize(
+                Quaternion.Euler(0f, angle, 0f) * direction,
+                GetCurrentSpellDamage(),
+                gameObject,
+                knockback
+            );
+        }
+
+        if (isFireball)
         {
             fireballCooldownTimer = fireballCooldown;
         }
@@ -578,7 +628,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
                 break;
 
             case CombatState.Recovery:
-                stateTimer = GetCurrentRecoveryDuration();
+                stateTimer = GetCurrentRecoveryDuration() / rapidFire.SpeedMultiplier;
                 break;
         }
     }

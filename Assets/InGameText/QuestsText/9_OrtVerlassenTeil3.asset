@@ -19,5 +19,5 @@ MonoBehaviour:
   _type: 0
   _targetId: LeavePlaceTeil3
   _requiredAmount: 1
-  _nextQuest: {fileID: 11400000, guid: f5d7139e3d64c2a49997ac4e5537a962, type: 2}
+  _nextQuest: {fileID: 11400000, guid: 9da1178de53c8c746b6803208ca0bc9f, type: 2}
   _canBeSkipped: 0
