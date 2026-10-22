@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c936bd8677012b459e779491e3fe7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 450
+  maxHealth: 500
 --- !u!114 &4258443872368493281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,10 +589,10 @@ MonoBehaviour:
     firstSummonDelay: 6
     cooldown: 18
     enragedCooldown: 12
-    minionsPerSummon: 2
-    maxAliveMinions: 3
+    minionsPerSummon: 4
+    maxAliveMinions: 6
     spawnRadius: 2.5
-    summonSound: {fileID: 0}
+    summonSound: {fileID: 8300000, guid: fd3625daa96b1eb48904d4acce8bb242, type: 3}
   enrageHealthPercent: 0.4
   enragedFireballChance: 0.6
   enragedFireballCount: 3

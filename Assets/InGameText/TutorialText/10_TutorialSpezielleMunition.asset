@@ -16,7 +16,7 @@ MonoBehaviour:
   _pages:
   - 'Du hast spezielle Munition gefunden! '
   - "Mit dem PushBolzen kannst du Gegner nicht nur verletzen, sondern sie auch nach
-    hinten sto\xDFen. Nutze diesen Effekt clever, um Gegner in die Magens\xE4ure
-    zu schleudern!"
-  - "M\xF6chtest du eine andere Munitionsart ausr\xFCsten? W\xE4hle sie im Item-Slot
-    aus und dr\xFCcke die linke Maustaste, um sie auszur\xFCsten."
+    hinten sto\xDFen."
+  - "Nutze diesen Effekt clever, um Gegner in die Magens\xE4ure zu schleudern!"
+  - "M\xF6chtest du eine andere Munitionsart ausr\xFCsten? "
+  - "W\xE4hle sie im Item-Slot aus und dr\xFCcke die linke Maustaste, um sie auszur\xFCsten."

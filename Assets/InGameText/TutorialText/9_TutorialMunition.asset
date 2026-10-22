@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialSO
   _title: Tutorial
   _pages:
-  - "Im Spiel gibt es verschiedene Munitionsarten. Im Item-Slot wird deine aktuell
-    ausgew\xE4hlte Munition hervorgehoben."
-  - "M\xF6chtest du eine andere Munitionsart ausr\xFCsten? W\xE4hle sie im Item-Slot
-    aus und dr\xFCcke die linke Maustaste, um sie auszur\xFCsten."
+  - Im Spiel gibt es verschiedene Munitionsarten.
+  - " Im Item-Slot wird deine aktuell ausgew\xE4hlte Munition hervorgehoben."
+  - "M\xF6chtest du eine andere Munitionsart ausr\xFCsten? "
+  - "W\xE4hle sie im Item-Slot aus und dr\xFCcke die linke Maustaste, um sie auszur\xFCsten."

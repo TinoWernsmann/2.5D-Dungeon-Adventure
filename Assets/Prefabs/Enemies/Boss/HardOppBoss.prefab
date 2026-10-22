@@ -398,6 +398,7 @@ GameObject:
   - component: {fileID: 372523354132971995}
   - component: {fileID: 5032175139011081091}
   - component: {fileID: 3116377273330054915}
+  - component: {fileID: 3475317752246395948}
   m_Layer: 0
   m_Name: HardOppBoss
   m_TagString: Untagged
@@ -566,12 +567,14 @@ MonoBehaviour:
   magicBoltCastDuration: 0.5
   magicBoltRecoveryDuration: 0.65
   magicBoltAimLeadTime: 0.35
+  magicBoltKnockback: 0
   fireballPrefab: {fileID: 8024949328669299552, guid: b20f4d18f97b893409829b2c83fae8f6, type: 3}
   fireballDamage: 20
   fireballCastDuration: 1.2
   fireballRecoveryDuration: 1.4
   fireballChance: 0.35
   fireballCooldown: 4
+  fireballKnockback: 0
   retreatDistance: 3
   retreatDuration: 1
   retreatCastChance: 0.35
@@ -589,9 +592,17 @@ MonoBehaviour:
     minionsPerSummon: 2
     maxAliveMinions: 3
     spawnRadius: 2.5
-    summonSound: {fileID: 0}
+    summonSound: {fileID: 8300000, guid: fd3625daa96b1eb48904d4acce8bb242, type: 3}
   enrageHealthPercent: 0.5
   enragedFireballChance: 0.6
+  enragedFireballCount: 1
+  fanSpreadAngle: 20
+  rapidFire:
+    unlockHealthPercent: 0
+    duration: 3
+    cooldown: 12
+    speedMultiplier: 4
+    startSound: {fileID: 0}
   debugCombat: 0
 --- !u!136 &2700000000000001
 CapsuleCollider:
@@ -779,6 +790,21 @@ MonoBehaviour:
     pitchVariation: 0.1
     maxHearingDistance: 20
   deathEffectPoint: {fileID: 764994764364833506}
+--- !u!114 &3475317752246395948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334742394470388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdb86e1121ec4254bc9457fb64df0e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefeatReward
+  questTargetId: KillBoss
+  lootPrefab: {fileID: 0}
+  upwardForce: 3
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0
