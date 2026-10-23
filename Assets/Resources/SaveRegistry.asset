@@ -87,7 +87,3 @@ MonoBehaviour:
     quest: {fileID: 11400000, guid: 9da1178de53c8c746b6803208ca0bc9f, type: 2}
   - id: fd2c40f6ad522954fbd36eb0a4c3076e
     quest: {fileID: 11400000, guid: fd2c40f6ad522954fbd36eb0a4c3076e, type: 2}
-  - id: a958ddd933b967743a53372d5c96f380
-    quest: {fileID: 11400000, guid: a958ddd933b967743a53372d5c96f380, type: 2}
-  - id: 21a8563eb85c8c3439ee346ee788268d
-    quest: {fileID: 11400000, guid: 21a8563eb85c8c3439ee346ee788268d, type: 2}

@@ -28,7 +28,14 @@ public class MainMenuManager : MonoBehaviour
     [Tooltip("Wird wie das Lade-Menü geöffnet; blendet dieselben Objekte aus.")]
     [SerializeField] private AchievementMenu _achievementMenu;
 
+    [Header("Level Select")]
+    [Tooltip("Wird wie das Lade-Menü geöffnet; blendet dieselben Objekte aus.")]
+    [SerializeField] private LevelSelectMenu _levelSelectMenu;
+
     private const string BEGIN_SCENE = "BeginCutscene";
+
+    // Level 1 beginnt immer mit der Anfangs-Cutscene, spätere Levels direkt mit ihrer Szene.
+    private string _sceneToStart = BEGIN_SCENE;
 
     private void Awake()
     {
@@ -47,6 +54,12 @@ public class MainMenuManager : MonoBehaviour
         if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleLoadMenuClosed;
         if (_difficultyMenu != null) _difficultyMenu.Closed += HandleLoadMenuClosed;
         if (_achievementMenu != null) _achievementMenu.Closed += HandleLoadMenuClosed;
+
+        if (_levelSelectMenu != null)
+        {
+            _levelSelectMenu.Closed += HandleLoadMenuClosed;
+            _levelSelectMenu.LevelChosen += StartLevel;
+        }
     }
 
     private void OnDestroy()
@@ -55,6 +68,12 @@ public class MainMenuManager : MonoBehaviour
         if (_saveSlotMenu != null) _saveSlotMenu.Closed -= HandleLoadMenuClosed;
         if (_difficultyMenu != null) _difficultyMenu.Closed -= HandleLoadMenuClosed;
         if (_achievementMenu != null) _achievementMenu.Closed -= HandleLoadMenuClosed;
+
+        if (_levelSelectMenu != null)
+        {
+            _levelSelectMenu.Closed -= HandleLoadMenuClosed;
+            _levelSelectMenu.LevelChosen -= StartLevel;
+        }
     }
 
     public void ContinueGame()
@@ -89,6 +108,21 @@ public class MainMenuManager : MonoBehaviour
         _achievementMenu.Open();
     }
 
+    /// <summary>Button "Load Level" im Hauptmenü.</summary>
+    public void OpenLevelSelect()
+    {
+        if (_levelSelectMenu == null) return;
+
+        SetMainMenuVisible(false);
+        _levelSelectMenu.Open();
+    }
+
+    /// <summary>Level aus der Auswahl: wie ein neues Spiel (Schwierigkeit, Name), nur mit anderer Startszene.</summary>
+    private void StartLevel(int levelNumber)
+    {
+        BeginNewGame(levelNumber == 1 ? BEGIN_SCENE : LevelSelectMenu.GetLevelSceneName(levelNumber));
+    }
+
     private void HandleLoadMenuClosed()
     {
         SetMainMenuVisible(true);
@@ -114,12 +148,19 @@ public class MainMenuManager : MonoBehaviour
     {
         GlobalVars.Instance.SetPlayerName(_nameInput.text);
         if (SaveManager.Instance != null) SaveManager.Instance.StartNewGame();
-        SceneLoader.Load(BEGIN_SCENE);
+        SceneLoader.Load(_sceneToStart);
     }
 
     /// <summary>Start: erst Schwierigkeit wählen, dann Namen eingeben, dann Cutscene.</summary>
     public void StartGame()
     {
+        BeginNewGame(BEGIN_SCENE);
+    }
+
+    private void BeginNewGame(string sceneToStart)
+    {
+        _sceneToStart = sceneToStart;
+
         if (_difficultyMenu == null)
         {
             ShowNameEntry();
