@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,21 +14,25 @@ public class DifficultyMenu : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
 
-    [Tooltip("In der Reihenfolge Easy, Normal, Hard.")]
+    [Tooltip("In der Reihenfolge Easy, Normal, Hard (Hardcore wird bei Bedarf automatisch ergänzt).")]
     [SerializeField] private Button[] difficultyButtons;
 
     [SerializeField] private TMP_Text descriptionText;
     [Tooltip("Pause-Menü: \"Back\". Hauptmenü: \"Confirm\" – bestätigt die Wahl und startet das Spiel.")]
     [SerializeField] private Button closeButton;
 
-    private static readonly string[] Names = { "Easy", "Normal", "Hard" };
+    private static readonly string[] Names = { "Easy", "Normal", "Hard", "Hardcore" };
 
     private static readonly string[] Descriptions =
     {
         "You take less damage and hit harder.",
         "The intended experience.",
-        "Enemies hit much harder, your attacks are weaker."
+        "Enemies hit much harder, your attacks are weaker.",
+        "Like Hard - but only one life and no saving."
     };
+
+    /// <summary>Hardcore wird freigeschaltet, sobald Level 1 auf Schwer geschafft wurde.</summary>
+    private const string HardcoreUnlockAchievementId = "L1_Hard";
 
     /// <summary>Das Menü wurde geschlossen (z.B. um das Pause-Menü wieder zu zeigen).</summary>
     public event Action Closed;
@@ -39,6 +44,8 @@ public class DifficultyMenu : MonoBehaviour
 
     private void Awake()
     {
+        AddMissingButtons();
+
         for (int i = 0; i < difficultyButtons.Length; i++)
         {
             Difficulty difficulty = (Difficulty)i;
@@ -73,6 +80,30 @@ public class DifficultyMenu : MonoBehaviour
         Closed?.Invoke();
     }
 
+    /// <summary>Ältere Menüs haben nur 3 Buttons: den Hardcore-Button als Kopie des letzten ergänzen.</summary>
+    private void AddMissingButtons()
+    {
+        if (difficultyButtons.Length == 0 || difficultyButtons.Length >= Names.Length)
+        {
+            return;
+        }
+
+        List<Button> buttons = new(difficultyButtons);
+        Button last = difficultyButtons[^1];
+
+        while (buttons.Count < Names.Length)
+        {
+            Button copy = Instantiate(last, last.transform.parent);
+            copy.transform.SetSiblingIndex(buttons[^1].transform.GetSiblingIndex() + 1);
+            copy.onClick.RemoveAllListeners();
+            buttons.Add(copy);
+        }
+
+        difficultyButtons = buttons.ToArray();
+    }
+
+    private static bool IsHardcoreUnlocked => AchievementManager.IsUnlocked(HardcoreUnlockAchievementId, out _);
+
     private void Select(Difficulty difficulty)
     {
         DifficultySettings.Current = difficulty;
@@ -87,17 +118,29 @@ public class DifficultyMenu : MonoBehaviour
         confirmed?.Invoke();
     }
 
-    /// <summary>Die aktive Stufe wird markiert: "> Normal <".</summary>
+    /// <summary>
+    /// Die aktive Stufe wird markiert: "> Normal <".
+    /// Hardcore gibt es nur beim Spielstart (und erst nach Freischaltung) – und im Spiel kann man ihn nicht verlassen.
+    /// </summary>
     private void Refresh()
     {
         int current = (int)DifficultySettings.Current;
+        bool isStartingGame = onConfirmed != null;
+        bool isLockedInHardcore = !isStartingGame && DifficultySettings.IsHardcore;
 
         for (int i = 0; i < difficultyButtons.Length; i++)
         {
+            bool isHardcoreButton = (Difficulty)i == Difficulty.Hardcore;
+
+            difficultyButtons[i].interactable = isHardcoreButton
+                ? isStartingGame && IsHardcoreUnlocked
+                : !isLockedInHardcore;
+
             TMP_Text label = difficultyButtons[i].GetComponentInChildren<TMP_Text>();
-            label.text = i == current ? $"> {Names[i]} <" : Names[i];
+            string name = isHardcoreButton && !IsHardcoreUnlocked ? $"{Names[i]} (locked)" : Names[i];
+            label.text = i == current ? $"> {name} <" : name;
         }
 
-        descriptionText.text = Descriptions[current];
+        descriptionText.text = Descriptions[Mathf.Clamp(current, 0, Descriptions.Length - 1)];
     }
 }

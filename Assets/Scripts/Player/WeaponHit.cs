@@ -12,7 +12,8 @@ public static class WeaponHit
         int damage,
         Transform attacker,
         SurfaceType defaultSurface,
-        float knockbackDistance = 0f)
+        float knockbackDistance = 0f,
+        bool isProjectile = false)
     {
         Health target =
             hit.collider.GetComponentInParent<Health>();
@@ -21,6 +22,12 @@ public static class WeaponHit
         {
             Surface.PlayImpact(hit, defaultSurface);
             return;
+        }
+
+        // Boss-Erfolg "nur mit der Armbrust besiegt".
+        if (target.TryGetComponent(out MageCombatBehaviour mage))
+        {
+            mage.NotifyPlayerHit(isProjectile);
         }
 
         target.TakeDamage(DifficultySettings.DamageByPlayer(damage), hit.point, attacker);

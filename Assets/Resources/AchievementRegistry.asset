@@ -23,5 +23,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 321ef3d77bb34ae9ab11de91540e7cfb, type: 2}
   - {fileID: 11400000, guid: b502b67174a04b3481810ce168ca0378, type: 2}
   - {fileID: 11400000, guid: 907b03f12fd7427a9546243a48ccfc02, type: 2}
+  - {fileID: 11400000, guid: 31179d7d1a95451f8a9c5d4ee12ca4ba, type: 2}
+  - {fileID: 11400000, guid: c43b21ab3a42491bb928c5750a683180, type: 2}
+  - {fileID: 11400000, guid: aab9b2c845c74fc3ba0a79a13b7bcfe7, type: 2}
+  - {fileID: 11400000, guid: 7a9bc3b36ac740d8bb8acdb668bfba4b, type: 2}
+  - {fileID: 11400000, guid: 811d99bc1e95432ea49f122b793fcec8, type: 2}
+  - {fileID: 11400000, guid: ea9b9c3366ae4e8ab4a72a62114ce407, type: 2}
+  - {fileID: 11400000, guid: e387b64cf6a14e57bec107c7f6e07db2, type: 2}
   popupFont: {fileID: 11400000, guid: 187290301dff71242acb2ae1ba094de7, type: 2}
   popupSound: {fileID: 8300000, guid: 21901ee19d100f140b89de964e46c3c2, type: 3}

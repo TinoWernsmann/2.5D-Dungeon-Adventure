@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d87ff40016c4a04b4fc5620e2ee0dcb, type: 3}
+  m_Name: L1_FistsOnly
+  m_EditorClassIdentifier: Assembly-CSharp::AchievementData
+  title: "Faustkämpfer"
+  description: "Schließe Level 1 ab und kämpfe nur mit den Fäusten."
+  trigger: 0
+  progressTarget: 0
+  level: "Level 1"
+  minDifficulty: 0
+  requireNoDamage: 0
+  requireAllItems: 0
+  requireAllCrates: 0
+  requireBossesWithoutSummonKills: 0
+  requireAllBossesPushedIntoAcid: 0
+  requireFistsOnly: 1
+  requireNoHealing: 0
+  requireNoDeathOrLoad: 0
+  maxMinutes: 0

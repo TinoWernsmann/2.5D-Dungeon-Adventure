@@ -4,12 +4,14 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// Freigeschaltete Erfolge – unabhängig vom Spielstand in einer eigenen Datei
-/// (achievements.json in Application.persistentDataPath), damit sie über neue Spiele erhalten bleiben.
+/// Spieler-Fortschritt, der über alle Spielstände erhalten bleibt (achievements.json in
+/// Application.persistentDataPath): freigeschaltete Erfolge, Zähler (z.B. "10 Gegner in die Säure")
+/// und der beste Abschluss jedes Levels (Schwierigkeit, Zeit).
 /// </summary>
 public static class AchievementManager
 {
     public const string PushIntoAcidId = "PushIntoAcid";
+    public const string AcidRainId = "AcidRain";
 
     private const string FileName = "achievements.json";
 
@@ -21,9 +23,26 @@ public static class AchievementManager
     }
 
     [Serializable]
+    private class CounterEntry
+    {
+        public string id;
+        public int value;
+    }
+
+    [Serializable]
+    public class LevelRecord
+    {
+        public string level;
+        public Difficulty bestDifficulty;
+        public float bestTimeSeconds;
+    }
+
+    [Serializable]
     private class SaveData
     {
         public List<UnlockedEntry> unlocked = new();
+        public List<CounterEntry> counters = new();
+        public List<LevelRecord> levels = new();
     }
 
     private static SaveData data;
@@ -75,26 +94,123 @@ public static class AchievementManager
         Data.unlocked.Add(new UnlockedEntry { id = id, unlockedAtIso = DateTime.Now.ToString("o") });
         WriteData();
 
+        LevelStats.Current?.RecordAchievementUnlocked(id);
+
         Debug.Log($"[Achievements] Freigeschaltet: {achievement.Title}");
         Unlocked?.Invoke(achievement);
     }
 
-    /// <summary>Prüft beim Level-Abschluss alle Erfolge dieses Levels.</summary>
-    public static void EvaluateLevel(string levelName, LevelStats stats, float minutes)
+    /// <summary>Prüft beim Level-Abschluss alle Erfolge dieses Levels. Gibt die Anzahl neu freigeschalteter zurück.</summary>
+    public static int EvaluateLevel(string levelName, LevelStats stats, float minutes)
     {
         if (stats == null)
         {
-            return;
+            return 0;
         }
+
+        int before = UnlockedCount;
 
         foreach (AchievementData achievement in All)
         {
-            if (achievement != null && achievement.Level == levelName && achievement.IsMetBy(stats, minutes))
+            if (achievement != null && achievement.IsEvaluatedAtEndOf(levelName) && achievement.IsMetBy(stats, minutes))
             {
                 Unlock(achievement.Id);
             }
         }
+
+        return UnlockedCount - before;
     }
+
+    #region Zähler
+
+    public static int GetProgress(string id)
+    {
+        CounterEntry entry = Data.counters.Find(e => e.id == id);
+        return entry != null ? entry.value : 0;
+    }
+
+    /// <summary>Erhöht einen Zähler; erreicht er das Ziel des gleichnamigen Erfolgs, wird dieser freigeschaltet.</summary>
+    public static void AddProgress(string id, int amount = 1)
+    {
+        CounterEntry entry = Data.counters.Find(e => e.id == id);
+
+        if (entry == null)
+        {
+            entry = new CounterEntry { id = id };
+            Data.counters.Add(entry);
+        }
+
+        entry.value += amount;
+        WriteData();
+
+        AchievementData achievement = Find(id);
+
+        if (achievement != null && achievement.ProgressTarget > 0 && entry.value >= achievement.ProgressTarget)
+        {
+            Unlock(id);
+        }
+    }
+
+    #endregion
+
+    #region Level-Bestleistungen
+
+    public static LevelRecord GetLevelRecord(string levelName) =>
+        Data.levels.Find(record => record.level == levelName);
+
+    /// <summary>Merkt sich die schwerste geschaffte Stufe und (unabhängig davon) die schnellste Zeit.</summary>
+    public static void RecordLevelCompleted(string levelName, Difficulty difficulty, float seconds)
+    {
+        if (string.IsNullOrEmpty(levelName))
+        {
+            return;
+        }
+
+        LevelRecord record = GetLevelRecord(levelName);
+
+        if (record == null)
+        {
+            Data.levels.Add(new LevelRecord { level = levelName, bestDifficulty = difficulty, bestTimeSeconds = seconds });
+            WriteData();
+            return;
+        }
+
+        if (difficulty > record.bestDifficulty)
+        {
+            record.bestDifficulty = difficulty;
+        }
+
+        if (seconds < record.bestTimeSeconds)
+        {
+            record.bestTimeSeconds = seconds;
+        }
+
+        WriteData();
+    }
+
+    /// <summary>Freigeschaltete / alle Erfolge eines Levels (z.B. für die Level-Auswahl).</summary>
+    public static void CountForLevel(string levelName, out int unlocked, out int total)
+    {
+        unlocked = 0;
+        total = 0;
+
+        foreach (AchievementData achievement in All)
+        {
+            if (achievement == null || achievement.Level != levelName)
+            {
+                continue;
+            }
+
+            total++;
+
+            if (IsUnlocked(achievement.Id, out _))
+            {
+                unlocked++;
+            }
+        }
+    }
+
+    #endregion
 
     private static AchievementData Find(string id)
     {

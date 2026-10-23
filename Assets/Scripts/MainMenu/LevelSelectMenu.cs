@@ -21,6 +21,8 @@ public class LevelSelectMenu : MonoBehaviour
     [Min(1)]
     [SerializeField] private int levelCount = 6;
 
+    private const float ButtonHeightWithProgress = 90f;
+
     private readonly List<Button> buttons = new();
 
     /// <summary>Ein Level wurde gewählt (Nummer ab 1). Das Menü ist dann schon ausgeblendet.</summary>
@@ -69,6 +71,12 @@ public class LevelSelectMenu : MonoBehaviour
             Button button = Instantiate(buttonTemplate, buttonParent);
             button.onClick.AddListener(() => Choose(levelNumber));
             buttons.Add(button);
+
+            // Zweizeilig (Name + Fortschritt) braucht mehr Höhe als die Vorlage.
+            if (button.TryGetComponent(out LayoutElement layout))
+            {
+                layout.preferredHeight = Mathf.Max(layout.preferredHeight, ButtonHeightWithProgress);
+            }
         }
 
         for (int i = 0; i < buttons.Count; i++)
@@ -79,9 +87,28 @@ public class LevelSelectMenu : MonoBehaviour
             buttons[i].gameObject.SetActive(levelNumber <= levelCount);
             buttons[i].interactable = isAvailable;
             buttons[i].GetComponentInChildren<TMP_Text>().text = isAvailable
-                ? GetLevelSceneName(levelNumber)
+                ? $"{GetLevelSceneName(levelNumber)}\n<size=70%>{FormatProgress(GetLevelSceneName(levelNumber))}</size>"
                 : $"{GetLevelSceneName(levelNumber)} - Bald verfügbar";
         }
+    }
+
+    /// <summary>"Erfolge 7/12 · Schwer · 12:34" – zeigt, was in diesem Level noch zu holen ist.</summary>
+    private static string FormatProgress(string levelName)
+    {
+        AchievementManager.CountForLevel(levelName, out int unlocked, out int total);
+        AchievementManager.LevelRecord record = AchievementManager.GetLevelRecord(levelName);
+
+        string achievements = $"Erfolge {unlocked}/{total}";
+
+        if (record == null)
+        {
+            return $"{achievements} · noch nicht abgeschlossen";
+        }
+
+        TimeSpan time = TimeSpan.FromSeconds(record.bestTimeSeconds);
+
+        return $"{achievements} · {DifficultySettings.GetDisplayName(record.bestDifficulty)} · " +
+               $"{(int)time.TotalHours}:{time.Minutes:00}:{time.Seconds:00}";
     }
 
     private void Choose(int levelNumber)

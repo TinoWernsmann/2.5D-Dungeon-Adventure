@@ -4,7 +4,10 @@ public enum Difficulty
 {
     Easy,
     Normal,
-    Hard
+    Hard,
+
+    // Wie Hard, aber nur ein Leben und kein Speichern. Freigeschaltet nach Level 1 auf Schwer.
+    Hardcore
 }
 
 /// <summary>
@@ -17,13 +20,28 @@ public static class DifficultySettings
 {
     public static Difficulty Current { get; set; } = Difficulty.Normal;
 
+    /// <summary>Nur ein Leben, kein Speichern.</summary>
+    public static bool IsHardcore => Current == Difficulty.Hardcore;
+
+    /// <summary>Anzeigename (Abschluss-Screen, Level-Auswahl).</summary>
+    public static string GetDisplayName(Difficulty difficulty)
+    {
+        return difficulty switch
+        {
+            Difficulty.Easy => "Einfach",
+            Difficulty.Hard => "Schwer",
+            Difficulty.Hardcore => "Hardcore",
+            _ => "Mittel"
+        };
+    }
+
     /// <summary>Schaden, den der Spieler austeilt.</summary>
     public static int DamageByPlayer(int damage)
     {
         return Scale(damage, Current switch
         {
             Difficulty.Easy => 1.25f,
-            Difficulty.Hard => 0.85f,
+            Difficulty.Hard or Difficulty.Hardcore => 0.85f,
             _ => 1f
         });
     }
@@ -39,7 +57,7 @@ public static class DifficultySettings
         return Scale(damage, Current switch
         {
             Difficulty.Easy => 0.6f,
-            Difficulty.Hard => 1.5f,
+            Difficulty.Hard or Difficulty.Hardcore => 1.5f,
             _ => 1f
         });
     }

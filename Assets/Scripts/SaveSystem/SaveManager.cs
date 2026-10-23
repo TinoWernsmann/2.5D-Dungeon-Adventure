@@ -132,7 +132,8 @@ public class SaveManager : MonoBehaviour
         secondsSinceAutoSave += Time.deltaTime;
 
         // Geht gerade nicht (z.B. tot oder im Kampf) -> im nächsten Frame erneut versuchen.
-        if (secondsSinceAutoSave < AutoSaveIntervalSeconds || !CanSave || EnemyBrain.IsAnyEnemyFighting)
+        if (secondsSinceAutoSave < AutoSaveIntervalSeconds || !CanSave || EnemyBrain.IsAnyEnemyFighting ||
+            DifficultySettings.IsHardcore)
         {
             return;
         }
@@ -228,6 +229,12 @@ public class SaveManager : MonoBehaviour
         if (EnemyBrain.IsAnyEnemyFighting)
         {
             Debug.LogWarning("[Save] Während eines Kampfes kann nicht gespeichert werden.");
+            return false;
+        }
+
+        if (DifficultySettings.IsHardcore)
+        {
+            Debug.LogWarning("[Save] Im Hardcore-Modus kann nicht gespeichert werden.");
             return false;
         }
 
@@ -418,6 +425,9 @@ public class SaveManager : MonoBehaviour
             levelStats.RecordSummonKilled();
             keepSummonKillAfterLoad = false;
         }
+
+        // Für "Eiserner Wille": Level ohne Laden eines Spielstands.
+        levelStats.RecordSaveLoaded();
 
         if (GlobalVars.Instance != null && !string.IsNullOrEmpty(data.playerName))
         {

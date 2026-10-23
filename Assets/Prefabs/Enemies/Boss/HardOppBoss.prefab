@@ -603,6 +603,8 @@ MonoBehaviour:
     cooldown: 12
     speedMultiplier: 4
     startSound: {fileID: 0}
+  untouchedAchievementId: 
+  rangedOnlyAchievementId: Sharpshooter
   debugCombat: 0
 --- !u!136 &2700000000000001
 CapsuleCollider:

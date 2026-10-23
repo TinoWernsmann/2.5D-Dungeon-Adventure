@@ -18,7 +18,17 @@ public class AchievementRow : MonoBehaviour
 
         titleText.text = isUnlocked ? achievement.Title : "???";
         descriptionText.text = isUnlocked ? achievement.Description : "Verborgener Erfolg";
-        dateText.text = isUnlocked ? $"Freigeschaltet am {unlockedAt:dd.MM.yyyy}" : string.Empty;
+        dateText.text = isUnlocked ? $"Freigeschaltet am {unlockedAt:dd.MM.yyyy}" : GetProgressText(achievement);
         canvasGroup.alpha = isUnlocked ? 1f : LockedAlpha;
+    }
+
+    /// <summary>Zähler-Erfolge zeigen auch verborgen schon ihren Fortschritt (z.B. "Fortschritt 4 / 10").</summary>
+    private static string GetProgressText(AchievementData achievement)
+    {
+        int progress = AchievementManager.GetProgress(achievement.Id);
+
+        return achievement.ProgressTarget > 0 && progress > 0
+            ? $"Fortschritt {Mathf.Min(progress, achievement.ProgressTarget)} / {achievement.ProgressTarget}"
+            : string.Empty;
     }
 }

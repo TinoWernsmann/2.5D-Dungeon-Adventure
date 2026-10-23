@@ -99,6 +99,7 @@ public class PlayerCombat : MonoBehaviour
     private void HandleHealing()
     {
         playerHealth.Heal(HEALING_AMOUNT);
+        LevelStats.Current?.RecordHealing();
     }
 
     // Für Erfolge wie "Level ohne Schaden abschließen".
@@ -109,6 +110,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
+        LevelStats.Current?.RecordDeath();
         SceneManager.LoadSceneAsync(DEATH_SCENE);
     }
 
@@ -315,6 +317,12 @@ public class PlayerCombat : MonoBehaviour
     private void PlayAttackFeedback(
         WeaponSO weapon)
     {
+        // Für den Erfolg "Faustkämpfer": jeder echte Angriff mit einer Waffe zählt.
+        if (equipment != null && !equipment.IsFists(weapon))
+        {
+            LevelStats.Current?.RecordWeaponUsed();
+        }
+
         heldItemUI?.PlayAttackAnimation(
             weapon.AttackSprite,
             weapon.HeldSprite,

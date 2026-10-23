@@ -11,13 +11,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Achievement", menuName = "Achievements/Achievement")]
 public class AchievementData : ScriptableObject
 {
+    public enum UnlockTrigger
+    {
+        [Tooltip("Am Level-Ende anhand der Bedingungen unten geprüft.")]
+        LevelEnd,
+
+        [Tooltip("Wird im Spiel per Code freigeschaltet (z.B. Boss-Erfolge). Das Level dient nur der Anzeige.")]
+        Code
+    }
+
     [SerializeField] private string title;
 
     [TextArea]
     [SerializeField] private string description;
 
+    [SerializeField] private UnlockTrigger trigger = UnlockTrigger.LevelEnd;
+
+    [Tooltip("Zähler-Erfolg (z.B. 10 Gegner in die Säure): Ziel des Zählers. 0 = kein Zähler.")]
+    [Min(0)]
+    [SerializeField] private int progressTarget;
+
     [Header("Level-Bedingungen")]
-    [Tooltip("z.B. \"Level 1\" (= Level 1 + Level 1.2). Leer = wird per Code freigeschaltet.")]
+    [Tooltip("z.B. \"Level 1\" (= Level 1 + Level 1.2). Leer = gehört zu keinem Level.")]
     [SerializeField] private string level;
 
     [Tooltip("Das ganze Level mindestens auf dieser Stufe (es zählt die leichteste benutzte).")]
@@ -33,6 +48,15 @@ public class AchievementData : ScriptableObject
     [Tooltip("Alle Bosse des Levels per Rückstoß in die Säure gestoßen.")]
     [SerializeField] private bool requireAllBossesPushedIntoAcid;
 
+    [Tooltip("Nur mit Fäusten angegriffen.")]
+    [SerializeField] private bool requireFistsOnly;
+
+    [Tooltip("Kein Heiltrank benutzt.")]
+    [SerializeField] private bool requireNoHealing;
+
+    [Tooltip("Kein Tod und kein Spielstand geladen.")]
+    [SerializeField] private bool requireNoDeathOrLoad;
+
     [Tooltip("Level in weniger als so vielen Minuten abschließen. 0 = egal.")]
     [Min(0f)]
     [SerializeField] private float maxMinutes;
@@ -41,6 +65,11 @@ public class AchievementData : ScriptableObject
     public string Title => title;
     public string Description => description;
     public string Level => level;
+    public int ProgressTarget => progressTarget;
+
+    /// <summary>Wird am Ende dieses Levels automatisch geprüft.</summary>
+    public bool IsEvaluatedAtEndOf(string levelName) =>
+        trigger == UnlockTrigger.LevelEnd && progressTarget == 0 && level == levelName;
 
     public bool IsMetBy(LevelStats stats, float minutes)
     {
@@ -59,7 +88,18 @@ public class AchievementData : ScriptableObject
             return false;
         }
 
+        // Spielweise (Waffen, Heilung, Tode, Laden) wird erst seit diesem Update gezählt.
+        bool needsPlayStyleTracking = requireFistsOnly || requireNoHealing || requireNoDeathOrLoad;
+
+        if (needsPlayStyleTracking && !stats.tracksPlayStyle)
+        {
+            return false;
+        }
+
         return (!requireNoDamage || stats.damageTaken == 0) &&
+               (!requireFistsOnly || !stats.usedWeapon) &&
+               (!requireNoHealing || !stats.healed) &&
+               (!requireNoDeathOrLoad || (stats.deaths == 0 && !stats.loadedSave)) &&
                (!requireAllItems || stats.HasAllItems) &&
                (!requireAllCrates || stats.HasAllCrates) &&
                (!requireBossesWithoutSummonKills || stats.KilledAllBossesWithoutSummons) &&

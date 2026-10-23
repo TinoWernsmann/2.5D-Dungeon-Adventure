@@ -119,7 +119,8 @@ public class PlayerProjectile : MonoBehaviour
             damage,
             owner != null ? owner.transform : null,
             defaultSurface,
-            knockbackDistance
+            knockbackDistance,
+            isProjectile: true
         );
 
         if (destroyOnImpact)

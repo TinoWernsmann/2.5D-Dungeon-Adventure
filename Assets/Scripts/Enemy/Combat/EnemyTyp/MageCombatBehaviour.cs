@@ -140,6 +140,13 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     [Header("Rapid Fire (optional)")]
     [SerializeField] private RapidFireMode rapidFire = new();
 
+    [Header("Achievements (optional)")]
+    [Tooltip("Erfolg, wenn dieser Gegner besiegt wird, ohne dass der Player im Kampf Schaden nimmt.")]
+    [SerializeField] private string untouchedAchievementId;
+
+    [Tooltip("Erfolg, wenn dieser Gegner nur mit Fernkampf (Armbrust) besiegt wird.")]
+    [SerializeField] private string rangedOnlyAchievementId;
+
     [Header("Debug")]
     [SerializeField] private bool debugCombat;
 
@@ -154,6 +161,11 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     private Health health;
     private Vector3 retreatPoint;
     private bool isRetreatCast;
+
+    // Für Boss-Erfolge: seit Kampfbeginn Schaden genommen / im Nahkampf getroffen worden?
+    private Health fightTargetHealth;
+    private bool playerDamagedInFight;
+    private bool wasHitInMelee;
 
     private float HealthPercent =>
         health != null && health.MaxHealth > 0
@@ -209,6 +221,14 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         {
             health.Died -= HandleDied;
         }
+
+        // Ohne Abo würden Treffer am Player nicht mehr gezählt -> "ohne Schaden" nicht mehr fair prüfbar.
+        if (fightTargetHealth != null)
+        {
+            playerDamagedInFight = true;
+        }
+
+        StopWatchingPlayerDamage();
     }
 
     private void HandleDied()
@@ -218,6 +238,40 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
         if (IsSummoner)
         {
             LevelStats.Current?.RecordBossKilled(this);
+        }
+
+        if (fightTargetHealth != null && !playerDamagedInFight)
+        {
+            AchievementManager.Unlock(untouchedAchievementId);
+        }
+
+        if (!wasHitInMelee)
+        {
+            AchievementManager.Unlock(rangedOnlyAchievementId);
+        }
+
+        StopWatchingPlayerDamage();
+    }
+
+    /// <summary>Wird von <see cref="WeaponHit"/> bei jedem Spielertreffer gemeldet.</summary>
+    public void NotifyPlayerHit(bool isProjectile)
+    {
+        if (!isProjectile)
+        {
+            wasHitInMelee = true;
+        }
+    }
+
+    private void HandlePlayerDamagedInFight(int damage)
+    {
+        playerDamagedInFight = true;
+    }
+
+    private void StopWatchingPlayerDamage()
+    {
+        if (fightTargetHealth != null)
+        {
+            fightTargetHealth.Damaged -= HandlePlayerDamagedInFight;
         }
     }
 
@@ -236,6 +290,13 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     protected override void OnCombatEntered()
     {
+        // Ab dem ersten Kampfkontakt zählt jeder Treffer am Player (für "ohne Schaden besiegt").
+        if (fightTargetHealth == null && TargetHealth != null)
+        {
+            fightTargetHealth = TargetHealth;
+            fightTargetHealth.Damaged += HandlePlayerDamagedInFight;
+        }
+
         summoner.StartCombat();
         ChangeState(CombatState.Approach);
     }

@@ -80,7 +80,7 @@ public static class LevelCompleteSceneBuilder
         GameObject root = SaveMenuBuilder.CreateCanvasRoot("LevelCompleteScreen");
         LevelCompleteScreen screen = root.AddComponent<LevelCompleteScreen>();
 
-        GameObject window = SaveMenuBuilder.CreateWindow(root.transform, new Vector2(1100f, 580f));
+        GameObject window = SaveMenuBuilder.CreateWindow(root.transform, new Vector2(1250f, 720f));
 
         VerticalLayoutGroup layout = window.GetComponent<VerticalLayoutGroup>();
         layout.childAlignment = TextAnchor.UpperCenter;
@@ -96,6 +96,11 @@ public static class LevelCompleteSceneBuilder
             "Difficulty", window.transform, "Schwierigkeit: Mittel", 24, TextAlignmentOptions.Center, 80f);
         difficulty.color = SaveMenuBuilder.InfoTextColor;
         difficulty.GetComponent<LayoutElement>().flexibleWidth = 1f;
+
+        TMP_Text stats = SaveMenuBuilder.CreateText(
+            "Stats", window.transform, "Items: 0 / 0", 18, TextAlignmentOptions.Center, 80f);
+        stats.color = SaveMenuBuilder.InfoTextColor;
+        stats.GetComponent<LayoutElement>().flexibleWidth = 1f;
 
         // Texte füllen weiterhin die Fensterbreite (und brechen um), nur die Buttons bleiben schmal.
         title.GetComponent<LayoutElement>().flexibleWidth = 1f;
@@ -113,6 +118,7 @@ public static class LevelCompleteSceneBuilder
         serialized.FindProperty("titleText").objectReferenceValue = title;
         serialized.FindProperty("timeText").objectReferenceValue = time;
         serialized.FindProperty("difficultyText").objectReferenceValue = difficulty;
+        serialized.FindProperty("statsText").objectReferenceValue = stats;
         serialized.ApplyModifiedPropertiesWithoutUndo();
     }
 

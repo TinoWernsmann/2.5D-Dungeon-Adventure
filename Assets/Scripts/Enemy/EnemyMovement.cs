@@ -371,6 +371,7 @@ public class EnemyMovement : MonoBehaviour, ISaveable
 
         // Rückstoß kommt nur von Spieler-Munition mit Knockback (Push-Bolzen).
         AchievementManager.Unlock(AchievementManager.PushIntoAcidId);
+        AchievementManager.AddProgress(AchievementManager.AcidRainId);
 
         if (TryGetComponent(out MageCombatBehaviour mage) && mage.IsSummoner)
         {

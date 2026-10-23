@@ -19,6 +19,7 @@ public class LevelCompleteScreen : MonoBehaviour
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private TMP_Text difficultyText;
+    [SerializeField] private TMP_Text statsText;
 
     [Header("Scenes")]
     [Tooltip("Wird geladen, wenn es kein nächstes Level gibt (z.B. am Ende des Spiels).")]
@@ -51,7 +52,23 @@ public class LevelCompleteScreen : MonoBehaviour
             difficultyText.text = FormatDifficulty(stats);
         }
 
-        AchievementManager.EvaluateLevel(levelName, stats, (float)time.TotalMinutes);
+        int newAchievements = AchievementManager.EvaluateLevel(levelName, stats, (float)time.TotalMinutes);
+
+        // Auch Erfolge mitzählen, die schon während des Levels kamen (z.B. Scharfschütze beim Boss-Tod).
+        if (stats != null)
+        {
+            newAchievements = stats.unlockedAchievementIds.Count;
+        }
+
+        if (stats != null)
+        {
+            AchievementManager.RecordLevelCompleted(levelName, stats.lowestDifficulty, (float)time.TotalSeconds);
+        }
+
+        if (statsText != null)
+        {
+            statsText.text = FormatStats(stats, newAchievements);
+        }
 
         nextScene = GetNextLevelScene(levelName);
     }
@@ -59,21 +76,30 @@ public class LevelCompleteScreen : MonoBehaviour
     /// <summary>Wurde die Stufe im Level geändert, zählt die leichteste benutzte.</summary>
     private static string FormatDifficulty(LevelStats stats)
     {
-        string text = $"Schwierigkeit: {GetDifficultyName(stats.lowestDifficulty)}";
+        string text = $"Schwierigkeit: {DifficultySettings.GetDisplayName(stats.lowestDifficulty)}";
 
         return stats.difficultyChanged
             ? $"{text}\n<size=70%>Während des Levels geändert – es zählt die leichteste Stufe.</size>"
             : text;
     }
 
-    private static string GetDifficultyName(Difficulty difficulty)
+    /// <summary>Zeigt, was im Level noch fehlt – Anreiz für einen weiteren Durchlauf.</summary>
+    private static string FormatStats(LevelStats stats, int newAchievements)
     {
-        return difficulty switch
+        string achievements = $"Neue Erfolge: {newAchievements}";
+
+        // Alte Spielstände haben Items/Kisten/Bosse nicht von Levelbeginn an gezählt.
+        if (stats == null || !stats.isTrackedFromStart)
         {
-            Difficulty.Easy => "Einfach",
-            Difficulty.Hard => "Schwer",
-            _ => "Mittel"
-        };
+            return achievements;
+        }
+
+        string deaths = stats.tracksPlayStyle ? $"   Tode: {stats.deaths}" : string.Empty;
+
+        return $"Items: {stats.collectedItemIds.Count} / {stats.knownItemIds.Count}   " +
+               $"Kisten: {stats.destroyedCrateIds.Count} / {stats.knownCrateIds.Count}   " +
+               $"Bosse: {stats.killedBossIds.Count} / {stats.knownBossIds.Count}\n" +
+               $"Schaden genommen: {stats.damageTaken}{deaths}   {achievements}";
     }
 
     public void Continue()

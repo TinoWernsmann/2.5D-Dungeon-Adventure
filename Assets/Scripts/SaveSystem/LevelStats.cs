@@ -19,6 +19,12 @@ public class LevelStats
 
     public int damageTaken;
     public bool summonKilledByPlayer;
+    // Fehlt in älteren Spielständen (= false): dann gelten Waffen/Heilung/Tod/Laden als nicht gezählt.
+    public bool tracksPlayStyle;
+    public int deaths;
+    public bool healed;
+    public bool loadedSave;
+    public bool usedWeapon;
 
     public List<string> countedScenes = new();
     public List<string> knownItemIds = new();
@@ -30,6 +36,9 @@ public class LevelStats
     public List<string> knownBossIds = new();
     public List<string> killedBossIds = new();
     public List<string> acidKilledBossIds = new();
+
+    // Alle in diesem Level freigeschalteten Erfolge (auch die mitten im Level, z.B. beim Boss-Tod).
+    public List<string> unlockedAchievementIds = new();
 
     /// <summary>Statistik des laufenden Levels (null außerhalb des Spiels).</summary>
     public static LevelStats Current =>
@@ -54,7 +63,8 @@ public class LevelStats
         {
             startDifficulty = difficulty,
             lowestDifficulty = difficulty,
-            isTrackedFromStart = trackedFromStart
+            isTrackedFromStart = trackedFromStart,
+            tracksPlayStyle = trackedFromStart
         };
     }
 
@@ -75,6 +85,31 @@ public class LevelStats
     public void RecordDamage(int damage)
     {
         damageTaken += damage;
+    }
+
+    public void RecordDeath()
+    {
+        deaths++;
+    }
+
+    public void RecordHealing()
+    {
+        healed = true;
+    }
+
+    public void RecordSaveLoaded()
+    {
+        loadedSave = true;
+    }
+
+    public void RecordWeaponUsed()
+    {
+        usedWeapon = true;
+    }
+
+    public void RecordAchievementUnlocked(string id)
+    {
+        AddUnique(unlockedAchievementIds, id);
     }
 
     public void RecordItemCollected(Component item)

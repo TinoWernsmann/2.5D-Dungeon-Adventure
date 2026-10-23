@@ -155,6 +155,12 @@ public class SaveSlotMenu : MonoBehaviour
             return;
         }
 
+        if (DifficultySettings.IsHardcore)
+        {
+            feedbackText.text = "You can't save in Hardcore mode.";
+            return;
+        }
+
         if (!SaveManager.Instance.HasSave(slot))
         {
             Save(slot);

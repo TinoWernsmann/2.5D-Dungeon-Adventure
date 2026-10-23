@@ -25,6 +25,8 @@ public class PlayerEquipment : MonoBehaviour
             ? fists
             : itemManager.SelectedWeapon;
 
+    public bool IsFists(WeaponSO weapon) => weapon == fists;
+
     private void Awake()
     {
         playerCombat = GetComponent<PlayerCombat>();
