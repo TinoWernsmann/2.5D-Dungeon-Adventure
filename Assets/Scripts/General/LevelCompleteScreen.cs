@@ -18,6 +18,7 @@ public class LevelCompleteScreen : MonoBehaviour
     [Header("Texts")]
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text timeText;
+    [SerializeField] private TMP_Text difficultyText;
 
     [Header("Scenes")]
     [Tooltip("Wird geladen, wenn es kein nächstes Level gibt (z.B. am Ende des Spiels).")]
@@ -43,7 +44,36 @@ public class LevelCompleteScreen : MonoBehaviour
         TimeSpan time = TimeSpan.FromSeconds(saveManager != null ? saveManager.LevelPlayTimeSeconds : 0f);
         timeText.text = $"Zeit: {(int)time.TotalHours}:{time.Minutes:00}:{time.Seconds:00}";
 
+        LevelStats stats = LevelStats.Current;
+
+        if (difficultyText != null && stats != null)
+        {
+            difficultyText.text = FormatDifficulty(stats);
+        }
+
+        AchievementManager.EvaluateLevel(levelName, stats, (float)time.TotalMinutes);
+
         nextScene = GetNextLevelScene(levelName);
+    }
+
+    /// <summary>Wurde die Stufe im Level geändert, zählt die leichteste benutzte.</summary>
+    private static string FormatDifficulty(LevelStats stats)
+    {
+        string text = $"Schwierigkeit: {GetDifficultyName(stats.lowestDifficulty)}";
+
+        return stats.difficultyChanged
+            ? $"{text}\n<size=70%>Während des Levels geändert – es zählt die leichteste Stufe.</size>"
+            : text;
+    }
+
+    private static string GetDifficultyName(Difficulty difficulty)
+    {
+        return difficulty switch
+        {
+            Difficulty.Easy => "Einfach",
+            Difficulty.Hard => "Schwer",
+            _ => "Mittel"
+        };
     }
 
     public void Continue()

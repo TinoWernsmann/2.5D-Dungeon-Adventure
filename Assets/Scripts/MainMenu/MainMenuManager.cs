@@ -24,6 +24,10 @@ public class MainMenuManager : MonoBehaviour
     [Tooltip("Wird wie das Lade-Menü geöffnet; blendet dieselben Objekte aus.")]
     [SerializeField] private DifficultyMenu _difficultyMenu;
 
+    [Header("Achievements")]
+    [Tooltip("Wird wie das Lade-Menü geöffnet; blendet dieselben Objekte aus.")]
+    [SerializeField] private AchievementMenu _achievementMenu;
+
     private const string BEGIN_SCENE = "BeginCutscene";
 
     private void Awake()
@@ -42,6 +46,7 @@ public class MainMenuManager : MonoBehaviour
         if (SaveManager.Instance != null) SaveManager.Instance.SlotsChanged += RefreshContinueButton;
         if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleLoadMenuClosed;
         if (_difficultyMenu != null) _difficultyMenu.Closed += HandleLoadMenuClosed;
+        if (_achievementMenu != null) _achievementMenu.Closed += HandleLoadMenuClosed;
     }
 
     private void OnDestroy()
@@ -49,6 +54,7 @@ public class MainMenuManager : MonoBehaviour
         if (SaveManager.Instance != null) SaveManager.Instance.SlotsChanged -= RefreshContinueButton;
         if (_saveSlotMenu != null) _saveSlotMenu.Closed -= HandleLoadMenuClosed;
         if (_difficultyMenu != null) _difficultyMenu.Closed -= HandleLoadMenuClosed;
+        if (_achievementMenu != null) _achievementMenu.Closed -= HandleLoadMenuClosed;
     }
 
     public void ContinueGame()
@@ -72,6 +78,15 @@ public class MainMenuManager : MonoBehaviour
 
         SetMainMenuVisible(false);
         _difficultyMenu.Open();
+    }
+
+    /// <summary>Button "Erfolge" im Hauptmenü.</summary>
+    public void OpenAchievementMenu()
+    {
+        if (_achievementMenu == null) return;
+
+        SetMainMenuVisible(false);
+        _achievementMenu.Open();
     }
 
     private void HandleLoadMenuClosed()

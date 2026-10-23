@@ -18,7 +18,7 @@ public static class SaveMenuBuilder
     // Farben wie im Pause-Menü.
     internal static readonly Color OverlayColor = new(0f, 0f, 0f, 0.5f);
     private static readonly Color WindowColor = new(0f, 0f, 0f, 0.88f);
-    private static readonly Color RowColor = new(1f, 1f, 1f, 0.06f);
+    internal static readonly Color RowColor = new(1f, 1f, 1f, 0.06f);
     private static readonly Color ButtonColor = Color.white;
     internal static readonly Color ButtonTextColor = new(0.196f, 0.196f, 0.196f, 1f);
     private static readonly Color DeleteTextColor = new(0.6f, 0.1f, 0.12f, 1f);
@@ -164,7 +164,7 @@ public static class SaveMenuBuilder
     }
 
     /// <summary>Scrollbare Liste (Viewport + Content + Scrollbar rechts). Gibt den Content zurück.</summary>
-    private static Transform CreateScrollList(Transform parent)
+    internal static Transform CreateScrollList(Transform parent)
     {
         const float ScrollbarWidth = 20f;
 
@@ -307,7 +307,7 @@ public static class SaveMenuBuilder
         return gameObject;
     }
 
-    private static GameObject CreateImage(string name, Transform parent, Color color)
+    internal static GameObject CreateImage(string name, Transform parent, Color color)
     {
         GameObject gameObject = new(name, typeof(RectTransform), typeof(Image));
         gameObject.transform.SetParent(parent, false);
@@ -386,7 +386,7 @@ public static class SaveMenuBuilder
         return button;
     }
 
-    private static void AddLayoutElement(
+    internal static void AddLayoutElement(
         GameObject gameObject,
         float preferredWidth = 0f,
         float preferredHeight = 0f,

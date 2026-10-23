@@ -29,6 +29,7 @@ public class SaveManager : MonoBehaviour
     private SaveGameData pendingLoad;
     private float playTimeSeconds;
     private float levelStartPlayTimeSeconds;
+    private LevelStats levelStats = LevelStats.Create(Difficulty.Normal, trackedFromStart: false);
     private float secondsSinceAutoSave;
     private bool isGameplayScene;
 
@@ -44,6 +45,9 @@ public class SaveManager : MonoBehaviour
 
     /// <summary>Gespielte Zeit im aktuellen Level (läuft nur in Gameplay-Szenen, wird mitgespeichert).</summary>
     public float LevelPlayTimeSeconds => playTimeSeconds - levelStartPlayTimeSeconds;
+
+    /// <summary>Statistik des aktuellen Levels (Schwierigkeit, Schaden, Items, ...) für Erfolge.</summary>
+    public LevelStats CurrentLevelStats => levelStats;
 
     /// <summary>Ein Slot wurde gespeichert oder gelöscht (für die UI).</summary>
     public event Action SlotsChanged;
@@ -116,6 +120,7 @@ public class SaveManager : MonoBehaviour
         if (isGameplayScene)
         {
             playTimeSeconds += Time.deltaTime;
+            levelStats.TrackDifficulty(DifficultySettings.Current);
             UpdateAutoSave();
         }
     }
@@ -254,6 +259,7 @@ public class SaveManager : MonoBehaviour
             savedAtIso = DateTime.Now.ToString("o"),
             playTimeSeconds = playTimeSeconds,
             levelStartPlayTimeSeconds = levelStartPlayTimeSeconds,
+            levelStats = levelStats,
             destroyedEntityIds = new List<string>(destroyedEntityIds),
             droppedItems = CaptureDroppedItems()
         };
@@ -352,9 +358,13 @@ public class SaveManager : MonoBehaviour
             if (isNewLevel && pendingLoad == null)
             {
                 levelStartPlayTimeSeconds = playTimeSeconds;
+                levelStats = LevelStats.Create(DifficultySettings.Current, trackedFromStart: true);
             }
 
             LastGameplayScene = scene.name;
+
+            // Vor dem Wiederherstellen eines Spielstands: eingesammeltes/zerstörtes zählt trotzdem als "vorhanden".
+            levelStats.RegisterScene(scene.name);
         }
 
         if (pendingLoad != null)
@@ -378,6 +388,7 @@ public class SaveManager : MonoBehaviour
     {
         playTimeSeconds = 0f;
         levelStartPlayTimeSeconds = 0f;
+        levelStats = LevelStats.Create(DifficultySettings.Current, trackedFromStart: true);
         LastGameplayScene = null;
     }
 
@@ -391,6 +402,11 @@ public class SaveManager : MonoBehaviour
         destroyedEntityIds.UnionWith(data.destroyedEntityIds);
         playTimeSeconds = data.playTimeSeconds;
         levelStartPlayTimeSeconds = data.levelStartPlayTimeSeconds;
+
+        // Spielstände vor Version 2 haben keine Level-Statistik.
+        levelStats = data.version >= 2 && data.levelStats != null
+            ? data.levelStats
+            : LevelStats.Create(data.difficulty, trackedFromStart: false);
 
         if (GlobalVars.Instance != null && !string.IsNullOrEmpty(data.playerName))
         {

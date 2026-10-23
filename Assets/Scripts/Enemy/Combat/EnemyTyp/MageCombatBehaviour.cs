@@ -174,6 +174,9 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
     public bool IsCasting => currentState == CombatState.Cast;
 
+    /// <summary>Beschwört Diener -> zählt als Boss (z.B. für Erfolge).</summary>
+    public bool IsSummoner => summoner.IsEnabled;
+
     public bool IsRetreating => currentState == CombatState.Retreat;
 
     public bool IsCastingFireball =>
@@ -194,7 +197,7 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
     {
         if (health != null)
         {
-            health.Died += summoner.KillAllMinions;
+            health.Died += HandleDied;
         }
     }
 
@@ -204,7 +207,17 @@ public class MageCombatBehaviour : EnemyCombatBehaviour
 
         if (health != null)
         {
-            health.Died -= summoner.KillAllMinions;
+            health.Died -= HandleDied;
+        }
+    }
+
+    private void HandleDied()
+    {
+        summoner.KillAllMinions();
+
+        if (IsSummoner)
+        {
+            LevelStats.Current?.RecordBossKilled(this);
         }
     }
 

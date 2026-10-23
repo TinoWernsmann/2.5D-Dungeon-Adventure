@@ -369,6 +369,9 @@ public class EnemyMovement : MonoBehaviour, ISaveable
     {
         agent.enabled = false;
 
+        // Rückstoß kommt nur von Spieler-Munition mit Knockback (Push-Bolzen).
+        AchievementManager.Unlock(AchievementManager.PushIntoAcidId);
+
         for (float elapsed = 0f; elapsed < FallDuration; elapsed += Time.deltaTime)
         {
             transform.position += (direction * 2f + Vector3.down * FallSpeed * (elapsed / FallDuration)) * Time.deltaTime;

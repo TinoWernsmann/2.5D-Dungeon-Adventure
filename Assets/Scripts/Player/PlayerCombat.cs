@@ -85,18 +85,26 @@ public class PlayerCombat : MonoBehaviour
     private void OnEnable()
     {
         playerHealth.Died += HandlePlayerDeath;
+        playerHealth.Damaged += HandleDamaged;
         itemManager.OnHealingUsed += HandleHealing;
     }
 
     private void OnDisable()
     {
         playerHealth.Died -= HandlePlayerDeath;
+        playerHealth.Damaged -= HandleDamaged;
         itemManager.OnHealingUsed -= HandleHealing;
     }
 
     private void HandleHealing()
     {
         playerHealth.Heal(HEALING_AMOUNT);
+    }
+
+    // Für Erfolge wie "Level ohne Schaden abschließen".
+    private void HandleDamaged(int damage)
+    {
+        LevelStats.Current?.RecordDamage(damage);
     }
 
     private void HandlePlayerDeath()

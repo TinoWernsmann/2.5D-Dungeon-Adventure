@@ -25,8 +25,15 @@ public class ItemCollector : MonoBehaviour
             return false;
         }
 
-        return itemManager.TryAddItem(
+        bool collected = itemManager.TryAddItem(
             item
         );
+
+        if (collected)
+        {
+            LevelStats.Current?.RecordItemCollected(item);
+        }
+
+        return collected;
     }
 }

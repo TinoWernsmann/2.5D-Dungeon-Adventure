@@ -46,7 +46,10 @@ public class MinionSummoner
     private readonly List<Health> aliveMinions = new();
 
     private Transform owner;
+    private Health ownerHealth;
     private float cooldownTimer;
+
+    public bool IsEnabled => minionPrefab != null;
 
     public float CastDuration => castDuration;
 
@@ -60,6 +63,7 @@ public class MinionSummoner
     public void Initialize(Transform summoner)
     {
         owner = summoner;
+        ownerHealth = summoner.GetComponent<Health>();
     }
 
     public void Tick(float deltaTime)
@@ -98,7 +102,21 @@ public class MinionSummoner
             if (minion.TryGetComponent(out Health minionHealth))
             {
                 aliveMinions.Add(minionHealth);
+                minionHealth.Died += HandleMinionDied;
             }
+        }
+    }
+
+    /// <summary>
+    /// Ein Diener stirbt, während der Beschwörer noch lebt -> der Player hat ihn getötet
+    /// (beim Tod des Beschwörers sterben die Diener über <see cref="KillAllMinions"/>, das zählt nicht).
+    /// shortcut: trifft der Boss seinen eigenen Diener tödlich, zählt das auch; bei Bedarf den Angreifer prüfen.
+    /// </summary>
+    private void HandleMinionDied()
+    {
+        if (ownerHealth != null && !ownerHealth.IsDead)
+        {
+            LevelStats.Current?.RecordSummonKilled();
         }
     }
 
