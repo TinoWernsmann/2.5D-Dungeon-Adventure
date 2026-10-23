@@ -17,6 +17,8 @@ public class DeathScreenManager : MonoBehaviour
     [SerializeField] private SaveSlotMenu _saveSlotMenu;
     [Tooltip("Ist ausgegraut, wenn es noch keinen Spielstand gibt.")]
     [SerializeField] private Button _loadButton;
+    [Tooltip("Lädt direkt den neuesten Spielstand. Ist ausgegraut, wenn es noch keinen gibt.")]
+    [SerializeField] private Button _quickLoadButton;
     [Tooltip("Wird ausgeblendet, solange das Lade-Menü offen ist (z.B. Titel und Buttons).")]
     [SerializeField] private GameObject[] _hideWhileLoadMenuOpen;
 
@@ -61,6 +63,15 @@ public class DeathScreenManager : MonoBehaviour
         _saveSlotMenu.Open(SaveSlotMenu.Mode.Load);
     }
 
+    /// <summary>Lädt den neuesten Spielstand (manuell oder Autosave).</summary>
+    public void QuickLoad()
+    {
+        if (SaveManager.Instance == null) return;
+
+        int slot = SaveManager.Instance.GetMostRecentSlot();
+        if (slot >= 0) SaveManager.Instance.Load(slot);
+    }
+
     public void GoToMainMenu()
     {
         SceneLoader.Load(_mainMenuScene);
@@ -83,8 +94,9 @@ public class DeathScreenManager : MonoBehaviour
 
     private void RefreshLoadButton()
     {
-        if (_loadButton == null) return;
+        bool hasSave = SaveManager.Instance != null && SaveManager.Instance.HasAnySave();
 
-        _loadButton.interactable = SaveManager.Instance != null && SaveManager.Instance.HasAnySave();
+        if (_loadButton != null) _loadButton.interactable = hasSave;
+        if (_quickLoadButton != null) _quickLoadButton.interactable = hasSave;
     }
 }

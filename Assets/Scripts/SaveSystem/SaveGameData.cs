@@ -17,6 +17,7 @@ public class SaveGameData
     public string questTitle;
     public string savedAtIso;
     public float playTimeSeconds;
+    public float levelStartPlayTimeSeconds; // fehlt in alten Spielständen -> 0 (Levelzeit = Gesamtzeit)
 
     // Zustand der Welt
     public List<EntitySaveData> entities = new();

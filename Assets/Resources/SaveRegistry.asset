@@ -58,9 +58,6 @@ MonoBehaviour:
   - id: a3080df8da2a4b699b00e302fa442e87
     item: {fileID: 11400000, guid: a3080df8da2a4b699b00e302fa442e87, type: 2}
     prefab: {fileID: 0}
-  - id: f83f888a874281141a787f8b2dc459b7
-    item: {fileID: 11400000, guid: f83f888a874281141a787f8b2dc459b7, type: 2}
-    prefab: {fileID: 0}
   - id: 7d7fc37d00862cc46b0af0c3e4821dde
     item: {fileID: 11400000, guid: 7d7fc37d00862cc46b0af0c3e4821dde, type: 2}
     prefab: {fileID: 223743874185225283, guid: 6906d19fff7047b478d1cb13af9e42c6, type: 3}
@@ -90,3 +87,7 @@ MonoBehaviour:
     quest: {fileID: 11400000, guid: 9da1178de53c8c746b6803208ca0bc9f, type: 2}
   - id: fd2c40f6ad522954fbd36eb0a4c3076e
     quest: {fileID: 11400000, guid: fd2c40f6ad522954fbd36eb0a4c3076e, type: 2}
+  - id: a958ddd933b967743a53372d5c96f380
+    quest: {fileID: 11400000, guid: a958ddd933b967743a53372d5c96f380, type: 2}
+  - id: 21a8563eb85c8c3439ee346ee788268d
+    quest: {fileID: 11400000, guid: 21a8563eb85c8c3439ee346ee788268d, type: 2}

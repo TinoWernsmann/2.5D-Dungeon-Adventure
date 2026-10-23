@@ -131,6 +131,9 @@ public class ItemListUI : MonoBehaviour
                 ? item.InventoryIcon
                 : null;
 
+        // Icons nicht auf die Slot-Größe strecken (z.B. schmale Schlüssel).
+        itemIcons[index].preserveAspect = true;
+
         itemIcons[index]
             .gameObject
             .SetActive(hasItem);
@@ -245,6 +248,8 @@ public class ItemListUI : MonoBehaviour
 
         selectedItemIcon.sprite =
             icon;
+
+        selectedItemIcon.preserveAspect = true;
 
         selectedItemIcon
             .gameObject

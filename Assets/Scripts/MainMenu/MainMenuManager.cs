@@ -98,6 +98,7 @@ public class MainMenuManager : MonoBehaviour
     public void SubmitName(string name)
     {
         GlobalVars.Instance.SetPlayerName(_nameInput.text);
+        if (SaveManager.Instance != null) SaveManager.Instance.StartNewGame();
         SceneLoader.Load(BEGIN_SCENE);
     }
 

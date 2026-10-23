@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58797e4b9cf40e345b170c1242bef4f9, type: 3}
-  m_Name: 10_BossFightTeil2
+  m_Name: Level2_2_DestoryHeart
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
-  _title: Boss Kampf 2
-  _goalText: Besiege den Kultist!
+  _title: Boss Kampf
+  _goalText: "Zerst\xF6re das Herz!"
   _showCounter: 0
   _startTutorial: {fileID: 0}
   _type: 4
-  _targetId: KillBoss2
+  _targetId: KillHeart
   _requiredAmount: 1
-  _nextQuest: {fileID: 11400000, guid: fd2c40f6ad522954fbd36eb0a4c3076e, type: 2}
+  _nextQuest: {fileID: 0}
   _canBeSkipped: 0

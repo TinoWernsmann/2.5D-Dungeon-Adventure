@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   ItemName: Key_9
   Description: 
-  InventoryIcon: {fileID: 21300000, guid: 6f68eafeb0869114ba91fcad84ff01c8, type: 3}
+  InventoryIcon: {fileID: -1621512990, guid: a1df6e6ef2b8df246b0a20f6b494c9a6, type: 3}
   HeldSprite: {fileID: 21300000, guid: e3812f87b0fcdfb40b14564618d1f37d, type: 3}
   stackable: 0
   maxStackSize: 1

@@ -19,12 +19,13 @@ MonoBehaviour:
   stackable: 0
   maxStackSize: 1
   IsHealing: 0
+  PickupTutorial: {fileID: 0}
   PickUpSound: {fileID: 0}
   DropSound: {fileID: 0}
   attackType: 0
   WeaponDamage: 6
-  WeaponRange: 2.5
-  AttackDuration: 0.4
+  WeaponRange: 2
+  AttackDuration: 0.5
   projectilePrefab: {fileID: 0}
   projectileSpeed: 20
   usesAmmo: 0

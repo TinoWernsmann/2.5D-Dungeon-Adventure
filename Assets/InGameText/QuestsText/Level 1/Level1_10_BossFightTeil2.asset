@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58797e4b9cf40e345b170c1242bef4f9, type: 3}
-  m_Name: 5_OrtVerlassenTeil1
+  m_Name: Level1_10_BossFightTeil2
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
-  _title: Ort Verlassen
-  _goalText: Das Tor ist offen! Verlasse diesen Ort!
+  _title: Boss Kampf 2
+  _goalText: Besiege den Kultist!
   _showCounter: 0
-  _type: 0
-  _targetId: LeavePlace
+  _startTutorial: {fileID: 0}
+  _type: 4
+  _targetId: KillBoss2
   _requiredAmount: 1
-  _nextQuest: {fileID: 11400000, guid: 4d35b934555fb324eb2622d17251db43, type: 2}
+  _nextQuest: {fileID: 11400000, guid: fd2c40f6ad522954fbd36eb0a4c3076e, type: 2}
   _canBeSkipped: 0

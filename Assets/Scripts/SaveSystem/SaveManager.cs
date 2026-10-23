@@ -28,6 +28,7 @@ public class SaveManager : MonoBehaviour
 
     private SaveGameData pendingLoad;
     private float playTimeSeconds;
+    private float levelStartPlayTimeSeconds;
     private float secondsSinceAutoSave;
     private bool isGameplayScene;
 
@@ -40,6 +41,9 @@ public class SaveManager : MonoBehaviour
 
     /// <summary>Das zuletzt gespielte Level (z.B. für "Restart Level" im Todes-Bildschirm).</summary>
     public string LastGameplayScene { get; private set; }
+
+    /// <summary>Gespielte Zeit im aktuellen Level (läuft nur in Gameplay-Szenen, wird mitgespeichert).</summary>
+    public float LevelPlayTimeSeconds => playTimeSeconds - levelStartPlayTimeSeconds;
 
     /// <summary>Ein Slot wurde gespeichert oder gelöscht (für die UI).</summary>
     public event Action SlotsChanged;
@@ -249,6 +253,7 @@ public class SaveManager : MonoBehaviour
             questTitle = GetTrackedQuestTitle(),
             savedAtIso = DateTime.Now.ToString("o"),
             playTimeSeconds = playTimeSeconds,
+            levelStartPlayTimeSeconds = levelStartPlayTimeSeconds,
             destroyedEntityIds = new List<string>(destroyedEntityIds),
             droppedItems = CaptureDroppedItems()
         };
@@ -340,6 +345,15 @@ public class SaveManager : MonoBehaviour
 
         if (isGameplayScene)
         {
+            // Neues Level betreten (z.B. Level 1.2 -> Level 2): Levelzeit startet neu.
+            bool isNewLevel =
+                SceneLoader.GetLevelName(scene.name) != SceneLoader.GetLevelName(LastGameplayScene);
+
+            if (isNewLevel && pendingLoad == null)
+            {
+                levelStartPlayTimeSeconds = playTimeSeconds;
+            }
+
             LastGameplayScene = scene.name;
         }
 
@@ -354,9 +368,17 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        // Neues Spiel (oder Neustart nach dem Tod): Welt ist frisch.
+        // Neue Szene (oder Neustart nach dem Tod): Welt ist frisch.
+        // Die Spielzeit läuft weiter – sie wird nur bei einem neuen Spiel zurückgesetzt.
         destroyedEntityIds.Clear();
+    }
+
+    /// <summary>Neues Spiel aus dem Hauptmenü: Spielzeit beginnt bei 0.</summary>
+    public void StartNewGame()
+    {
         playTimeSeconds = 0f;
+        levelStartPlayTimeSeconds = 0f;
+        LastGameplayScene = null;
     }
 
     private IEnumerator RestoreGame(SaveGameData data)
@@ -368,6 +390,7 @@ public class SaveManager : MonoBehaviour
         destroyedEntityIds.Clear();
         destroyedEntityIds.UnionWith(data.destroyedEntityIds);
         playTimeSeconds = data.playTimeSeconds;
+        levelStartPlayTimeSeconds = data.levelStartPlayTimeSeconds;
 
         if (GlobalVars.Instance != null && !string.IsNullOrEmpty(data.playerName))
         {
