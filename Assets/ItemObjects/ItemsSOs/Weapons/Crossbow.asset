@@ -34,6 +34,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 645a10cbcff648d0abb31cfa5b3dad28, type: 2}
   ammoPerShot: 1
   AttackSprite: {fileID: 21300000, guid: 51cef7502a998b74d80bcb5e6c97d8c9, type: 3}
+  EmptySprite: {fileID: 21300000, guid: 920f464107c944548ad5d8127b3d9d60, type: 3}
   AttackSounds:
   - {fileID: 8300000, guid: 060f213e01fbe3c469b8503471ae99a6, type: 3}
   - {fileID: 8300000, guid: 7d2b10c8a3128334d9b06dc210bf9e1d, type: 3}

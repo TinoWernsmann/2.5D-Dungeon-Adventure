@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AmmoSO
   ItemName: Push Bolts
   Description: Pushes enemies back
-  InventoryIcon: {fileID: 479275709, guid: fb371294aaaaa684b8b6d79d58a2f23e, type: 3}
-  HeldSprite: {fileID: -1822101462, guid: aad4f84d92a6ed04ba0727e1b58afc20, type: 3}
+  InventoryIcon: {fileID: 479275709, guid: 22b937d5ade44a23bb99353ba055df9f, type: 3}
+  HeldSprite: {fileID: -1822101462, guid: b66ffcb8f97b4feeb335af300f3d1abe, type: 3}
   stackable: 1
   maxStackSize: 12
   IsHealing: 0
@@ -24,3 +24,4 @@ MonoBehaviour:
   DropSound: {fileID: 8300000, guid: 03ee6ced028d2414babfc96ae72b6fe8, type: 3}
   knockbackDistance: 2.5
   projectilePrefab: {fileID: 7032267243731821679, guid: ef10a41a73b4d374cbea30a65423c1cb, type: 3}
+  loadedWeaponSprite: {fileID: 21300000, guid: ad48359fa2d548788328cfa0d5cd15d0, type: 3}

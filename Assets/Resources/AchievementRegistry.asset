@@ -22,4 +22,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d441bbe3e66445ff8b4cc36e6a7901fc, type: 2}
   - {fileID: 11400000, guid: 321ef3d77bb34ae9ab11de91540e7cfb, type: 2}
   - {fileID: 11400000, guid: b502b67174a04b3481810ce168ca0378, type: 2}
+  - {fileID: 11400000, guid: 907b03f12fd7427a9546243a48ccfc02, type: 2}
   popupFont: {fileID: 11400000, guid: 187290301dff71242acb2ae1ba094de7, type: 2}
+  popupSound: {fileID: 8300000, guid: 21901ee19d100f140b89de964e46c3c2, type: 3}

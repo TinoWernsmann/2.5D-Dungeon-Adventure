@@ -15,6 +15,10 @@ public class AchievementRegistry : ScriptableObject
     [Tooltip("Schrift für das Popup \"Erfolg freigeschaltet\".")]
     [SerializeField] private TMP_FontAsset popupFont;
 
+    [Tooltip("Optional: Sound beim Popup \"Erfolg freigeschaltet\".")]
+    [SerializeField] private AudioClip popupSound;
+
     public IReadOnlyList<AchievementData> Achievements => achievements;
     public TMP_FontAsset PopupFont => popupFont;
+    public AudioClip PopupSound => popupSound;
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level1_9_OrtVerlassenTeil3
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
   _title: Ort Verlassen
-  _goalText: Entkomme aus diesem Ort
+  _goalText: Das Tor ist offen! Verlasse diesen Ort!
   _showCounter: 0
   _startTutorial: {fileID: 0}
   _type: 0

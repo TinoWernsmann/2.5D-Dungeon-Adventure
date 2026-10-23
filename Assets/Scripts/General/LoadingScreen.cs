@@ -33,7 +33,7 @@ public class LoadingScreen : MonoBehaviour
     {
         if (screenCanvas == null)
         {
-            screenCanvas = FindAnyObjectByType<Canvas>();
+            screenCanvas = FindCanvasInOwnScene();
         }
 
         string targetScene = SceneLoader.TakePendingScene();
@@ -92,6 +92,25 @@ public class LoadingScreen : MonoBehaviour
 
         screenCanvas.sortingOrder = TopSortingOrder;
         DontDestroyOnLoad(screenCanvas.transform.root.gameObject);
+    }
+
+    /// <summary>
+    /// Nur in der LoadingScene suchen – sonst könnte eine Canvas, die über alle Szenen bleibt
+    /// (z.B. das Erfolgs-Popup), gefunden und am Ende zerstört werden.
+    /// </summary>
+    private Canvas FindCanvasInOwnScene()
+    {
+        foreach (GameObject root in gameObject.scene.GetRootGameObjects())
+        {
+            Canvas canvas = root.GetComponentInChildren<Canvas>(true);
+
+            if (canvas != null)
+            {
+                return canvas;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>Wartet, bis ein geladener Spielstand vollständig wiederhergestellt ist.</summary>

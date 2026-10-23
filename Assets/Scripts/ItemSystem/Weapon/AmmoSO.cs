@@ -19,7 +19,12 @@ public class AmmoSO : ItemSO
     [Tooltip("Optional: eigenes Projektil (Aussehen). Leer = Projektil der Waffe.")]
     [SerializeField] private PlayerProjectile projectilePrefab;
 
+    [Tooltip("Optional: Bild der Waffe in der Hand, wenn diese Munition geladen ist. Leer = Held Sprite der Waffe.")]
+    [SerializeField] private Sprite loadedWeaponSprite;
+
     public float KnockbackDistance => knockbackDistance;
+
+    public Sprite LoadedWeaponSprite => loadedWeaponSprite;
 
     public PlayerProjectile ProjectilePrefab => projectilePrefab;
 }

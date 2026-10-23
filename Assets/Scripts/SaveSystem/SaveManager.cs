@@ -30,6 +30,7 @@ public class SaveManager : MonoBehaviour
     private float playTimeSeconds;
     private float levelStartPlayTimeSeconds;
     private LevelStats levelStats = LevelStats.Create(Difficulty.Normal, trackedFromStart: false);
+    private bool keepSummonKillAfterLoad;
     private float secondsSinceAutoSave;
     private bool isGameplayScene;
 
@@ -339,6 +340,10 @@ public class SaveManager : MonoBehaviour
 
         pendingLoad = data;
 
+        // Ein getöteter Diener sperrt "Nur die Bosse" für dieses Level – auch Laden hebt das nicht auf.
+        bool isSameLevel = SceneLoader.GetLevelName(data.sceneName) == SceneLoader.GetLevelName(LastGameplayScene);
+        keepSummonKillAfterLoad = isSameLevel && levelStats.summonKilledByPlayer;
+
         SceneLoader.Load(data.sceneName);
 
         return true;
@@ -407,6 +412,12 @@ public class SaveManager : MonoBehaviour
         levelStats = data.version >= 2 && data.levelStats != null
             ? data.levelStats
             : LevelStats.Create(data.difficulty, trackedFromStart: false);
+
+        if (keepSummonKillAfterLoad)
+        {
+            levelStats.RecordSummonKilled();
+            keepSummonKillAfterLoad = false;
+        }
 
         if (GlobalVars.Instance != null && !string.IsNullOrEmpty(data.playerName))
         {

@@ -30,6 +30,9 @@ public class AchievementData : ScriptableObject
     [Tooltip("Alle Bosse besiegt, ohne einen beschworenen Diener zu töten.")]
     [SerializeField] private bool requireBossesWithoutSummonKills;
 
+    [Tooltip("Alle Bosse des Levels per Rückstoß in die Säure gestoßen.")]
+    [SerializeField] private bool requireAllBossesPushedIntoAcid;
+
     [Tooltip("Level in weniger als so vielen Minuten abschließen. 0 = egal.")]
     [Min(0f)]
     [SerializeField] private float maxMinutes;
@@ -48,7 +51,8 @@ public class AchievementData : ScriptableObject
 
         // Diese Werte werden erst seit Spielstand-Version 2 von Levelbeginn an gezählt.
         bool needsFullTracking =
-            requireNoDamage || requireAllItems || requireAllCrates || requireBossesWithoutSummonKills;
+            requireNoDamage || requireAllItems || requireAllCrates ||
+            requireBossesWithoutSummonKills || requireAllBossesPushedIntoAcid;
 
         if (needsFullTracking && !stats.isTrackedFromStart)
         {
@@ -59,6 +63,7 @@ public class AchievementData : ScriptableObject
                (!requireAllItems || stats.HasAllItems) &&
                (!requireAllCrates || stats.HasAllCrates) &&
                (!requireBossesWithoutSummonKills || stats.KilledAllBossesWithoutSummons) &&
+               (!requireAllBossesPushedIntoAcid || stats.PushedAllBossesIntoAcid) &&
                (maxMinutes <= 0f || minutes < maxMinutes);
     }
 }

@@ -41,6 +41,20 @@ public class HeldItemUI : MonoBehaviour
         SetSprite(heldSprite);
     }
 
+    /// <summary>
+    /// Tauscht das Bild des gehaltenen Items (z.B. Armbrust leer/geladen), ohne eine laufende
+    /// Angriffsanimation abzubrechen – sie endet dann mit dem neuen Bild.
+    /// </summary>
+    public void UpdateHeldSprite(Sprite heldSprite)
+    {
+        currentHeldSprite = heldSprite;
+
+        if (attackAnimation == null)
+        {
+            SetSprite(heldSprite);
+        }
+    }
+
     public void PlayAttackAnimation(
         Sprite attackSprite,
         Sprite heldSprite,

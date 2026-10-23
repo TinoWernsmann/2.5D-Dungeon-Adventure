@@ -29,6 +29,7 @@ public class LevelStats
     // Ids statt Zähler: nach einem Neustart (Tod) stehen die Bosse wieder da und dürfen nicht doppelt zählen.
     public List<string> knownBossIds = new();
     public List<string> killedBossIds = new();
+    public List<string> acidKilledBossIds = new();
 
     /// <summary>Statistik des laufenden Levels (null außerhalb des Spiels).</summary>
     public static LevelStats Current =>
@@ -42,6 +43,10 @@ public class LevelStats
         knownBossIds.Count > 0 &&
         knownBossIds.All(killedBossIds.Contains) &&
         !summonKilledByPlayer;
+
+    public bool PushedAllBossesIntoAcid =>
+        knownBossIds.Count > 0 &&
+        knownBossIds.All(acidKilledBossIds.Contains);
 
     public static LevelStats Create(Difficulty difficulty, bool trackedFromStart)
     {
@@ -93,6 +98,14 @@ public class LevelStats
         if (TryGetSceneId(boss, out string id))
         {
             AddUnique(killedBossIds, id);
+        }
+    }
+
+    public void RecordBossPushedIntoAcid(Component boss)
+    {
+        if (TryGetSceneId(boss, out string id))
+        {
+            AddUnique(acidKilledBossIds, id);
         }
     }
 
