@@ -15,7 +15,7 @@ MonoBehaviour:
   ItemName: Key_6
   Description: 
   InventoryIcon: {fileID: 40288863, guid: 297553b4c782a8a4897726bfad10f27a, type: 3}
-  HeldSprite: {fileID: 21300000, guid: e3812f87b0fcdfb40b14564618d1f37d, type: 3}
+  HeldSprite: {fileID: 21300000, guid: 2dc4dc272a2f4a33bde5095ebb30d9ce, type: 3}
   stackable: 0
   maxStackSize: 1
   IsHealing: 0
