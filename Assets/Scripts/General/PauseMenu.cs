@@ -12,6 +12,12 @@ public class PauseMenu : MonoBehaviour
     [Header("Save System")]
     [SerializeField] private SaveSlotMenu _saveSlotMenu;
 
+    [Header("Difficulty")]
+    [SerializeField] private DifficultyMenu _difficultyMenu;
+
+    [Header("Achievements")]
+    [SerializeField] private AchievementMenu _achievementMenu;
+
     private Option _chosenOption = Option.None;
 
     private const string EXIT_TEXT = "Are you sure you want to exit the game?";
@@ -31,6 +37,7 @@ public class PauseMenu : MonoBehaviour
     private void OnDisable()
     {
         if (_saveSlotMenu != null) _saveSlotMenu.Closed -= HandleSaveSlotMenuClosed;
+        if (_difficultyMenu != null) _difficultyMenu.Closed -= HandleSaveSlotMenuClosed;
 
         if (GameInput.Instance == null) return;
 
@@ -46,6 +53,8 @@ public class PauseMenu : MonoBehaviour
         GameInput.Instance.OnPause += TryPauseGame;
 
         if (_saveSlotMenu != null) _saveSlotMenu.Closed += HandleSaveSlotMenuClosed;
+        if (_difficultyMenu != null) _difficultyMenu.Closed += HandleSaveSlotMenuClosed;
+        if (_achievementMenu != null) _achievementMenu.Closed += HandleSaveSlotMenuClosed;
     }
 
     public void TryPauseGame()
@@ -54,6 +63,18 @@ public class PauseMenu : MonoBehaviour
         if (_saveSlotMenu != null && _saveSlotMenu.IsOpen)
         {
             _saveSlotMenu.Close();
+            return;
+        }
+
+        if (_difficultyMenu != null && _difficultyMenu.IsOpen)
+        {
+            _difficultyMenu.Close();
+            return;
+        }
+
+        if (_achievementMenu != null && _achievementMenu.IsOpen)
+        {
+            _achievementMenu.Close();
             return;
         }
 
@@ -82,6 +103,8 @@ public class PauseMenu : MonoBehaviour
         _mainPauseMenu.SetActive(true);
 
         if (_saveSlotMenu != null && _saveSlotMenu.IsOpen) _saveSlotMenu.Close();
+        if (_difficultyMenu != null && _difficultyMenu.IsOpen) _difficultyMenu.Close();
+        if (_achievementMenu != null && _achievementMenu.IsOpen) _achievementMenu.Close();
     }
 
     public void OpenSaveMenu()
@@ -107,6 +130,33 @@ public class PauseMenu : MonoBehaviour
         _saveSlotMenu.Open(mode);
     }
 
+    /// <summary>Button "Change Difficulty" im Pause-Menü.</summary>
+    public void OpenDifficultyMenu()
+    {
+        if (_difficultyMenu == null)
+        {
+            Debug.LogWarning("PauseMenu: Kein DifficultyMenu zugewiesen.", this);
+            return;
+        }
+
+        _pauseMenu.SetActive(false);
+        _difficultyMenu.Open();
+    }
+
+    /// <summary>Button "Erfolge" im Pause-Menü.</summary>
+    public void OpenAchievementMenu()
+    {
+        if (_achievementMenu == null)
+        {
+            Debug.LogWarning("PauseMenu: Kein AchievementMenu zugewiesen.", this);
+            return;
+        }
+
+        _pauseMenu.SetActive(false);
+        _achievementMenu.Open();
+    }
+
+    // Gilt für Save-, Schwierigkeits- und Erfolgs-Menü: zurück ins Pause-Menü.
     private void HandleSaveSlotMenuClosed()
     {
         if (!isPause) return;

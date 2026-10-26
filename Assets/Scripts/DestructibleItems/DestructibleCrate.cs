@@ -47,6 +47,7 @@ public class DestructibleCrate : MonoBehaviour
 
         destroyed = true;
 
+        LevelStats.Current?.RecordCrateDestroyed(this);
         SpawnItem();
 
         Destroy(gameObject);

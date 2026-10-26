@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0732c44c22ade41babf3ffe39d6273, type: 3}
+  m_Name: Fists
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
+  ItemName: Fists
+  Description: Bare hands
+  InventoryIcon: {fileID: 0}
+  HeldSprite: {fileID: 0}
+  stackable: 0
+  maxStackSize: 1
+  IsHealing: 0
+  PickupTutorial: {fileID: 0}
+  PickUpSound: {fileID: 0}
+  DropSound: {fileID: 0}
+  attackType: 0
+  WeaponDamage: 6
+  WeaponRange: 2
+  AttackDuration: 0.5
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 20
+  usesAmmo: 0
+  ammoTypes: []
+  ammoPerShot: 1
+  AttackSprite: {fileID: 0}
+  AttackSounds: []

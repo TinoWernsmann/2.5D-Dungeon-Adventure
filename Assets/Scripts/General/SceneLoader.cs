@@ -15,6 +15,14 @@ public static class SceneLoader
     /// <summary>Die Szene, die der Ladebildschirm als Nächstes laden soll.</summary>
     public static string PendingScene { get; private set; }
 
+    /// <summary>"Level 1.2" -> "Level 1": Unter-Szenen gehören zum selben Level.</summary>
+    public static string GetLevelName(string sceneName)
+    {
+        return string.IsNullOrEmpty(sceneName)
+            ? string.Empty
+            : sceneName.Split('.')[0];
+    }
+
     public static void Load(string sceneName)
     {
         Time.timeScale = 1f;

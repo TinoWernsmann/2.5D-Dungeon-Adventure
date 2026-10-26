@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4208bb1ff7e2d934a8b6726540db4f31, type: 3}
+  m_Name: Key_7
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSO
+  ItemName: Key_7
+  Description: 
+  InventoryIcon: {fileID: 1855936074, guid: 8fd710aa1796f69428a217e73f92764f, type: 3}
+  HeldSprite: {fileID: 21300000, guid: 03b615dde10445c1bafea5e243bf2689, type: 3}
+  stackable: 0
+  maxStackSize: 1
+  IsHealing: 0
+  PickupTutorial: {fileID: 0}
+  PickUpSound: {fileID: 8300000, guid: 740d92f2ee2f8c148934fb173fae08be, type: 3}
+  DropSound: {fileID: 8300000, guid: e21d49cf963bfa44f97fc0e7889a408e, type: 3}

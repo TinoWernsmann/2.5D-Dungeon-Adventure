@@ -17,12 +17,21 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
-    public const int SlotCount = 3;
+    /// <summary>Manuelle Slots (0 bis SlotCount-1). Danach folgen die Autosave-Slots.</summary>
+    public const int SlotCount = 10;
+    public const int AutoSaveSlotCount = 4;
+    public const int TotalSlotCount = SlotCount + AutoSaveSlotCount;
+
+    private const float AutoSaveIntervalSeconds = 180f;
 
     private readonly HashSet<string> destroyedEntityIds = new();
 
     private SaveGameData pendingLoad;
     private float playTimeSeconds;
+    private float levelStartPlayTimeSeconds;
+    private LevelStats levelStats = LevelStats.Create(Difficulty.Normal, trackedFromStart: false);
+    private bool keepSummonKillAfterLoad;
+    private float secondsSinceAutoSave;
     private bool isGameplayScene;
 
     public static SaveManager Instance { get; private set; }
@@ -34,6 +43,12 @@ public class SaveManager : MonoBehaviour
 
     /// <summary>Das zuletzt gespielte Level (z.B. für "Restart Level" im Todes-Bildschirm).</summary>
     public string LastGameplayScene { get; private set; }
+
+    /// <summary>Gespielte Zeit im aktuellen Level (läuft nur in Gameplay-Szenen, wird mitgespeichert).</summary>
+    public float LevelPlayTimeSeconds => playTimeSeconds - levelStartPlayTimeSeconds;
+
+    /// <summary>Statistik des aktuellen Levels (Schwierigkeit, Schaden, Items, ...) für Erfolge.</summary>
+    public LevelStats CurrentLevelStats => levelStats;
 
     /// <summary>Ein Slot wurde gespeichert oder gelöscht (für die UI).</summary>
     public event Action SlotsChanged;
@@ -106,12 +121,35 @@ public class SaveManager : MonoBehaviour
         if (isGameplayScene)
         {
             playTimeSeconds += Time.deltaTime;
+            levelStats.TrackDifficulty(DifficultySettings.Current);
+            UpdateAutoSave();
         }
+    }
+
+    /// <summary>Zählt mit Time.deltaTime – im Pause-Menü (timeScale 0) läuft die Zeit nicht weiter.</summary>
+    private void UpdateAutoSave()
+    {
+        secondsSinceAutoSave += Time.deltaTime;
+
+        // Geht gerade nicht (z.B. tot oder im Kampf) -> im nächsten Frame erneut versuchen.
+        if (secondsSinceAutoSave < AutoSaveIntervalSeconds || !CanSave || EnemyBrain.IsAnyEnemyFighting ||
+            DifficultySettings.IsHardcore)
+        {
+            return;
+        }
+
+        secondsSinceAutoSave = 0f;
+        Save(GetNextAutoSaveSlot());
     }
 
     #endregion
 
     #region Slots
+
+    public static bool IsAutoSaveSlot(int slot)
+    {
+        return slot >= SlotCount;
+    }
 
     public bool HasSave(int slot)
     {
@@ -135,7 +173,7 @@ public class SaveManager : MonoBehaviour
         int mostRecentSlot = -1;
         DateTime mostRecentDate = DateTime.MinValue;
 
-        for (int slot = 0; slot < SlotCount; slot++)
+        for (int slot = 0; slot < TotalSlotCount; slot++)
         {
             if (TryGetSlotInfo(slot, out SaveGameData info) && info.SavedAt > mostRecentDate)
             {
@@ -145,6 +183,29 @@ public class SaveManager : MonoBehaviour
         }
 
         return mostRecentSlot;
+    }
+
+    /// <summary>Erster leerer Autosave-Slot, sonst der älteste (wird überschrieben).</summary>
+    private int GetNextAutoSaveSlot()
+    {
+        int oldestSlot = SlotCount;
+        DateTime oldestDate = DateTime.MaxValue;
+
+        for (int slot = SlotCount; slot < TotalSlotCount; slot++)
+        {
+            if (!TryGetSlotInfo(slot, out SaveGameData info))
+            {
+                return slot;
+            }
+
+            if (info.SavedAt < oldestDate)
+            {
+                oldestDate = info.SavedAt;
+                oldestSlot = slot;
+            }
+        }
+
+        return oldestSlot;
     }
 
     public void Delete(int slot)
@@ -162,6 +223,18 @@ public class SaveManager : MonoBehaviour
         if (!CanSave)
         {
             Debug.LogWarning("[Save] Speichern ist gerade nicht möglich.");
+            return false;
+        }
+
+        if (EnemyBrain.IsAnyEnemyFighting)
+        {
+            Debug.LogWarning("[Save] Während eines Kampfes kann nicht gespeichert werden.");
+            return false;
+        }
+
+        if (DifficultySettings.IsHardcore)
+        {
+            Debug.LogWarning("[Save] Im Hardcore-Modus kann nicht gespeichert werden.");
             return false;
         }
 
@@ -189,9 +262,12 @@ public class SaveManager : MonoBehaviour
         {
             sceneName = SceneManager.GetActiveScene().name,
             playerName = GlobalVars.Instance != null ? GlobalVars.Instance.PlayerName : string.Empty,
+            difficulty = DifficultySettings.Current,
             questTitle = GetTrackedQuestTitle(),
             savedAtIso = DateTime.Now.ToString("o"),
             playTimeSeconds = playTimeSeconds,
+            levelStartPlayTimeSeconds = levelStartPlayTimeSeconds,
+            levelStats = levelStats,
             destroyedEntityIds = new List<string>(destroyedEntityIds),
             droppedItems = CaptureDroppedItems()
         };
@@ -271,6 +347,10 @@ public class SaveManager : MonoBehaviour
 
         pendingLoad = data;
 
+        // Ein getöteter Diener sperrt "Nur die Bosse" für dieses Level – auch Laden hebt das nicht auf.
+        bool isSameLevel = SceneLoader.GetLevelName(data.sceneName) == SceneLoader.GetLevelName(LastGameplayScene);
+        keepSummonKillAfterLoad = isSameLevel && levelStats.summonKilledByPlayer;
+
         SceneLoader.Load(data.sceneName);
 
         return true;
@@ -279,10 +359,24 @@ public class SaveManager : MonoBehaviour
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         isGameplayScene = FindAnyObjectByType<PlayerMovement>() != null;
+        secondsSinceAutoSave = 0f;
 
         if (isGameplayScene)
         {
+            // Neues Level betreten (z.B. Level 1.2 -> Level 2): Levelzeit startet neu.
+            bool isNewLevel =
+                SceneLoader.GetLevelName(scene.name) != SceneLoader.GetLevelName(LastGameplayScene);
+
+            if (isNewLevel && pendingLoad == null)
+            {
+                levelStartPlayTimeSeconds = playTimeSeconds;
+                levelStats = LevelStats.Create(DifficultySettings.Current, trackedFromStart: true);
+            }
+
             LastGameplayScene = scene.name;
+
+            // Vor dem Wiederherstellen eines Spielstands: eingesammeltes/zerstörtes zählt trotzdem als "vorhanden".
+            levelStats.RegisterScene(scene.name);
         }
 
         if (pendingLoad != null)
@@ -296,9 +390,18 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        // Neues Spiel (oder Neustart nach dem Tod): Welt ist frisch.
+        // Neue Szene (oder Neustart nach dem Tod): Welt ist frisch.
+        // Die Spielzeit läuft weiter – sie wird nur bei einem neuen Spiel zurückgesetzt.
         destroyedEntityIds.Clear();
+    }
+
+    /// <summary>Neues Spiel aus dem Hauptmenü: Spielzeit beginnt bei 0.</summary>
+    public void StartNewGame()
+    {
         playTimeSeconds = 0f;
+        levelStartPlayTimeSeconds = 0f;
+        levelStats = LevelStats.Create(DifficultySettings.Current, trackedFromStart: true);
+        LastGameplayScene = null;
     }
 
     private IEnumerator RestoreGame(SaveGameData data)
@@ -310,11 +413,28 @@ public class SaveManager : MonoBehaviour
         destroyedEntityIds.Clear();
         destroyedEntityIds.UnionWith(data.destroyedEntityIds);
         playTimeSeconds = data.playTimeSeconds;
+        levelStartPlayTimeSeconds = data.levelStartPlayTimeSeconds;
+
+        // Spielstände vor Version 2 haben keine Level-Statistik.
+        levelStats = data.version >= 2 && data.levelStats != null
+            ? data.levelStats
+            : LevelStats.Create(data.difficulty, trackedFromStart: false);
+
+        if (keepSummonKillAfterLoad)
+        {
+            levelStats.RecordSummonKilled();
+            keepSummonKillAfterLoad = false;
+        }
+
+        // Für "Eiserner Wille": Level ohne Laden eines Spielstands.
+        levelStats.RecordSaveLoaded();
 
         if (GlobalVars.Instance != null && !string.IsNullOrEmpty(data.playerName))
         {
             GlobalVars.Instance.SetPlayerName(data.playerName);
         }
+
+        DifficultySettings.Current = data.difficulty;
 
         Dictionary<string, SaveableEntity> entitiesById = MapEntitiesById();
 

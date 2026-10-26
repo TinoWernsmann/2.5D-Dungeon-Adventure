@@ -13,24 +13,50 @@ MonoBehaviour:
   m_Name: SaveRegistry
   m_EditorClassIdentifier: Assembly-CSharp::SaveRegistry
   items:
+  - id: a9a79891748e6a4469be2a8d45d85d4a
+    item: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 16121a253592a674a8a32b982d1616bc, type: 3}
+  - id: 645a10cbcff648d0abb31cfa5b3dad28
+    item: {fileID: 11400000, guid: 645a10cbcff648d0abb31cfa5b3dad28, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 3cac56694a7440f08fd3befce9e63d34, type: 3}
   - id: f4c356b8cf8c05b44983c47b60dc7198
     item: {fileID: 11400000, guid: f4c356b8cf8c05b44983c47b60dc7198, type: 2}
     prefab: {fileID: 5397329226068617096, guid: 31dd3498f6968504ca2510087e9fc1fa, type: 3}
-    prefab: {fileID: 0}
+  - id: 319f7ad8deca82740bb14512aecb82be
+    item: {fileID: 11400000, guid: 319f7ad8deca82740bb14512aecb82be, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 62d3e79cb7fa5dd4999aef0b7f3bf092, type: 3}
+  - id: 2e3a3423ee7f45f408951a98208e0712
+    item: {fileID: 11400000, guid: 2e3a3423ee7f45f408951a98208e0712, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: e827f8a41f2682846b29ee1c86daf2c9, type: 3}
+  - id: 808eaa612f617c44eb56f0203c0433da
+    item: {fileID: 11400000, guid: 808eaa612f617c44eb56f0203c0433da, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 2d56c25de6e5a764eb1329cd8ccba2fb, type: 3}
+  - id: 3be83dd6c64b8bf48b82556e25e4743c
+    item: {fileID: 11400000, guid: 3be83dd6c64b8bf48b82556e25e4743c, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: c91c396dfa7071542970a9213abf1040, type: 3}
+  - id: bb952535c7a0ca14db607256355da9e9
+    item: {fileID: 11400000, guid: bb952535c7a0ca14db607256355da9e9, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 46860ed36f7b06241b5f4a0299f563e1, type: 3}
+  - id: 586f0c93bb01acf4e86e4b054a793cbf
+    item: {fileID: 11400000, guid: 586f0c93bb01acf4e86e4b054a793cbf, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: f9afd304f51311c47a70e656766e3a91, type: 3}
+  - id: ad9950f60276d90459369ea185b9f445
+    item: {fileID: 11400000, guid: ad9950f60276d90459369ea185b9f445, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 8b97746a16ac068449a173b7c3bf7b3f, type: 3}
+  - id: 1abf89c085820144cb5064b7124dad72
+    item: {fileID: 11400000, guid: 1abf89c085820144cb5064b7124dad72, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: f3dadd3fb429fe849937f402d0d4c093, type: 3}
+  - id: af762721219e466409dba932b6206e13
+    item: {fileID: 11400000, guid: af762721219e466409dba932b6206e13, type: 2}
+    prefab: {fileID: 5397329226068617096, guid: 09d40cce7c404b143b9cfbf197144fcc, type: 3}
   - id: 5ca1e33bc39febe4ca949e4295585ca6
     item: {fileID: 11400000, guid: 5ca1e33bc39febe4ca949e4295585ca6, type: 2}
     prefab: {fileID: 2216420366719847928, guid: 33b3881090d03e842b74e41751d51dcd, type: 3}
   - id: 33de8fdab3a2b31409ec434affd42c81
     item: {fileID: 11400000, guid: 33de8fdab3a2b31409ec434affd42c81, type: 2}
     prefab: {fileID: 3429332506891082912, guid: 88e5bf80d937e1945a46cc9f059bb4b1, type: 3}
-  - id: a9a79891748e6a4469be2a8d45d85d4a
-    item: {fileID: 11400000, guid: a9a79891748e6a4469be2a8d45d85d4a, type: 2}
-    prefab: {fileID: 5397329226068617096, guid: 16121a253592a674a8a32b982d1616bc, type: 3}
-  - id: 319f7ad8deca82740bb14512aecb82be
-    item: {fileID: 11400000, guid: 319f7ad8deca82740bb14512aecb82be, type: 2}
-    prefab: {fileID: 5397329226068617096, guid: 62d3e79cb7fa5dd4999aef0b7f3bf092, type: 3}
-  - id: f83f888a874281141a787f8b2dc459b7
-    item: {fileID: 11400000, guid: f83f888a874281141a787f8b2dc459b7, type: 2}
+  - id: a3080df8da2a4b699b00e302fa442e87
+    item: {fileID: 11400000, guid: a3080df8da2a4b699b00e302fa442e87, type: 2}
     prefab: {fileID: 0}
   - id: 7d7fc37d00862cc46b0af0c3e4821dde
     item: {fileID: 11400000, guid: 7d7fc37d00862cc46b0af0c3e4821dde, type: 2}
@@ -39,17 +65,25 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 90069dc5ad8322f4a8a9229c6acd3f86, type: 2}
     prefab: {fileID: 1091953983615760258, guid: bf16aa3ec845b454cacca63f55678263, type: 3}
   quests:
-  - id: b9495b9021c4fc3489da3d486ed5f60d
-    quest: {fileID: 11400000, guid: b9495b9021c4fc3489da3d486ed5f60d, type: 2}
-  - id: 23dad7f72cb85bb47a15042bdee19428
-    quest: {fileID: 11400000, guid: 23dad7f72cb85bb47a15042bdee19428, type: 2}
   - id: 430f4cd9e860e7d48a104d1a7e486d48
     quest: {fileID: 11400000, guid: 430f4cd9e860e7d48a104d1a7e486d48, type: 2}
+  - id: 1227b83a8c6f1704e8528f1f8b74a47e
+    quest: {fileID: 11400000, guid: 1227b83a8c6f1704e8528f1f8b74a47e, type: 2}
+  - id: 37fcd84ff0c11d343974680ec1d01154
+    quest: {fileID: 11400000, guid: 37fcd84ff0c11d343974680ec1d01154, type: 2}
   - id: 84f4592185acf0447b444e0927fb63a4
     quest: {fileID: 11400000, guid: 84f4592185acf0447b444e0927fb63a4, type: 2}
   - id: ac6fd4e3cbb7465488ef7fc2d8fea3eb
     quest: {fileID: 11400000, guid: ac6fd4e3cbb7465488ef7fc2d8fea3eb, type: 2}
   - id: 4d35b934555fb324eb2622d17251db43
     quest: {fileID: 11400000, guid: 4d35b934555fb324eb2622d17251db43, type: 2}
-  - id: fc7b46f7b0a8e5140b54054ec4c64cb2
-    quest: {fileID: 11400000, guid: fc7b46f7b0a8e5140b54054ec4c64cb2, type: 2}
+  - id: 47a7ece02eedf9d4d8bbf05e66b8cd14
+    quest: {fileID: 11400000, guid: 47a7ece02eedf9d4d8bbf05e66b8cd14, type: 2}
+  - id: f5d7139e3d64c2a49997ac4e5537a962
+    quest: {fileID: 11400000, guid: f5d7139e3d64c2a49997ac4e5537a962, type: 2}
+  - id: 7e38972076580eb499c9d8f7ea8e8f0d
+    quest: {fileID: 11400000, guid: 7e38972076580eb499c9d8f7ea8e8f0d, type: 2}
+  - id: 9da1178de53c8c746b6803208ca0bc9f
+    quest: {fileID: 11400000, guid: 9da1178de53c8c746b6803208ca0bc9f, type: 2}
+  - id: fd2c40f6ad522954fbd36eb0a4c3076e
+    quest: {fileID: 11400000, guid: fd2c40f6ad522954fbd36eb0a4c3076e, type: 2}

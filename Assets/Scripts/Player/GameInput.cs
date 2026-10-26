@@ -10,11 +10,19 @@ public class GameInput : MonoBehaviour
     private const float ItemScrollCooldown = 0.08f;
 
     private InputSystem_Actions _input;
+    // Aktionen, die nicht im Input-Asset stehen, werden hier im Code angelegt.
     private InputAction _itemScrollAction;
+    private InputAction _slot5Action;
+    private InputAction _switchAmmoAction;
     private float _nextItemScrollTime;
 
     public event Action OnDropPressed;
+
+    /// <summary>Zifferntaste 1–5 als Index 0–4 (Taste 1 = Fäuste, 2–5 = Inventar-Slots).</summary>
     public event Action<int> OnItemSelect;
+
+    /// <summary>R: Munitionsart der Fernkampfwaffe wechseln.</summary>
+    public event Action OnSwitchAmmo;
 
     /// <summary>Mausrad: +1 = nächster Slot (runter scrollen), -1 = vorheriger Slot (hoch scrollen).</summary>
     public event Action<int> OnItemScroll;
@@ -60,7 +68,23 @@ public class GameInput : MonoBehaviour
 
         _itemScrollAction = new InputAction("ItemScroll", InputActionType.Value, "<Mouse>/scroll/y");
         _itemScrollAction.performed += ItemScrollPerformed;
-        _itemScrollAction.Enable();
+
+        _slot5Action = new InputAction("Slot5", InputActionType.Button, "<Keyboard>/5");
+        _slot5Action.performed += Slot5Performed;
+
+        _switchAmmoAction = new InputAction("SwitchAmmo", InputActionType.Button, "<Keyboard>/r");
+        _switchAmmoAction.performed += SwitchAmmoPerformed;
+
+        SetCodeActionsEnabled(true);
+    }
+
+    private void SetCodeActionsEnabled(bool isEnabled)
+    {
+        foreach (InputAction action in new[] { _itemScrollAction, _slot5Action, _switchAmmoAction })
+        {
+            if (isEnabled) action.Enable();
+            else action.Disable();
+        }
     }
 
     private void OnDisable()
@@ -85,21 +109,28 @@ public class GameInput : MonoBehaviour
         _input.Player.Pause.performed -= PausePerformed;
 
         _itemScrollAction.performed -= ItemScrollPerformed;
-        _itemScrollAction.Disable();
+        _slot5Action.performed -= Slot5Performed;
+        _switchAmmoAction.performed -= SwitchAmmoPerformed;
+        SetCodeActionsEnabled(false);
     }
 
     public void EnableDialogue()
     {
         _input.Player.Disable();
         _input.Player.Dialogue.Enable();
-        _itemScrollAction.Disable();
+        SetCodeActionsEnabled(false);
     }
 
     public void DisableDialogue()
     {
         _input.Player.Enable();
         _input.Player.Dialogue.Disable();
-        _itemScrollAction.Enable();
+        SetCodeActionsEnabled(true);
+    }
+
+    private void SwitchAmmoPerformed(InputAction.CallbackContext context)
+    {
+        OnSwitchAmmo?.Invoke();
     }
 
     private void ItemScrollPerformed(InputAction.CallbackContext context)
@@ -165,5 +196,10 @@ public class GameInput : MonoBehaviour
     private void Slot4Performed(InputAction.CallbackContext context)
     {
         OnItemSelect?.Invoke(3);
+    }
+
+    private void Slot5Performed(InputAction.CallbackContext context)
+    {
+        OnItemSelect?.Invoke(4);
     }
 }

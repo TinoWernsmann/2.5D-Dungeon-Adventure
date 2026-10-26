@@ -20,6 +20,15 @@ public class ItemListUI : MonoBehaviour
     [SerializeField]
     private Image selectedItemIcon;
 
+    [Header("Equipped Ammo")]
+    [Tooltip("Leer lassen = wird automatisch gesucht.")]
+    [SerializeField]
+    private PlayerCombat playerCombat;
+
+    [Tooltip("Leuchtender Rand um die ausgerüstete Munition.")]
+    [SerializeField]
+    private Color equippedAmmoGlow = new(1f, 0.85f, 0.2f, 1f);
+
     private readonly Color selectedColor =
         Color.white;
 
@@ -31,8 +40,21 @@ public class ItemListUI : MonoBehaviour
             1f
         );
 
+    private void Awake()
+    {
+        if (playerCombat == null)
+        {
+            playerCombat = FindAnyObjectByType<PlayerCombat>();
+        }
+    }
+
     private void OnEnable()
     {
+        if (playerCombat != null)
+        {
+            playerCombat.SelectedAmmoChanged += Refresh;
+        }
+
         if (itemManager == null)
         {
             return;
@@ -52,6 +74,11 @@ public class ItemListUI : MonoBehaviour
 
     private void OnDisable()
     {
+        if (playerCombat != null)
+        {
+            playerCombat.SelectedAmmoChanged -= Refresh;
+        }
+
         if (itemManager == null)
         {
             return;
@@ -104,6 +131,9 @@ public class ItemListUI : MonoBehaviour
                 ? item.InventoryIcon
                 : null;
 
+        // Icons nicht auf die Slot-Größe strecken (z.B. schmale Schlüssel).
+        itemIcons[index].preserveAspect = true;
+
         itemIcons[index]
             .gameObject
             .SetActive(hasItem);
@@ -114,10 +144,39 @@ public class ItemListUI : MonoBehaviour
                 ? selectedColor
                 : unselectedColor;
 
+        RefreshEquippedGlow(
+            index,
+            item
+        );
+
         RefreshAmountText(
             index,
             item
         );
+    }
+
+    private void RefreshEquippedGlow(
+        int index,
+        ItemSO item)
+    {
+        bool isEquippedAmmo =
+            item != null &&
+            playerCombat != null &&
+            item == playerCombat.EquippedAmmo;
+
+        if (!itemIcons[index].TryGetComponent(out Outline glow))
+        {
+            if (!isEquippedAmmo)
+            {
+                return;
+            }
+
+            glow = itemIcons[index].gameObject.AddComponent<Outline>();
+            glow.effectDistance = new Vector2(3f, -3f);
+        }
+
+        glow.effectColor = equippedAmmoGlow;
+        glow.enabled = isEquippedAmmo;
     }
 
     private void RefreshAmountText(
@@ -189,6 +248,8 @@ public class ItemListUI : MonoBehaviour
 
         selectedItemIcon.sprite =
             icon;
+
+        selectedItemIcon.preserveAspect = true;
 
         selectedItemIcon
             .gameObject

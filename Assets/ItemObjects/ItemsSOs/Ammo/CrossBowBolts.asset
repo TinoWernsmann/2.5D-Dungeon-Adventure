@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4208bb1ff7e2d934a8b6726540db4f31, type: 3}
+  m_Script: {fileID: 11500000, guid: 2883f2f849784efe9bbd3b331bf2ba5f, type: 3}
   m_Name: CrossBowBolts
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::AmmoSO
   ItemName: Crossbow Bolts
   Description: 'Ammo for Crossbow '
   InventoryIcon: {fileID: 479275709, guid: fb371294aaaaa684b8b6d79d58a2f23e, type: 3}
@@ -19,5 +19,8 @@ MonoBehaviour:
   stackable: 1
   maxStackSize: 12
   IsHealing: 0
+  PickupTutorial: {fileID: 11400000, guid: a20b913e9042e1248805b14ee39d1a67, type: 2}
   PickUpSound: {fileID: 8300000, guid: 3c88b45084ee0254aa64e0b28b277c61, type: 3}
   DropSound: {fileID: 8300000, guid: 03ee6ced028d2414babfc96ae72b6fe8, type: 3}
+  knockbackDistance: 0
+  projectilePrefab: {fileID: 7032267243731821679, guid: 88505baa233f80c439d0abc0299a4867, type: 3}

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// Baut das Speichern/Laden-Menü als normale UI-Objekte in der Szene – im Stil des Pause-Menüs:
 /// schwarzes, leicht transparentes Fenster, weiße abgerundete Buttons mit dunkler Schrift,
 /// Titel in PixelFraktur. Danach kann alles im Editor frei angepasst werden.
+/// Die Bausteine (internal) nutzt auch <see cref="DifficultyMenuBuilder"/>, damit alle Menüs gleich aussehen.
 /// </summary>
 public static class SaveMenuBuilder
 {
@@ -15,14 +16,14 @@ public static class SaveMenuBuilder
     private const string ButtonSpritePath = "UI/Skin/UISprite.psd";
 
     // Farben wie im Pause-Menü.
-    private static readonly Color OverlayColor = new(0f, 0f, 0f, 0.5f);
+    internal static readonly Color OverlayColor = new(0f, 0f, 0f, 0.5f);
     private static readonly Color WindowColor = new(0f, 0f, 0f, 0.88f);
-    private static readonly Color RowColor = new(1f, 1f, 1f, 0.06f);
+    internal static readonly Color RowColor = new(1f, 1f, 1f, 0.06f);
     private static readonly Color ButtonColor = Color.white;
-    private static readonly Color ButtonTextColor = new(0.196f, 0.196f, 0.196f, 1f);
+    internal static readonly Color ButtonTextColor = new(0.196f, 0.196f, 0.196f, 1f);
     private static readonly Color DeleteTextColor = new(0.6f, 0.1f, 0.12f, 1f);
     private static readonly Color TextColor = Color.white;
-    private static readonly Color InfoTextColor = new(0.78f, 0.78f, 0.78f, 1f);
+    internal static readonly Color InfoTextColor = new(0.78f, 0.78f, 0.78f, 1f);
 
     private static TMP_FontAsset textFont;
     private static TMP_FontAsset titleFont;
@@ -30,28 +31,22 @@ public static class SaveMenuBuilder
 
     public static SaveSlotMenu Build()
     {
-        textFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TextFontPath);
-        titleFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TitleFontPath);
-        buttonSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(ButtonSpritePath);
+        LoadStyle();
 
-        GameObject root = CreateCanvasRoot();
+        GameObject root = CreateCanvasRoot("SaveSlotMenu");
         SaveSlotMenu menu = root.AddComponent<SaveSlotMenu>();
 
         GameObject panel = CreateStretched("Panel", root.transform, OverlayColor);
         GameObject window = CreateWindow(panel.transform, new Vector2(1250f, 820f));
 
-        TMP_Text title = CreateText("Title", window.transform, "Save Game", 64, TextAlignmentOptions.Center, 90f);
+        TMP_Text title = CreateTitle(window.transform, "Save Game");
 
-        if (titleFont != null)
+        Transform slotList = CreateScrollList(window.transform);
+        SaveSlotView[] slotViews = new SaveSlotView[SaveManager.TotalSlotCount];
+
+        for (int slot = 0; slot < SaveManager.TotalSlotCount; slot++)
         {
-            title.font = titleFont;
-        }
-
-        SaveSlotView[] slotViews = new SaveSlotView[SaveManager.SlotCount];
-
-        for (int slot = 0; slot < SaveManager.SlotCount; slot++)
-        {
-            slotViews[slot] = CreateSlotRow(window.transform, slot);
+            slotViews[slot] = CreateSlotRow(slotList, slot);
         }
 
         TMP_Text feedback = CreateText("Feedback", window.transform, string.Empty, 20, TextAlignmentOptions.Center, 40f);
@@ -89,9 +84,28 @@ public static class SaveMenuBuilder
         return menu;
     }
 
-    private static GameObject CreateCanvasRoot()
+    internal static void LoadStyle()
     {
-        GameObject root = new("SaveSlotMenu", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        textFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TextFontPath);
+        titleFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(TitleFontPath);
+        buttonSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(ButtonSpritePath);
+    }
+
+    internal static TMP_Text CreateTitle(Transform parent, string text)
+    {
+        TMP_Text title = CreateText("Title", parent, text, 64, TextAlignmentOptions.Center, 90f);
+
+        if (titleFont != null)
+        {
+            title.font = titleFont;
+        }
+
+        return title;
+    }
+
+    internal static GameObject CreateCanvasRoot(string name)
+    {
+        GameObject root = new(name, typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
 
         Canvas canvas = root.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -100,7 +114,7 @@ public static class SaveMenuBuilder
         CanvasScaler scaler = root.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920f, 1080f);
-        scaler.matchWidthOrHeight = 0.5f;
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand; // passt auf jedes Seitenverhältnis
 
         return root;
     }
@@ -149,6 +163,88 @@ public static class SaveMenuBuilder
         return view;
     }
 
+    /// <summary>Scrollbare Liste (Viewport + Content + Scrollbar rechts). Gibt den Content zurück.</summary>
+    internal static Transform CreateScrollList(Transform parent)
+    {
+        const float ScrollbarWidth = 20f;
+
+        GameObject scrollView = CreateImage("SlotList", parent, Color.clear);
+        LayoutElement scrollElement = scrollView.AddComponent<LayoutElement>();
+        scrollElement.flexibleHeight = 1f;
+
+        // Transparentes Image, damit das Mausrad auch zwischen den Zeilen scrollt.
+        GameObject viewport = CreateStretched("Viewport", scrollView.transform, Color.clear);
+        viewport.AddComponent<RectMask2D>();
+
+        GameObject content = new("Content", typeof(RectTransform));
+        content.transform.SetParent(viewport.transform, false);
+
+        RectTransform contentRect = content.GetComponent<RectTransform>();
+        contentRect.anchorMin = new Vector2(0f, 1f);
+        contentRect.anchorMax = new Vector2(1f, 1f);
+        contentRect.pivot = new Vector2(0.5f, 1f);
+        contentRect.sizeDelta = Vector2.zero;
+
+        VerticalLayoutGroup layout = content.AddComponent<VerticalLayoutGroup>();
+        layout.spacing = 20f;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = false;
+
+        content.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        Scrollbar scrollbar = CreateScrollbar(scrollView.transform, ScrollbarWidth);
+
+        ScrollRect scrollRect = scrollView.AddComponent<ScrollRect>();
+        scrollRect.content = contentRect;
+        scrollRect.viewport = viewport.GetComponent<RectTransform>();
+        scrollRect.horizontal = false;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.scrollSensitivity = 40f;
+        scrollRect.verticalScrollbar = scrollbar;
+        scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
+        scrollRect.verticalScrollbarSpacing = 10f;
+
+        return content.transform;
+    }
+
+    private static Scrollbar CreateScrollbar(Transform parent, float width)
+    {
+        GameObject track = CreateImage("Scrollbar", parent, RowColor);
+
+        RectTransform trackRect = track.GetComponent<RectTransform>();
+        trackRect.anchorMin = new Vector2(1f, 0f);
+        trackRect.anchorMax = Vector2.one;
+        trackRect.pivot = new Vector2(1f, 0.5f);
+        trackRect.sizeDelta = new Vector2(width, 0f);
+
+        GameObject slidingArea = new("SlidingArea", typeof(RectTransform));
+        slidingArea.transform.SetParent(track.transform, false);
+
+        RectTransform areaRect = slidingArea.GetComponent<RectTransform>();
+        areaRect.anchorMin = Vector2.zero;
+        areaRect.anchorMax = Vector2.one;
+        areaRect.offsetMin = Vector2.zero;
+        areaRect.offsetMax = Vector2.zero;
+
+        GameObject handle = CreateImage("Handle", slidingArea.transform, ButtonColor);
+        Image handleImage = handle.GetComponent<Image>();
+        handleImage.sprite = buttonSprite;
+        handleImage.type = Image.Type.Sliced;
+
+        RectTransform handleRect = handle.GetComponent<RectTransform>();
+        handleRect.offsetMin = Vector2.zero;
+        handleRect.offsetMax = Vector2.zero;
+
+        Scrollbar scrollbar = track.AddComponent<Scrollbar>();
+        scrollbar.direction = Scrollbar.Direction.BottomToTop;
+        scrollbar.handleRect = handleRect;
+        scrollbar.targetGraphic = handleImage;
+
+        return scrollbar;
+    }
+
     private static GameObject CreateConfirmDialog(
         Transform parent,
         out TMP_Text message,
@@ -179,7 +275,7 @@ public static class SaveMenuBuilder
 
     #region UI Helpers
 
-    private static GameObject CreateWindow(Transform parent, Vector2 size)
+    internal static GameObject CreateWindow(Transform parent, Vector2 size)
     {
         GameObject window = CreateImage("Window", parent, WindowColor);
 
@@ -198,7 +294,7 @@ public static class SaveMenuBuilder
         return window;
     }
 
-    private static GameObject CreateStretched(string name, Transform parent, Color color)
+    internal static GameObject CreateStretched(string name, Transform parent, Color color)
     {
         GameObject gameObject = CreateImage(name, parent, color);
 
@@ -211,7 +307,7 @@ public static class SaveMenuBuilder
         return gameObject;
     }
 
-    private static GameObject CreateImage(string name, Transform parent, Color color)
+    internal static GameObject CreateImage(string name, Transform parent, Color color)
     {
         GameObject gameObject = new(name, typeof(RectTransform), typeof(Image));
         gameObject.transform.SetParent(parent, false);
@@ -220,7 +316,7 @@ public static class SaveMenuBuilder
         return gameObject;
     }
 
-    private static TMP_Text CreateText(
+    internal static TMP_Text CreateText(
         string name,
         Transform parent,
         string text,
@@ -252,7 +348,7 @@ public static class SaveMenuBuilder
     }
 
     /// <summary>Weißer, abgerundeter Button wie im Pause-Menü.</summary>
-    private static Button CreateButton(
+    internal static Button CreateButton(
         string name,
         Transform parent,
         string label,
@@ -290,7 +386,7 @@ public static class SaveMenuBuilder
         return button;
     }
 
-    private static void AddLayoutElement(
+    internal static void AddLayoutElement(
         GameObject gameObject,
         float preferredWidth = 0f,
         float preferredHeight = 0f,

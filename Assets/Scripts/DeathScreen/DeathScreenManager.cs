@@ -5,6 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Todes-Bildschirm. Der Spieler entscheidet selbst, wie es weitergeht:
 /// Level neu starten, einen Spielstand laden oder zurück ins Hauptmenü.
+/// Im Hardcore-Modus ist der Durchlauf vorbei: nur noch zurück ins Hauptmenü.
 /// </summary>
 public class DeathScreenManager : MonoBehaviour
 {
@@ -13,12 +14,20 @@ public class DeathScreenManager : MonoBehaviour
     [SerializeField] private string _sceneToLoad = "MainScene";
     [SerializeField] private string _mainMenuScene = "MainMenu";
 
+    [Header("Restart")]
+    [Tooltip("Wird im Hardcore-Modus deaktiviert (nur ein Leben).")]
+    [SerializeField] private Button _restartButton;
+
     [Header("Load Game")]
     [SerializeField] private SaveSlotMenu _saveSlotMenu;
     [Tooltip("Ist ausgegraut, wenn es noch keinen Spielstand gibt.")]
     [SerializeField] private Button _loadButton;
+    [Tooltip("Lädt direkt den neuesten Spielstand. Ist ausgegraut, wenn es noch keinen gibt.")]
+    [SerializeField] private Button _quickLoadButton;
     [Tooltip("Wird ausgeblendet, solange das Lade-Menü offen ist (z.B. Titel und Buttons).")]
     [SerializeField] private GameObject[] _hideWhileLoadMenuOpen;
+
+    private bool isHardcoreRunOver;
 
     private void Start()
     {
@@ -26,6 +35,16 @@ public class DeathScreenManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 1f;
+
+        if (DifficultySettings.IsHardcore)
+        {
+            isHardcoreRunOver = true;
+
+            // Sonst wäre die Stufe im Hauptmenü "Hardcore" und könnte dort nicht mehr geändert werden.
+            DifficultySettings.Current = Difficulty.Hard;
+
+            if (_restartButton != null) _restartButton.interactable = false;
+        }
 
         RefreshLoadButton();
 
@@ -42,6 +61,8 @@ public class DeathScreenManager : MonoBehaviour
     /// <summary>Startet das Level, in dem der Spieler gestorben ist, von vorne.</summary>
     public void RestartLevel()
     {
+        if (isHardcoreRunOver) return;
+
         string levelScene = SaveManager.Instance != null && !string.IsNullOrEmpty(SaveManager.Instance.LastGameplayScene)
             ? SaveManager.Instance.LastGameplayScene
             : _sceneToLoad;
@@ -51,6 +72,8 @@ public class DeathScreenManager : MonoBehaviour
 
     public void OpenLoadMenu()
     {
+        if (isHardcoreRunOver) return;
+
         if (_saveSlotMenu == null)
         {
             Debug.LogWarning("DeathScreenManager: Kein SaveSlotMenu zugewiesen.", this);
@@ -59,6 +82,15 @@ public class DeathScreenManager : MonoBehaviour
 
         SetMenuVisible(false);
         _saveSlotMenu.Open(SaveSlotMenu.Mode.Load);
+    }
+
+    /// <summary>Lädt den neuesten Spielstand (manuell oder Autosave).</summary>
+    public void QuickLoad()
+    {
+        if (isHardcoreRunOver || SaveManager.Instance == null) return;
+
+        int slot = SaveManager.Instance.GetMostRecentSlot();
+        if (slot >= 0) SaveManager.Instance.Load(slot);
     }
 
     public void GoToMainMenu()
@@ -83,8 +115,9 @@ public class DeathScreenManager : MonoBehaviour
 
     private void RefreshLoadButton()
     {
-        if (_loadButton == null) return;
+        bool hasSave = !isHardcoreRunOver && SaveManager.Instance != null && SaveManager.Instance.HasAnySave();
 
-        _loadButton.interactable = SaveManager.Instance != null && SaveManager.Instance.HasAnySave();
+        if (_loadButton != null) _loadButton.interactable = hasSave;
+        if (_quickLoadButton != null) _quickLoadButton.interactable = hasSave;
     }
 }

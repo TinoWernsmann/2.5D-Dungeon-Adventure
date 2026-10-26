@@ -26,6 +26,9 @@ public class Door : MonoBehaviour, IInteractable, ISaveable
     [SerializeField] private bool isLocked;
     [SerializeField] private string neededUnlockItem;
 
+    [Tooltip("Wird nach dem Aufschließen geladen (z.B. CreditScene am Levelende). Leer = nichts.")]
+    [SerializeField] private string sceneToLoadOnUnlock;
+
     [Header("Enemies")]
     [Tooltip("Gegner können diese Tür öffnen, solange sie nicht abgeschlossen ist.")]
     [SerializeField] private bool enemiesCanOpen = true;
@@ -93,6 +96,12 @@ public class Door : MonoBehaviour, IInteractable, ISaveable
                 itemManager.RemoveItemByName(neededUnlockItem);
                 isLocked = false;
                 OpenDoor();
+
+                if (!string.IsNullOrEmpty(sceneToLoadOnUnlock))
+                {
+                    StartCoroutine(LoadSceneAfterOpening());
+                }
+
                 return;
             }
             else
@@ -119,6 +128,14 @@ public class Door : MonoBehaviour, IInteractable, ISaveable
         StartCoroutine(
             RotateDoor(openRotation, true)
         );
+    }
+
+    /// <summary>Erst die Tür aufgehen lassen, dann die nächste Szene laden.</summary>
+    private IEnumerator LoadSceneAfterOpening()
+    {
+        yield return new WaitForSeconds(animationDuration + 0.5f);
+
+        SceneLoader.Load(sceneToLoadOnUnlock);
     }
 
     private void CloseDoor()

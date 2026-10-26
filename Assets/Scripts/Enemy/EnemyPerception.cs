@@ -87,6 +87,12 @@ public class EnemyPerception : MonoBehaviour
 
     private void Awake()
     {
+        // Zur Laufzeit gespawnte Gegner (z.B. beschworene Diener) haben keine Inspector-Referenz.
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
+
         if (player == null)
         {
             return;

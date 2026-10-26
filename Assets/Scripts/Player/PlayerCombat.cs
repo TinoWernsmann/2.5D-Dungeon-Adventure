@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -10,6 +12,10 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField]
     private ItemManager itemManager;
+
+    [Tooltip("Leer lassen = wird am selben Objekt gesucht.")]
+    [SerializeField]
+    private PlayerEquipment equipment;
 
     [FormerlySerializedAs("weaponUI")]
     [SerializeField]
@@ -31,6 +37,37 @@ public class PlayerCombat : MonoBehaviour
 
     private Health playerHealth;
     private float nextAttackTime;
+    private AmmoSO selectedAmmo;
+
+    /// <summary>Munitionssorte, mit der als Nächstes geschossen wird (für die Anzeige).</summary>
+    public AmmoSO SelectedAmmo => GetAmmoToUse(equipment != null ? equipment.CurrentWeapon : null);
+
+    /// <summary>
+    /// Ausgerüstete Munition (im Inventar hervorgehoben): zuletzt gewählte Sorte, solange vorhanden –
+    /// sonst die erste Munition im Inventar.
+    /// </summary>
+    public AmmoSO EquippedAmmo
+    {
+        get
+        {
+            if (selectedAmmo != null && itemManager.HasItem(selectedAmmo))
+            {
+                return selectedAmmo;
+            }
+
+            for (int slot = 0; slot < itemManager.ItemCount; slot++)
+            {
+                if (itemManager.GetItemAt(slot) is AmmoSO ammo)
+                {
+                    return ammo;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    public event Action SelectedAmmoChanged;
     private const string DEATH_SCENE = "DeathScene";
     private const int HEALING_AMOUNT = 15;
 
@@ -38,27 +75,42 @@ public class PlayerCombat : MonoBehaviour
     {
         playerHealth =
             GetComponent<Health>();
+
+        if (equipment == null)
+        {
+            equipment = GetComponent<PlayerEquipment>();
+        }
     }
 
     private void OnEnable()
     {
         playerHealth.Died += HandlePlayerDeath;
+        playerHealth.Damaged += HandleDamaged;
         itemManager.OnHealingUsed += HandleHealing;
     }
 
     private void OnDisable()
     {
         playerHealth.Died -= HandlePlayerDeath;
+        playerHealth.Damaged -= HandleDamaged;
         itemManager.OnHealingUsed -= HandleHealing;
     }
 
     private void HandleHealing()
     {
         playerHealth.Heal(HEALING_AMOUNT);
+        LevelStats.Current?.RecordHealing();
+    }
+
+    // Für Erfolge wie "Level ohne Schaden abschließen".
+    private void HandleDamaged(int damage)
+    {
+        LevelStats.Current?.RecordDamage(damage);
     }
 
     private void HandlePlayerDeath()
     {
+        LevelStats.Current?.RecordDeath();
         SceneManager.LoadSceneAsync(DEATH_SCENE);
     }
 
@@ -70,7 +122,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         WeaponSO weapon =
-            itemManager?.SelectedWeapon;
+            equipment != null ? equipment.CurrentWeapon : null;
 
         if (!CanAttack(weapon))
         {
@@ -115,7 +167,8 @@ public class PlayerCombat : MonoBehaviour
         }
 
         if (!TryConsumeAmmo(
-                weapon))
+                weapon,
+                out AmmoSO usedAmmo))
         {
             Debug.Log(
                 $"[PLAYER] No ammo for " +
@@ -129,7 +182,8 @@ public class PlayerCombat : MonoBehaviour
 
         PlayAttackFeedback(weapon);
 
-        ShootProjectile(weapon);
+        ShootProjectile(weapon, usedAmmo);
+        SelectedAmmoChanged?.Invoke();
     }
 
     private bool CanShootProjectile(
@@ -165,29 +219,91 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private bool TryConsumeAmmo(
-        WeaponSO weapon)
+        WeaponSO weapon,
+        out AmmoSO usedAmmo)
     {
+        usedAmmo = null;
+
         if (!weapon.UsesAmmo)
         {
             return true;
         }
 
-        if (weapon.AmmoItem == null)
+        if (weapon.AmmoTypes.Length == 0)
         {
             Debug.LogWarning(
                 $"{weapon.name}: Uses Ammo is " +
-                "enabled but no Ammo Item " +
-                "is assigned.",
+                "enabled but no Ammo Types " +
+                "are assigned.",
                 weapon
             );
 
             return false;
         }
 
-        return itemManager.TryConsumeItem(
-            weapon.AmmoItem,
-            weapon.AmmoPerShot
-        );
+        usedAmmo = GetAmmoToUse(weapon);
+
+        return usedAmmo != null &&
+               itemManager.TryConsumeItem(
+                   usedAmmo,
+                   weapon.AmmoPerShot
+               );
+    }
+
+    /// <summary>Munition im Slot auswählen + Linksklick: diese Sorte wird ab jetzt verschossen.</summary>
+    public void EquipAmmo(AmmoSO ammo)
+    {
+        if (ammo == null || ammo == EquippedAmmo)
+        {
+            return;
+        }
+
+        selectedAmmo = ammo;
+        SelectedAmmoChanged?.Invoke();
+    }
+
+    /// <summary>R: wechselt zur nächsten Munitionssorte, die der Spieler besitzt.</summary>
+    public void SwitchAmmo()
+    {
+        WeaponSO weapon = equipment != null ? equipment.CurrentWeapon : null;
+
+        if (weapon == null || !weapon.UsesAmmo)
+        {
+            return;
+        }
+
+        AmmoSO[] available = GetAvailableAmmo(weapon);
+
+        if (available.Length < 2)
+        {
+            return;
+        }
+
+        int current = Array.IndexOf(available, GetAmmoToUse(weapon));
+        EquipAmmo(available[(current + 1) % available.Length]);
+    }
+
+    /// <summary>Ausgerüstete Sorte, falls sie zur Waffe passt – sonst die erste passende, die der Spieler hat.</summary>
+    private AmmoSO GetAmmoToUse(WeaponSO weapon)
+    {
+        if (weapon == null || !weapon.UsesAmmo)
+        {
+            return null;
+        }
+
+        AmmoSO[] available = GetAvailableAmmo(weapon);
+        AmmoSO equipped = EquippedAmmo;
+
+        return available.Contains(equipped)
+            ? equipped
+            : available.FirstOrDefault();
+    }
+
+    private AmmoSO[] GetAvailableAmmo(WeaponSO weapon)
+    {
+        return weapon.AmmoTypes
+            .Where(ammo => ammo != null && itemManager.HasItem(ammo, weapon.AmmoPerShot))
+            .ToArray();
     }
 
     private void StartAttackCooldown(
@@ -201,6 +317,12 @@ public class PlayerCombat : MonoBehaviour
     private void PlayAttackFeedback(
         WeaponSO weapon)
     {
+        // Für den Erfolg "Faustkämpfer": jeder echte Angriff mit einer Waffe zählt.
+        if (equipment != null && !equipment.IsFists(weapon))
+        {
+            LevelStats.Current?.RecordWeaponUsed();
+        }
+
         heldItemUI?.PlayAttackAnimation(
             weapon.AttackSprite,
             weapon.HeldSprite,
@@ -212,16 +334,23 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private void ShootProjectile(
-        WeaponSO weapon)
+        WeaponSO weapon,
+        AmmoSO ammo)
     {
         Vector3 direction =
             GetProjectileDirection(
                 weapon
             );
 
+        // Munition mit eigenem Projektil (z.B. Push-Bolzen) sieht auch anders aus.
+        PlayerProjectile prefab =
+            ammo != null && ammo.ProjectilePrefab != null
+                ? ammo.ProjectilePrefab
+                : weapon.ProjectilePrefab;
+
         PlayerProjectile projectile =
             Instantiate(
-                weapon.ProjectilePrefab,
+                prefab,
                 projectileSpawnPoint.position,
                 Quaternion.LookRotation(
                     direction
@@ -233,7 +362,8 @@ public class PlayerCombat : MonoBehaviour
             weapon.ProjectileSpeed,
             weapon.WeaponDamage,
             gameObject,
-            defaultSurface
+            defaultSurface,
+            ammo != null ? ammo.KnockbackDistance : 0f
         );
     }
 

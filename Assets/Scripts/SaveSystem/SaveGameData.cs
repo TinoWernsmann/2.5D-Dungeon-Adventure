@@ -6,16 +6,19 @@ using UnityEngine;
 [Serializable]
 public class SaveGameData
 {
-    public const int CurrentVersion = 1;
+    public const int CurrentVersion = 2; // 2: Level-Statistik für Erfolge
 
     public int version = CurrentVersion;
 
     // Info für das Slot-Menü
     public string sceneName;
     public string playerName;
+    public Difficulty difficulty = Difficulty.Normal; // fehlt in alten Spielständen -> Normal
     public string questTitle;
     public string savedAtIso;
     public float playTimeSeconds;
+    public float levelStartPlayTimeSeconds; // fehlt in alten Spielständen -> 0 (Levelzeit = Gesamtzeit)
+    public LevelStats levelStats;
 
     // Zustand der Welt
     public List<EntitySaveData> entities = new();

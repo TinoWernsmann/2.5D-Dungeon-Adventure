@@ -172,6 +172,13 @@ public class HeavyAntibodyCombatBehaviour : EnemyCombatBehaviour
             damageApplied = TryHitTarget(hitRange, chargeDamage);
         }
 
+        // Nach dem Treffer stoppen – sonst schiebt der Ansturm den Player vor sich her bis an die Wand.
+        if (damageApplied)
+        {
+            StartRecovery(hitWall: false);
+            return;
+        }
+
         if (!movedFreely)
         {
             StartRecovery(hitWall: true);

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f2560fde23e3d4c92c05aa34e2d230, type: 3}
+  m_Name: 10_TutorialSpezielleMunition
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialSO
+  _title: Tutorial
+  _pages:
+  - 'Du hast spezielle Munition gefunden! '
+  - "Mit dem PushBolzen kannst du Gegner nicht nur verletzen, sondern sie auch nach
+    hinten sto\xDFen."
+  - "Nutze diesen Effekt clever, um Gegner in die Magens\xE4ure zu schleudern!"
+  - "M\xF6chtest du eine andere Munitionsart ausr\xFCsten? "
+  - "W\xE4hle sie im Item-Slot aus und dr\xFCcke die linke Maustaste, um sie auszur\xFCsten."

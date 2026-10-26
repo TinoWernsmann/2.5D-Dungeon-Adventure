@@ -58,18 +58,31 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: def4c87cbc8029a4eb4918d7522e4754, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2489058932138061262}
+      addedObject: {fileID: 7802109628904911291}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: def4c87cbc8029a4eb4918d7522e4754, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7802109628904911291}
+      addedObject: {fileID: 3447944207376094345}
   m_SourcePrefab: {fileID: 100100000, guid: def4c87cbc8029a4eb4918d7522e4754, type: 3}
 --- !u!1 &17734819103555120 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: def4c87cbc8029a4eb4918d7522e4754, type: 3}
   m_PrefabInstance: {fileID: 936300571594294113}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &2489058932138061262
-MeshCollider:
+--- !u!114 &7802109628904911291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17734819103555120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00dc9045fde843b1af3088e32e2fb0a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Surface
+  surfaceType: {fileID: 11400000, guid: e5d08fb75c194d9fb1447ed2ec13befa, type: 2}
+--- !u!65 &3447944207376094345
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -86,20 +99,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5098199609554520554, guid: def4c87cbc8029a4eb4918d7522e4754, type: 3}
---- !u!114 &7802109628904911291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17734819103555120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00dc9045fde843b1af3088e32e2fb0a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Surface
-  surfaceType: {fileID: 11400000, guid: e5d08fb75c194d9fb1447ed2ec13befa, type: 2}
+  serializedVersion: 3
+  m_Size: {x: 0.05000002, y: 0.05000001, z: 0.0020000122}
+  m_Center: {x: 1.3103852e-26, y: -2.3605803e-10, z: 0.0009900993}

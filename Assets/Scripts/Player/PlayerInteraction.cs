@@ -38,6 +38,7 @@ public class PlayerInteraction : MonoBehaviour
         GameInput.Instance.OnAttack += HandleCombatInput;
         GameInput.Instance.OnItemSelect += HandleInventoryInput;
         GameInput.Instance.OnItemScroll += HandleItemScroll;
+        GameInput.Instance.OnSwitchAmmo += HandleSwitchAmmo;
         GameInput.Instance.OnDropPressed += HandleDropInput;
     }
 
@@ -50,6 +51,7 @@ public class PlayerInteraction : MonoBehaviour
         GameInput.Instance.OnAttack -= HandleCombatInput;
         GameInput.Instance.OnItemSelect -= HandleInventoryInput;
         GameInput.Instance.OnItemScroll -= HandleItemScroll;
+        GameInput.Instance.OnSwitchAmmo -= HandleSwitchAmmo;
         GameInput.Instance.OnDropPressed -= HandleDropInput;
     }
 
@@ -70,6 +72,13 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleCombatInput()
     {
+        // Munition in der Hand: Linksklick rüstet sie für die Armbrust aus.
+        if (itemManager != null && itemManager.SelectedItem is AmmoSO ammo)
+        {
+            if (Time.timeScale > 0f) playerCombat?.EquipAmmo(ammo);
+            return;
+        }
+
         // Heiltrank in der Hand: Linksklick trinkt ihn (wie H), statt anzugreifen.
         if (itemManager != null && itemManager.IsHealingSelected)
         {
@@ -80,9 +89,21 @@ public class PlayerInteraction : MonoBehaviour
         playerCombat?.TryAttack();
     }
 
-    private void HandleInventoryInput(int slot)
+    // Taste 1 = Fäuste, Tasten 2–5 = Inventar-Slots 1–4.
+    private void HandleInventoryInput(int key)
     {
-        itemManager?.SelectSlot(slot);
+        if (itemManager == null)
+        {
+            return;
+        }
+
+        if (key == 0)
+        {
+            itemManager.SelectFists();
+            return;
+        }
+
+        itemManager.SelectSlot(key - 1);
     }
 
     private void HandleItemScroll(int step)
@@ -94,6 +115,11 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         itemManager?.SelectRelativeSlot(step);
+    }
+
+    private void HandleSwitchAmmo()
+    {
+        if (Time.timeScale > 0f) playerCombat?.SwitchAmmo();
     }
 
     private void HandleDropInput()

@@ -197,7 +197,7 @@ public abstract class EnemyCombatBehaviour : MonoBehaviour
         }
 
         TargetHealth.TakeDamage(
-            damage,
+            DifficultySettings.DamageByEnemy(damage, TargetHealth),
             Target.position,
             transform
         );

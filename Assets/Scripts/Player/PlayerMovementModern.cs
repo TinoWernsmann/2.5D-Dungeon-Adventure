@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
 
+    [Tooltip("Wie schnell ein Rückstoß (z.B. vom Feuerball) abgebremst wird.")]
+    [Min(0.1f)]
+    [SerializeField] private float knockbackDeceleration = 20f;
+
     [Header("Jumping & Gravity")]
     [SerializeField] private float jumpHeight = 1.5f;
     [SerializeField] private float gravity = -20f;
@@ -34,6 +38,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private CharacterController characterController;
 
     private float verticalVelocity;
+    private Vector3 knockbackVelocity;
     private float cameraPitch;
     private bool wasGrounded = true;
 
@@ -64,6 +69,20 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         areControlsLocked = locked;
     }
 
+    /// <summary>Stößt den Player ungefähr <paramref name="distance"/> Meter weg (er kann gegenlaufen).</summary>
+    public void Knockback(Vector3 direction, float distance)
+    {
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude <= 0.001f || distance <= 0f)
+        {
+            return;
+        }
+
+        // Bremsweg v² / (2a) = distance
+        knockbackVelocity = direction.normalized * Mathf.Sqrt(2f * knockbackDeceleration * distance);
+    }
+
     private void Update()
     {
         HandleMovement();
@@ -82,8 +101,13 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
         HandleVerticalMovement();
 
-        Vector3 velocity = moveDirection * moveSpeed;
+        Vector3 velocity = moveDirection * moveSpeed + knockbackVelocity;
         velocity.y = verticalVelocity;
+
+        knockbackVelocity = Vector3.MoveTowards(
+            knockbackVelocity,
+            Vector3.zero,
+            knockbackDeceleration * Time.deltaTime);
 
         characterController.Move(velocity * Time.deltaTime);
 

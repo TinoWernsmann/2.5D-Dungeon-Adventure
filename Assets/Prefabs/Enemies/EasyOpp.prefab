@@ -432,6 +432,9 @@ MonoBehaviour:
   footsteps: {fileID: 2673529979195659367}
   doorOpener:
     canOpenDoors: 1
+  canBeKnockedBack: 1
+  knockbackDuration: 0.25
+  staggerAfterKnockback: 0.3
 --- !u!114 &1552544721555742038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,7 +593,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -730,7 +733,7 @@ MonoBehaviour:
     volume: 1
     pitchVariation: 0.1
     maxHearingDistance: 20
-  deathEffectPoint: {fileID: 0}
+  deathEffectPoint: {fileID: 764994764364833506}
 --- !u!1 &8422531498140445762
 GameObject:
   m_ObjectHideFlags: 0

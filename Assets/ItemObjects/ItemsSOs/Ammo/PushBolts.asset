@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2883f2f849784efe9bbd3b331bf2ba5f, type: 3}
+  m_Name: PushBolts
+  m_EditorClassIdentifier: Assembly-CSharp::AmmoSO
+  ItemName: Push Bolts
+  Description: Pushes enemies back
+  InventoryIcon: {fileID: 479275709, guid: 22b937d5ade44a23bb99353ba055df9f, type: 3}
+  HeldSprite: {fileID: -1822101462, guid: b66ffcb8f97b4feeb335af300f3d1abe, type: 3}
+  stackable: 1
+  maxStackSize: 12
+  IsHealing: 0
+  PickupTutorial: {fileID: 11400000, guid: ece8f7064b9015b4cbb3a6c7e195b153, type: 2}
+  PickUpSound: {fileID: 8300000, guid: 3c88b45084ee0254aa64e0b28b277c61, type: 3}
+  DropSound: {fileID: 8300000, guid: 03ee6ced028d2414babfc96ae72b6fe8, type: 3}
+  knockbackDistance: 2.5
+  projectilePrefab: {fileID: 7032267243731821679, guid: ef10a41a73b4d374cbea30a65423c1cb, type: 3}
+  loadedWeaponSprite: {fileID: 21300000, guid: ad48359fa2d548788328cfa0d5cd15d0, type: 3}

@@ -44,7 +44,12 @@ public class QuestManager : MonoBehaviour, ISaveable
 
     public void StartQuest(QuestData data)
     {
-        Begin(data, announce: true);
+        QuestProgress started = Begin(data, announce: true);
+
+        if (started != null && TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.StartTutorialOnce(data.StartTutorial);
+        }
     }
 
     public void ReportProgress(QuestType type, string targetId, int amount = 1)
